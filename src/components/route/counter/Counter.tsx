@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { CounterActions } from "../../../store/slice/CounterSlice";
+import { CounterActions } from "../../../services/state/slice/CounterSlice";
 import classes from "./Counter.module.css";
-import { RootState } from "../../../store/store";
+import { RootState } from "../../../services/state/store";
 
 const Counter = () => {
   const dispatch = useDispatch();
