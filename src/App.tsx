@@ -1,10 +1,11 @@
-import "./App.css";
 import Test from "./components/route/test/Test";
+import { Button } from "./components/ui/button";
 
 function App() {
   return (
     <>
-      <Test></Test>
+      <Test />
+      <Button variant="outline">asd</Button>
     </>
   );
 }
