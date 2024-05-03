@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getApiData, postApiData } from "../../../services/api/ApiUtils";
+// TODO wywalić
 
 function Test(): JSX.Element {
   const [randomString, setRandomString] = useState<string>("");

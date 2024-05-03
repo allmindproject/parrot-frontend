@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./button";
 import {
   Card,
   CardContent,
@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "./card";
 
 export {
   Button,
