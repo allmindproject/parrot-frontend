@@ -1,15 +1,24 @@
-import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-import { tempIsAuth } from "./tempIsAuth";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentToken } from "@/services/state/auth/authSlice";
 
-type PrivateRouteProps = {
-  children: ReactNode;
-};
-
-const PrivateRoute = ({ children }: PrivateRouteProps) => {
+const PrivateRoute = () => {
   // TODO check if authenticated using redux and local storage
-  const isAuthenticated = tempIsAuth;
-  return isAuthenticated ? children : <Navigate to={"/login"} />;
+  const token = useSelector(selectCurrentToken);
+  const location = useLocation();
+
+  console.log(`Token: ${token}`)
+  return <Outlet />
+  // return token ? (
+  //   <Outlet />
+  // ) : (
+  //   <>
+  //     {console.log(
+  //       "<Navigate to={/login} state={{ from: location }} replace />"
+  //     )}
+  //     <Navigate to={"/login"} state={{ from: location }} replace />
+  //   </>
+  // );
 };
 
 export { PrivateRoute };

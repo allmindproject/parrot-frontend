@@ -14,44 +14,45 @@ import { GuestOnlyRoute, PrivateRoute } from "./components/routes";
 
 const router = createBrowserRouter([
   {
+    path: "*",
+    element: <NotFoundPage />,
+  },
+  {
     path: "/",
-    element: (
-      <PrivateRoute>
-        <Layout />
-      </PrivateRoute>
-    ),
-    errorElement: <NotFoundPage />,
+    element: <Layout />,
     children: [
       //TODO tutaj inne strony dla kazdej roli
       {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: "/about",
-        element: <div>about page</div>,
-      },
-      {
-        path: "/dashboard",
-        element: <DashboardPage />,
+        element: <PrivateRoute />,
+        children: [
+          {
+            index: true,
+            element: <HomePage />,
+          },
+          {
+            path: "/about",
+            element: <div>about page</div>,
+          },
+          {
+            path: "/dashboard",
+            element: <DashboardPage />,
+          },
+        ],
       },
     ],
   },
   {
-    path: "/login",
-    element: (
-      <GuestOnlyRoute>
-        <LoginPage />
-      </GuestOnlyRoute>
-    ),
-  },
-  {
-    path: "/register",
-    element: (
-      <GuestOnlyRoute>
-        <RegisterPage />
-      </GuestOnlyRoute>
-    ),
+    element: <GuestOnlyRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+    ],
   },
 ]);
 
