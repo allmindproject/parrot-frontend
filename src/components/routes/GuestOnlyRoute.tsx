@@ -1,23 +1,16 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "@/services/state/auth/authSlice";
 
 const GuestOnlyRoute = () => {
-  // TODO check if authenticated using redux and local storage
-  // const isAuthenticated = useSelector(selectIsLoggedIn);
-
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const location = useLocation();
 
-  return <Outlet />;
-  // return !isAuthenticated ? (
-  //   <Outlet />
-  // ) : (
-  //   <>
-  //     {console.log(
-  //       "<Navigate to={/dashboard} state={{ from: location }} replace />"
-  //     )}
-  //     <Navigate to={"/dashboard"} state={{ from: location }} replace />
-  //   </>
-  // );
+  return !isAuthenticated ? (
+    <Outlet />
+  ) : (
+    <Navigate to={"/dashboard"} state={{ from: location }} replace />
+  );
 };
 
 export { GuestOnlyRoute };

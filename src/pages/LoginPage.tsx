@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { LoginValues } from "@/types";
 import { toast } from "sonner";
-import { setAuthToken } from "@/services/state/auth/authSlice";
+import { setCredentials } from "@/services/state/auth/authSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -70,14 +70,10 @@ const LoginPage = () => {
     console.log(loginValues);
     try {
       const authResult = await login(loginValues).unwrap();
-      dispatch(setAuthToken(authResult.access_token));
-      //TODO ogarnac tutaj poza tokenem info o userze
-      // czy da sie to zrobic w 1 zapytaniu?
-      // const user = await getUser().unwrap()
-      // dispatch(setUser({user.}))
+      dispatch(setCredentials(authResult.access_token));
 
       navigate("/dashboard");
-    } catch (err) {
+    } catch (err) { //TODO okreslic typ erroru
       console.log("z loginu ", err);
       toast.error(`Error ${err.data.status}`, {
         description: `${err.data.message}`,

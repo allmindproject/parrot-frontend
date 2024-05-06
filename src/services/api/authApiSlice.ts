@@ -8,11 +8,6 @@ type AuthResult = {
   user_name: string; // email
 };
 
-type UserResult = {
-  //TODO
-  data: undefined;
-};
-
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthResult, LoginValues>({
@@ -24,13 +19,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    getUser: builder.query<UserResult, undefined>({
-      query: () => ({
-        url: "/get-user", //TODO czy jest wogole taki endpoint???
-        method: "GET",
-      }),
-    }),
   }),
 });
 
-export const { useLoginMutation, useGetUserQuery } = authApiSlice;
+export const { useLoginMutation } = authApiSlice;

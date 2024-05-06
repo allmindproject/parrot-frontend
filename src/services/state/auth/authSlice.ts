@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { Role } from "@/types";
+import { DecodedToken, Role } from "@/types";
+import { jwtDecode } from "jwt-decode";
+import { convertStringToRole } from "@/utils/convertStringToRole";
 
 type User = {
-  email: string | null;
-  firstName: string | null;
-  surname: string | null;
+  email: string;
+  firstName: string;
+  lastName: string;
   role: Role;
 };
 
@@ -15,25 +17,28 @@ type AuthState = {
 };
 
 const initialState: AuthState = {
-  user: { email: null, firstName: null, surname: null, role: Role.User },
+  user: null,
   token: null,
 };
-// TODO
+
 const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    setAuthToken: (state, action: { payload: string }) => {
+    setCredentials: (state, action: { payload: string }) => {
       const token = action.payload;
+      const decodedToken: DecodedToken = jwtDecode(token);
+      const user: User = {
+        email: decodedToken.sub,
+        firstName: decodedToken.firstName,
+        lastName: decodedToken.lastName,
+        role: convertStringToRole(decodedToken.scope),
+      };
+
       state.token = token;
-      console.log("setAuthToken reducer");
-      console.log(state.user);
-      console.log(state.token);
-    },
-    setUser: (state, action: { payload: User }) => {
-      const user = action.payload;
       state.user = user;
-      console.log("setUser reducer");
+
+      console.log("setCredentials reducer");
       console.log(state.user);
       console.log(state.token);
     },
@@ -47,9 +52,13 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuthToken, setUser, logOut } = authSlice.actions;
+export const { setCredentials, logOut } = authSlice.actions;
 
-export const selectCurrentUser = (state: RootState) => state.auth.user;
-export const selectCurrentToken = (state: RootState) => state.auth.token;
+export const selectCurrentUser = (state: RootState): User | null =>
+  state.auth.user;
+export const selectCurrentToken = (state: RootState): string | null =>
+  state.auth.token;
+export const selectIsAuthenticated = (state: RootState): boolean =>
+  !!state.auth.token && !!state.auth.user;
 
 export default authSlice.reducer;
