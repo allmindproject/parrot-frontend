@@ -1,6 +1,6 @@
-import { DecodedToken } from "./DecodedToken";
+import { User } from "./User";
 import { LoginValues } from "./LoginValues";
 import { Role } from "./Role";
 
-export type { DecodedToken, LoginValues };
+export type { LoginValues, User };
 export { Role };

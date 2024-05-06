@@ -1,14 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { DecodedToken, Role } from "@/types";
+import { User } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { convertStringToRole } from "@/utils/convertStringToRole";
 
-type User = {
-  email: string;
+type DecodedToken = {
+  exp: number; // access token expiry
   firstName: string;
+  iat: number; // sth
+  iss: string; // token type
   lastName: string;
-  role: Role;
+  scope: string; // role
+  sub: string; //email
 };
 
 type AuthState = {
