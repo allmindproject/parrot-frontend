@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { User } from "@/types";
 import { jwtDecode } from "jwt-decode";
@@ -28,8 +28,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    setCredentials: (state, action: { payload: string }) => {
-      const token = action.payload;
+    setCredentials: (state, action: PayloadAction<{ token: string }>) => {
+      const token = action.payload.token;
       const decodedToken: DecodedToken = jwtDecode(token);
       const user: User = {
         email: decodedToken.sub,

@@ -14,9 +14,7 @@ import {
   FormMessage,
   FormField,
 } from "@/components/ui";
-import { useLoginMutation } from "@/services/api/authApiSlice";
-import { AppDispatch } from "@/services/state/store";
-import { useDispatch } from "react-redux";
+import { useLoginMutation } from "@/services/api/auth/authApiSlice";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,12 +22,13 @@ import { z } from "zod";
 import { LoginValues } from "@/types";
 import { toast } from "sonner";
 import { setCredentials } from "@/services/state/auth/authSlice";
+import { useAppDispatch } from "@/hooks";
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const loginSchema = z.object({
     email: z
@@ -70,7 +69,7 @@ const LoginPage = () => {
     console.log(loginValues);
     try {
       const authResult = await login(loginValues).unwrap();
-      dispatch(setCredentials(authResult.access_token));
+      dispatch(setCredentials({token: authResult.access_token}));
 
       navigate("/dashboard");
     } catch (err) { //TODO okreslic typ erroru

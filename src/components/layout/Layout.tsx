@@ -1,14 +1,17 @@
 import { Outlet } from "react-router-dom";
+import { LayoutFooter, LayoutHeader } from ".";
+import { Separator } from "../ui";
 
 function Layout() {
-  // TODO navbar and footer
   return (
     <div>
-      <header>Header Content</header>
-      <main>
+      <LayoutHeader />
+      <Separator />
+      <div className="p-4">
         <Outlet /> {/* Nested routes render here */}
-      </main>
-      <footer>Footer Content</footer>
+      </div>
+      <Separator />
+      <LayoutFooter />
     </div>
   );
 }

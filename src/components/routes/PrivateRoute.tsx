@@ -1,9 +1,10 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "@/services/state/auth/authSlice";
+import { toast } from "sonner";
+import { useAppSelector } from "@/hooks";
 
 const PrivateRoute = () => {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const location = useLocation();
 
   return isAuthenticated ? (

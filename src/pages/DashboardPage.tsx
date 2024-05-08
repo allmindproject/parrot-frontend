@@ -1,18 +1,17 @@
 import { Button, Card } from "@/components/ui";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import {
   logOut,
   selectCurrentToken,
   selectCurrentUser,
 } from "@/services/state/auth/authSlice";
-import { AppDispatch } from "@/services/state/store";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 // TODO różne dashboardy dla różnych roli
 const DashboardPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector(selectCurrentUser);
-  const token = useSelector(selectCurrentToken);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(selectCurrentToken);
 
   return (
     <Card>

@@ -8,6 +8,23 @@ import {
   CardTitle,
 } from "./card";
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from "./dropdown-menu";
+import {
   useFormField,
   FormItem,
   FormLabel,
@@ -19,6 +36,7 @@ import {
 } from "./form";
 import { Input } from "./input";
 import { Label } from "./label";
+import { Separator } from "./separator";
 import { Toaster } from "./sonner";
 
 export {
@@ -30,6 +48,21 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
   useFormField,
   Form,
   FormItem,
@@ -40,5 +73,6 @@ export {
   FormField,
   Input,
   Label,
+  Separator,
   Toaster,
 };
