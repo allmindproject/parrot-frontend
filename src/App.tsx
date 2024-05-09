@@ -9,9 +9,9 @@ import {
 import { Layout } from "./components/layout";
 import { GuestOnlyRoute, PrivateRoute } from "./components/routes";
 import { Theme } from "./types";
-import { useEffect } from "react";
 import { setTheme } from "./services/state/theme/themeSlice";
 import { useAppDispatch } from "./hooks";
+import { setCredentials } from "./services/state/auth/authSlice";
 
 // TODO wymyslic jak renderować componenty w zależności od roli
 // TODO czy jeden "/dashboard" dla wszystkich roli jest ok?
@@ -63,10 +63,12 @@ const router = createBrowserRouter([
 const App = () => {
   const dispatch = useAppDispatch();
   const theme = (localStorage.getItem("theme") as Theme) || "system";
+  const token = localStorage.getItem("token") || null;
 
-  useEffect(() => {
-    dispatch(setTheme({ theme: theme }));
-  }, []);
+  dispatch(setTheme({ theme: theme }));
+  if (token) {
+    dispatch(setCredentials({ token: token }));
+  }
 
   return <RouterProvider router={router} />;
 };

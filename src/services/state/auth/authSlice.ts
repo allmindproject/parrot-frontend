@@ -40,17 +40,12 @@ const authSlice = createSlice({
 
       state.token = token;
       state.user = user;
-
-      console.log("setCredentials reducer");
-      console.log(state.user);
-      console.log(state.token);
+      localStorage.setItem("token", token);
     },
     logOut: (state) => {
       state.user = null;
       state.token = null;
-      console.log("logOut reducer");
-      console.log(state.user);
-      console.log(state.token);
+      localStorage.removeItem("token");
     },
   },
 });

@@ -23,11 +23,22 @@ import { LoginValues } from "@/types";
 import { toast } from "sonner";
 import { setCredentials } from "@/services/state/auth/authSlice";
 import { useAppDispatch } from "@/hooks";
+import { useEffect } from "react";
 
+//TODO handling errors, isloading, isError
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [
+    login,
+    {
+      data: loginData,
+      isLoading: isLoginLoading,
+      isSuccess: isLoginSuccess,
+      isError: isLoginError,
+      error: loginError,
+    },
+  ] = useLoginMutation();
   const dispatch = useAppDispatch();
 
   const loginSchema = z.object({
@@ -69,10 +80,11 @@ const LoginPage = () => {
     console.log(loginValues);
     try {
       const authResult = await login(loginValues).unwrap();
-      dispatch(setCredentials({token: authResult.access_token}));
+      // dispatch(setCredentials({token: authResult.access_token}));
 
-      navigate("/dashboard");
-    } catch (err) { //TODO okreslic typ erroru
+      // navigate("/dashboard");
+    } catch (err) {
+      //TODO okreslic typ erroru
       console.log("z loginu ", err);
       toast.error(`Error ${err.data.status}`, {
         description: `${err.data.message}`,
@@ -80,7 +92,17 @@ const LoginPage = () => {
     }
   };
 
-  return isLoading ? (
+  useEffect(() => {
+    if (isLoginSuccess) {
+      toast.success(`Hehe`, {
+        description: `zalogowany`,
+      });
+      dispatch(setCredentials({ token: loginData.access_token }));
+      navigate("/dashboard");
+    }
+  }, [isLoginSuccess]);
+
+  return isLoginLoading ? (
     <h1>Loading...</h1>
   ) : (
     <div className="h-screen flex items-center justify-center">
