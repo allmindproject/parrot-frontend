@@ -1,16 +1,37 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { selectIsAuthenticated } from "@/services/state/auth/authSlice";
+import {
+  selectCurrentToken,
+  selectCurrentUser,
+} from "@/services/state/auth/authSlice";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hooks";
+import { Role } from "@/types";
 
-const PrivateRoute = () => {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+type PrivateRouteProps = {
+  allowedRoles: Role[];
+};
+
+const PrivateRoute = ({ allowedRoles }: PrivateRouteProps) => {
+  const user = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(selectCurrentToken);
   const location = useLocation();
 
-  return isAuthenticated ? (
+  return !!user && !!token && allowedRoles.includes(user?.role) ? (
     <Outlet />
+  ) : !!user && !!token ? (
+    <>
+      {toast.error(`oooops where you goin bro`, {
+        description: `You are not authorized to go there`,
+      })}
+      <Navigate to={"/unauthorized"} state={{ from: location }} replace />
+    </>
   ) : (
-    <Navigate to={"/login"} state={{ from: location }} replace />
+    <>
+      {toast.error(`oooops where you goin bro`, {
+        description: `You are not logged in`,
+      })}
+      <Navigate to={"/login"} state={{ from: location }} replace />
+    </>
   );
 };
 

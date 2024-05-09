@@ -1,31 +1,39 @@
-import { Button, Card } from "@/components/ui";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import {
-  logOut,
-  selectCurrentToken,
-  selectCurrentUser,
-} from "@/services/state/auth/authSlice";
-import { Link } from "react-router-dom";
+import { useAppSelector } from "@/hooks";
+import { selectCurrentUser } from "@/services/state/auth/authSlice";
+import { Role } from "@/types";
+import { Navigate, useLocation } from "react-router-dom";
 
-// TODO różne dashboardy dla różnych roli
 const DashboardPage = () => {
-  const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
-  const token = useAppSelector(selectCurrentToken);
+  const location = useLocation();
+  let route: string = "/login";
 
-  return (
-    <Card>
-      <p>Dashboard</p>
-      <p>Token: {token}</p>
-      <p>Email: {user?.email}</p>
-      <p>firstName: {user?.firstName}</p>
-      <p>lastName: {user?.lastName}</p>
-      <p>role: {user?.role}</p>
-      <Link to="/login">
-        <Button variant="secondary">Login</Button>
-      </Link>
-      <Button onClick={() => dispatch(logOut())}>logout</Button>
-    </Card>
-  );
+  switch (user?.role) {
+    case Role.Admin:
+      route = "/admin";
+      break;
+    case Role.Doctor:
+      route = "/doctor";
+      break;
+    case Role.LabAssistant:
+      route = "/labAssistant";
+      break;
+    case Role.LabSupervisor:
+      route = "/labSupervisor";
+      break;
+    case Role.Patient:
+      route = "/patient";
+      break;
+    case Role.Receptionist:
+      route = "/receptionist";
+      break;
+    case Role.User:
+      route = "/user";
+      break;
+    default:
+      break;
+  }
+  return <Navigate to={route} state={{ from: location }} replace />;
 };
+
 export { DashboardPage };

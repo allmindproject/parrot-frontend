@@ -1,12 +1,16 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { selectIsAuthenticated } from "@/services/state/auth/authSlice";
+import {
+  selectCurrentToken,
+  selectCurrentUser,
+} from "@/services/state/auth/authSlice";
 import { useAppSelector } from "@/hooks";
 
 const GuestOnlyRoute = () => {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const user = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(selectCurrentToken);
   const location = useLocation();
 
-  return !isAuthenticated ? (
+  return !(!!user && !!token) ? (
     <Outlet />
   ) : (
     <Navigate to={"/dashboard"} state={{ from: location }} replace />
