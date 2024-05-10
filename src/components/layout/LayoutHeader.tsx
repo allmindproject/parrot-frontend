@@ -2,7 +2,7 @@ import { logOut } from "@/services/state/auth/authSlice";
 import { ClinicLogo, ThemeToggle } from "..";
 import { Button } from "../ui";
 import { useAppDispatch } from "@/hooks";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const LayoutHeader = () => {
@@ -17,7 +17,9 @@ const LayoutHeader = () => {
   };
   return (
     <div className="flex justify-between items-center p-4">
-      <ClinicLogo height={40} />
+      <Link to={"/dashboard"}>
+        <ClinicLogo height={40} />
+      </Link>
       <div className="flex gap-4">
         <Button onClick={handleLogout}>logout</Button>
         <ThemeToggle />

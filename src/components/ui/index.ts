@@ -1,4 +1,5 @@
 import { Button, buttonVariants } from "./button";
+import { Calendar } from "./calendar";
 import {
   Card,
   CardContent,
@@ -36,12 +37,14 @@ import {
 } from "./form";
 import { Input } from "./input";
 import { Label } from "./label";
+import { ScrollArea, ScrollBar } from "./scroll-area";
 import { Separator } from "./separator";
 import { Toaster } from "./sonner";
 
 export {
   Button,
   buttonVariants,
+  Calendar,
   Card,
   CardHeader,
   CardFooter,
@@ -74,5 +77,7 @@ export {
   Input,
   Label,
   Separator,
+  ScrollArea,
+  ScrollBar,
   Toaster,
 };
