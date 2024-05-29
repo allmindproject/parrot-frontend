@@ -26,7 +26,7 @@ import { useAppDispatch } from "@/hooks";
 import { useEffect } from "react";
 
 //TODO handling errors, isloading, isError
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui";
 import { useAppSelector } from "@/hooks";
 import { selectCurrentUser } from "@/services/state/auth/authSlice";
 
-const UnauthorizedPage = () => {
+const UnauthorizedPage: React.FC = () => {
   const navigate = useNavigate();
   const user = useAppSelector(selectCurrentUser);
   const message = user

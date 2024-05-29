@@ -143,7 +143,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const App = () => {
+const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const theme = (localStorage.getItem("theme") as Theme) || "system";
   const token = localStorage.getItem("token") || null;

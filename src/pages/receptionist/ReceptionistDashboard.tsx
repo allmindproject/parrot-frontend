@@ -1,4 +1,4 @@
-const ReceptionistDashboard = () => {
+const ReceptionistDashboard: React.FC = () => {
   return <div>ReceptionistDashboard</div>;
 };
 

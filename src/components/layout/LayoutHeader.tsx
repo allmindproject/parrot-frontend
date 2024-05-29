@@ -5,7 +5,7 @@ import { useAppDispatch } from "@/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-const LayoutHeader = () => {
+const LayoutHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleLogout = (): void => {

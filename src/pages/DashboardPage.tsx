@@ -3,7 +3,7 @@ import { selectCurrentUser } from "@/services/state/auth/authSlice";
 import { Role } from "@/types";
 import { Navigate, useLocation } from "react-router-dom";
 
-const DashboardPage = () => {
+const DashboardPage: React.FC = () => {
   const user = useAppSelector(selectCurrentUser);
   const location = useLocation();
   let route: string = "/login";

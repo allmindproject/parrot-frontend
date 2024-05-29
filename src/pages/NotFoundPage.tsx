@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui";
 import { Link } from "react-router-dom";
 
-const NotFoundPage = () => {
+const NotFoundPage: React.FC = () => {
   //TODO
   return (
     <div>

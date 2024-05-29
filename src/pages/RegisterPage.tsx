@@ -1,6 +1,6 @@
 import { Button, Card } from "@/components/ui";
 
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => {
   //TODO
   return (
     <Card>

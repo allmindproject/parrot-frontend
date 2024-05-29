@@ -1,18 +1,19 @@
 import { Outlet } from "react-router-dom";
-import { LayoutFooter, LayoutHeader } from ".";
+import { LayoutHeader } from ".";
 import { Separator } from "../ui";
 
-function Layout() {
+const Layout: React.FC = () => {
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <LayoutHeader />
       <Separator />
-      <div className="p-4">
-        <Outlet /> {/* Nested routes render here */}
+      <div className="p-4 overflow-hidden">
+        <Outlet /> {/* Nested routes are rendered here */}
       </div>
-      <Separator />
-      <LayoutFooter />
+      {/* <Separator /> */}
+      {/* <LayoutFooter /> */}
     </div>
   );
-}
+};
+
 export { Layout };

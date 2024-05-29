@@ -11,22 +11,22 @@ import {
 } from "@/components/ui";
 import { useState } from "react";
 
-const DoctorDashboard = () => {
+const DoctorDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
-    <div className="flex justify-between items-start gap-4">
+    <div className="h-full flex justify-between items-start gap-4">
       <Calendar
         mode="single"
         selected={date}
         onSelect={setDate}
         className="border rounded-md"
       />
-      <div className="w-full flex flex-col items-stretch gap-4">
+      <div className="w-full h-full flex flex-col items-stretch gap-4">
         <Button variant="outline" className="self-end">
           See all visits
         </Button>
-        <ScrollArea className="h-[400px]">
+        <ScrollArea>
           <div className="flex flex-col gap-4">
             {"abcdefghijk".split("").map((letter) => (
               <Card key={letter}>

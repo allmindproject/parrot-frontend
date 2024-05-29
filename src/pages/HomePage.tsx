@@ -8,7 +8,7 @@ import {
 import { Link } from "react-router-dom";
 // TODO niepotrzebne wywalić
 // narazie tylko zeby pokazac jak dziala rbac
-const HomePage = () => {
+const HomePage: React.FC = () => {
   return (
     <Card>
       <CardHeader>

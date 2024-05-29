@@ -3,7 +3,7 @@ type ClinicLogoProps = {
   width?: number;
 };
 
-const ClinicLogo = ({ height, width }: ClinicLogoProps) => {
+const ClinicLogo: React.FC<ClinicLogoProps> = ({ height, width }) => {
   return (
     <svg
       width={width}

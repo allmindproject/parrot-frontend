@@ -9,7 +9,7 @@ import {
 } from "./ui";
 import { useAppDispatch } from "@/hooks";
 
-const ThemeToggle = () => {
+const ThemeToggle: React.FC = () => {
   const dispatch = useAppDispatch();
 
   return (

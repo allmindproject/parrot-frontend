@@ -8,7 +8,7 @@ import {
 } from "@/components/ui";
 import { useSearchExaminationsQuery } from "@/services/api/doctor/doctorApiSlice";
 //TODO bo nie dziala poki co
-const Examinations = () => {
+const Examinations: React.FC = () => {
   const { data, isLoading, isSuccess, isError, error } =
     useSearchExaminationsQuery({ code: "", description: "" });
   let content: JSX.Element;

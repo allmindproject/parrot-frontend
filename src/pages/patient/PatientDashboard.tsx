@@ -1,4 +1,4 @@
-const PatientDashboard = () => {
+const PatientDashboard: React.FC = () => {
   return <div>PatientDashboard</div>;
 };
 
