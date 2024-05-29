@@ -37,6 +37,7 @@ import {
 } from "./form";
 import { Input } from "./input";
 import { Label } from "./label";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { ScrollArea, ScrollBar } from "./scroll-area";
 import { Separator } from "./separator";
 import { Toaster } from "./sonner";
@@ -76,6 +77,9 @@ export {
   FormField,
   Input,
   Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Separator,
   ScrollArea,
   ScrollBar,

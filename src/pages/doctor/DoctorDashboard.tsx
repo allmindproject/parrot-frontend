@@ -20,7 +20,7 @@ const DoctorDashboard: React.FC = () => {
         mode="single"
         selected={date}
         onSelect={setDate}
-        className="border rounded-md"
+        className="border rounded-md p-4"
       />
       <div className="w-full h-full flex flex-col items-stretch gap-4">
         <div className="flex justify-end">
@@ -31,9 +31,10 @@ const DoctorDashboard: React.FC = () => {
             {"abcdefghijk".split("").map((letter) => (
               <Card key={letter}>
                 <CardHeader className="flex-row justify-between items-start gap-4">
-                  <div>
+                  <div className="space-y-1.5">
                     <CardTitle>Wojciech Dolibóg</CardTitle>
-                    <CardDescription>{letter}e szpitale z pr</CardDescription>
+                    <CardDescription>31.03.2024r.</CardDescription>
+                    <CardDescription>Dr. John Sm{letter}</CardDescription>
                   </div>
                   <Button>Enter a visit</Button>
                 </CardHeader>

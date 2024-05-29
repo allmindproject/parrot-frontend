@@ -7,7 +7,7 @@ const Layout: React.FC = () => {
     <div className="flex flex-col h-screen">
       <LayoutHeader />
       <Separator />
-      <div className="p-4 overflow-hidden">
+      <div className="p-4 overflow-y-hidden">
         <Outlet /> {/* Nested routes are rendered here */}
       </div>
       {/* <Separator /> */}

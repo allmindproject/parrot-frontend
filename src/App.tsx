@@ -17,7 +17,10 @@ import { DoctorDashboard } from "./pages/doctor";
 import { LabAssistantDashboard } from "./pages/labAssistant";
 import { LabSupervisorDashboard } from "./pages/labSupervisor";
 import { PatientDashboard } from "./pages/patient";
-import { ReceptionistDashboard } from "./pages/receptionist";
+import {
+  ReceptionistAllVisits,
+  ReceptionistDashboard,
+} from "./pages/receptionist";
 import { UnauthorizedPage } from "./pages/UnauthorizedPage";
 import { UserDashboard } from "./pages/user";
 
@@ -109,6 +112,10 @@ const router = createBrowserRouter([
           {
             path: "receptionist",
             element: <ReceptionistDashboard />,
+          },
+          {
+            path: "receptionist/all-visits",
+            element: <ReceptionistAllVisits />,
           },
         ],
       },

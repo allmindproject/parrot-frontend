@@ -1,3 +1,4 @@
+import { ReceptionistAllVisits } from "./ReceptionistAllVisits";
 import { ReceptionistDashboard } from "./ReceptionistDashboard";
 
-export { ReceptionistDashboard };
+export { ReceptionistAllVisits, ReceptionistDashboard };
