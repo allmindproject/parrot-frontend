@@ -1,13 +1,20 @@
-import { logOut } from "@/services/state/auth/authSlice";
+import { logOut, selectCurrentUser } from "@/services/state/auth/authSlice";
 import { ClinicLogo, ThemeToggle } from "..";
 import { Button } from "../ui";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { convertRoleToString } from "@/utils/convertRoleToString";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 const LayoutHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const date = new Date();
+  const user = useAppSelector(selectCurrentUser);
+  const role = user ? convertRoleToString(user.role) : null;
+
   const handleLogout = (): void => {
     dispatch(logOut());
     navigate("/login"); // TODO replace false trzeba dac ale ten button nie moze byc na page'ach ktore są publiczne
@@ -15,12 +22,25 @@ const LayoutHeader: React.FC = () => {
       description: `wylogowany`,
     });
   };
+
   return (
     <div className="flex justify-between items-center p-4">
       <Link to={"/dashboard"}>
         <ClinicLogo height={40} />
       </Link>
-      <div className="flex gap-4">
+      <div className="flex items-center gap-8">
+        <div className="flex flex-row text-sm font-semibold">
+          <CalendarIcon className="h-4 w-4" />
+          <span className="ml-2">{format(date, "PPPP")}</span>
+        </div>
+        {user && (
+          <div className="flex flex-col items-end">
+            <div className="text-sm font-bold">
+              {user?.firstName} {user?.lastName}
+            </div>
+            <div className="text-xs font-semibold text-primary">{role}</div>
+          </div>
+        )}
         <Button onClick={handleLogout}>logout</Button>
         <ThemeToggle />
       </div>
