@@ -23,9 +23,9 @@ const DoctorDashboard: React.FC = () => {
         className="border rounded-md"
       />
       <div className="w-full h-full flex flex-col items-stretch gap-4">
-        <Button variant="outline" className="self-end">
-          See all visits
-        </Button>
+        <div className="flex justify-end">
+          <Button variant="outline">See all visits</Button>
+        </div>
         <ScrollArea>
           <div className="flex flex-col gap-4">
             {"abcdefghijk".split("").map((letter) => (
