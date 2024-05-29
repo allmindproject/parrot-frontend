@@ -26,7 +26,7 @@ const LayoutHeader: React.FC = () => {
   return (
     <div className="flex justify-between items-center p-4">
       <Link to={"/dashboard"}>
-        <ClinicLogo height={40} />
+        <ClinicLogo className="h-10"/>
       </Link>
       <div className="flex items-center gap-8">
         <div className="flex flex-row text-sm font-semibold">
