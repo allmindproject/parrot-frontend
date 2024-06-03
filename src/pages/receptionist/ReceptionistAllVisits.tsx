@@ -29,32 +29,40 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
+const searchVisitsSchema = z.object({
+  name: z
+    .string()
+    .max(20, {
+      message: "Name must not be longer than 20 characters.",
+    })
+    .optional(),
+  visitDate: z.date().optional(),
+});
+
+type SearchVisitsValues = z.infer<typeof searchVisitsSchema>;
+
 const ReceptionistAllVisits: React.FC = () => {
   const navigate = useNavigate();
 
-  const searchSchema = z.object({
-    name: z
-      .string()
-      .max(20, {
-        message: "Name must not be longer than 20 characters.",
-      })
-      .optional(),
-    visitDate: z.date().optional(),
+  const defaultValues: Partial<SearchVisitsValues> = {
+    name: "",
+    visitDate: undefined,
+  };
+  const form = useForm<SearchVisitsValues>({
+    resolver: zodResolver(searchVisitsSchema),
+    defaultValues,
   });
 
-  const form = useForm<z.infer<typeof searchSchema>>({
-    resolver: zodResolver(searchSchema),
-    defaultValues: { name: "", visitDate: undefined },
-  });
-
-  const onSearchHandler = async (data: z.infer<typeof searchSchema>) => {
+  const onSearchHandler = async (searchVisitsValues: SearchVisitsValues) => {
     //TODO handle searching
     toast.success(`Hehe`, {
       description: (
-        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <code className="text-white">
+          {JSON.stringify(searchVisitsValues, null, 2)}
+        </code>
       ),
     });
-    console.log(data);
+    console.log(searchVisitsValues);
   };
 
   return (
@@ -75,7 +83,7 @@ const ReceptionistAllVisits: React.FC = () => {
                       <FormLabel>Doctor or Patient name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Name Surname"
+                          placeholder="John Doe"
                           autoComplete="off"
                           {...field}
                         />

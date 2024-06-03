@@ -41,6 +41,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { ScrollArea, ScrollBar } from "./scroll-area";
 import { Separator } from "./separator";
 import { Toaster } from "./sonner";
+import { Textarea } from "./textarea";
 
 export {
   Button,
@@ -83,5 +84,6 @@ export {
   Separator,
   ScrollArea,
   ScrollBar,
+  Textarea,
   Toaster,
 };

@@ -25,6 +25,30 @@ import { setCredentials } from "@/services/state/auth/authSlice";
 import { useAppDispatch } from "@/hooks";
 import { useEffect } from "react";
 
+const loginSchema = z.object({
+  email: z
+    .string({
+      required_error: "Email is required.",
+    })
+    .email()
+    .min(2, {
+      message: "Email must be at least 2 characters.",
+    })
+    .max(30, {
+      message: "Email must not be longer than 30 characters.",
+    }),
+  password: z
+    .string({
+      required_error: "Password is required.",
+    })
+    .min(2, {
+      message: "Password must be at least 2 characters.",
+    })
+    .max(30, {
+      message: "Password must not be longer than 30 characters.",
+    }),
+});
+// TODO LoginValues type inferred here
 //TODO handling errors, isloading, isError
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -40,30 +64,6 @@ const LoginPage: React.FC = () => {
     },
   ] = useLoginMutation();
   const dispatch = useAppDispatch();
-
-  const loginSchema = z.object({
-    email: z
-      .string({
-        required_error: "Email is required.",
-      })
-      .email()
-      .min(2, {
-        message: "Email must be at least 2 characters.",
-      })
-      .max(30, {
-        message: "Email must not be longer than 30 characters.",
-      }),
-    password: z
-      .string({
-        required_error: "Password is required.",
-      })
-      .min(2, {
-        message: "Password must be at least 2 characters.",
-      })
-      .max(30, {
-        message: "Password must not be longer than 30 characters.",
-      }),
-  });
 
   const defaultValues: Partial<LoginValues> = {
     email: "",

@@ -27,7 +27,7 @@ const ReceptionistDashboard: React.FC = () => {
       />
       <div className="w-full h-full flex flex-col items-stretch gap-4">
         <div className="flex justify-end gap-4">
-          <Button variant="default" onClick={() => navigate("create-new-visit")}>Create new visit</Button>
+          <Button variant="default" onClick={() => navigate("create-visit")}>Create new visit</Button>
           <Button variant="outline" onClick={() => navigate("all-visits")}>See all visits</Button>
         </div>
         <ScrollArea>
