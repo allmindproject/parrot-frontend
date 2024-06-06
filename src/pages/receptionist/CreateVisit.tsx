@@ -20,6 +20,9 @@ import {
   Textarea,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useCreateVisitMutation } from "@/services/api/receptionist";
+import { VisitCreateRequest } from "@/services/api/receptionist/receptionistApiSlice";
+import { handleError } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -84,6 +87,16 @@ type CreateVisitValues = z.infer<typeof createVisitSchema>;
 const CreateVisit: React.FC = () => {
   const navigate = useNavigate();
   // const dispatch = useAppDispatch();
+  const [
+    createVisit,
+    {
+      data: visitCreateResponse,
+      isLoading: isCreateVisitLoading,
+      isSuccess: isCreateVisitSuccess,
+      isError: isCreateVisitError,
+      error: visitCreateError,
+    },
+  ] = useCreateVisitMutation();
 
   const defaultValues: Partial<CreateVisitValues> = {
     patientName: "",
@@ -102,16 +115,24 @@ const CreateVisit: React.FC = () => {
 
   const onCreateVisitHandler = async (visitValues: CreateVisitValues) => {
     console.log(visitValues);
+
+    const visitCreateRequest: VisitCreateRequest = {
+      description: visitValues.comments || "",
+      doctorNpwzId: "npwzId1", //TODO zebrac
+      patientInsuranceId: "insurancep1", //TODO zebrac
+      scheduledDateTime: format(visitValues.visitDate, "HH:mm dd.MM.yyyy"),
+    };
     try {
-      //   const authResult = await login(loginValues).unwrap();
-      // dispatch(setCredentials({token: authResult.access_token}));
-      // navigate("/dashboard");
-    } catch (err) {
-      //TODO okreslic typ erroru
-      console.log("z CreateVisit ", err);
-      // toast.error(`Error ${err.data.status}`, {
-      //   description: `${err.data.message}`,
+      await createVisit(visitCreateRequest).unwrap();
+      // toast.success(`Hehe`, {
+      //   description: `visit created`,
       // });
+      //TODO zastanowic sie jak toastowac sukcesy
+    } catch (error) {
+      handleError(error);
+    } finally {
+      console.log(visitCreateResponse);
+      //TODO usunac finally
     }
   };
 

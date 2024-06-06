@@ -3,21 +3,21 @@ import { apiSlice } from "@/services/api/apiSlice";
 type Person = {
   firstName: string;
   lastName: string;
-  nationalIDNumber: string; //or number
+  nationalIDNumber: string;
   sex: "FEMALE" | "MALE";
 };
 
-type Visit = unknown //TODO
+type Visit = unknown; //TODO
+
+type ClinicStaff = {
+  clinicEmpId: number;
+  person: Person;
+};
 
 type PatientSearchResponse = {
   insuranceId: string;
   person: Person;
-  visitList: Visit[]
-};
-
-type DoctorSearchResponse = {
-  firstName: string;
-  //TODO
+  visitList: Visit[];
 };
 
 type PatientSearchRequest = {
@@ -27,6 +27,13 @@ type PatientSearchRequest = {
   insuranceId: number;
 };
 
+type DoctorSearchResponse = {
+  clinicStaff: ClinicStaff;
+  id: number;
+  npwzId: string;
+  visitList: Visit[];
+};
+
 type DoctorSearchRequest = {
   firstName: string;
   lastName: string;
@@ -34,11 +41,25 @@ type DoctorSearchRequest = {
   npwzId: number;
 };
 
+type VisitCreateResponse = unknown;
+// {
+//   description: string;
+//   doctorNpwzId: string;
+//   patientInsuranceId: string;
+//   scheduledDateTime: Date;
+// };
+
+export type VisitCreateRequest = {
+  description: string;
+  doctorNpwzId: string;
+  patientInsuranceId: string;
+  scheduledDateTime: string;
+};
+
 export const receptionistApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPatient: builder.query<
-      // Partial<Patient>[],
-      unknown,
+      PatientSearchResponse[],
       Partial<PatientSearchRequest>
     >({
       query: (patientSearchRequest) => ({
@@ -47,14 +68,17 @@ export const receptionistApiSlice = apiSlice.injectEndpoints({
         params: patientSearchRequest,
       }),
     }),
-    getDoctor: builder.query<unknown, Partial<DoctorSearchRequest>>({
+    getDoctor: builder.query<
+      DoctorSearchResponse[],
+      Partial<DoctorSearchRequest>
+    >({
       query: (doctorSearchRequest) => ({
         url: "/api/receptionist/search-doctor",
         method: "GET",
         params: doctorSearchRequest,
       }),
     }),
-    createVisit: builder.mutation<unknown, unknown>({
+    createVisit: builder.mutation<VisitCreateResponse, VisitCreateRequest>({
       query: (body) => ({
         url: "/api/receptionist/create-visit",
         method: "POST",
@@ -65,8 +89,9 @@ export const receptionistApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetPatientQuery,
-  useLazyGetPatientQuery,
+  useCreateVisitMutation,
   useGetDoctorQuery,
+  useGetPatientQuery,
   useLazyGetDoctorQuery,
+  useLazyGetPatientQuery,
 } = receptionistApiSlice;

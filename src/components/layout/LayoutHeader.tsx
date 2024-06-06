@@ -4,7 +4,7 @@ import { Button } from "../ui";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { convertRoleToString } from "@/utils/convertRoleToString";
+import { convertRoleToString } from "@/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
@@ -26,7 +26,7 @@ const LayoutHeader: React.FC = () => {
   return (
     <div className="flex justify-between items-center p-4">
       <Link to={"/dashboard"}>
-        <ClinicLogo className="h-10"/>
+        <ClinicLogo className="h-10" />
       </Link>
       <div className="flex items-center gap-8">
         <div className="flex flex-row text-sm font-semibold">

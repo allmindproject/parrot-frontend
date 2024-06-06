@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { User } from "@/types";
 import { jwtDecode } from "jwt-decode";
-import { convertStringToRole } from "@/utils/convertStringToRole";
+import { convertStringToRole } from "@/utils";
 
 type DecodedToken = {
   exp: number; // access token expiry

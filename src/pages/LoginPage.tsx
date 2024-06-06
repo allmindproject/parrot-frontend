@@ -14,7 +14,7 @@ import {
   FormMessage,
   FormField,
 } from "@/components/ui";
-import { useLoginMutation } from "@/services/api/auth/authApiSlice";
+import { useLoginMutation } from "@/services/api/auth";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { setCredentials } from "@/services/state/auth/authSlice";
 import { useAppDispatch } from "@/hooks";
 import { useEffect } from "react";
+import { handleError } from "@/utils";
 
 const loginSchema = z.object({
   email: z
@@ -84,12 +85,8 @@ const LoginPage: React.FC = () => {
       // dispatch(setCredentials({token: authResult.access_token}));
 
       // navigate("/dashboard");
-    } catch (err) {
-      //TODO okreslic typ erroru
-      console.log("z loginu ", err);
-      toast.error(`Error ${err.data.status}`, {
-        description: `${err.data.message}`,
-      });
+    } catch (error) {
+      handleError(error);
     }
   };
 

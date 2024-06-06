@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { useSearchExaminationsQuery } from "@/services/api/doctor/doctorApiSlice";
+import { useSearchExaminationsQuery } from "@/services/api/doctor";
 //TODO bo nie dziala poki co
 const Examinations: React.FC = () => {
   const { data, isLoading, isSuccess, isError, error } =

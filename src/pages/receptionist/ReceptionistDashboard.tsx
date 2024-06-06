@@ -30,7 +30,7 @@ const ReceptionistDashboard: React.FC = () => {
           <Button variant="default" onClick={() => navigate("create-visit")}>Create new visit</Button>
           <Button variant="outline" onClick={() => navigate("all-visits")}>See all visits</Button>
         </div>
-        <ScrollArea>
+        <ScrollArea className="w-full h-full">
           <div className="flex flex-col gap-4 min-w-[350px]">
             {"abcdefghijk".split("").map((letter) => (
               <Card key={letter}>
