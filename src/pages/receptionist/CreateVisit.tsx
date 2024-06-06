@@ -122,7 +122,7 @@ const CreateVisit: React.FC = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onCreateVisitHandler)}>
-        <Card className="min-w-[500px] max-w-[700px] m-auto">
+        <Card className="max-w-[700px] mx-auto">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">
               Create New Visit

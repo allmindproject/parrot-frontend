@@ -48,6 +48,7 @@ const loginSchema = z.object({
       message: "Password must not be longer than 30 characters.",
     }),
 });
+
 // TODO LoginValues type inferred here
 //TODO handling errors, isloading, isError
 const LoginPage: React.FC = () => {
@@ -102,9 +103,7 @@ const LoginPage: React.FC = () => {
     }
   }, [isLoginSuccess]);
 
-  return isLoginLoading ? (
-    <h1>Loading...</h1>
-  ) : (
+  return (
     <div className="h-screen flex items-center justify-center">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitHandler)}>
@@ -178,8 +177,12 @@ const LoginPage: React.FC = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" type="submit">
-                Login
+              <Button
+                disabled={isLoginLoading}
+                className="w-full"
+                type="submit"
+              >
+                {isLoginLoading ? "Loading..." : "Login"}
               </Button>
             </CardFooter>
           </Card>

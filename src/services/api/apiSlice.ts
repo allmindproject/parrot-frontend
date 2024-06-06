@@ -1,10 +1,13 @@
 import {
   BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../state/store";
 import { logOut, setCredentials } from "../state/auth/authSlice";
+import { AuthResult, BackendError } from "@/types";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080",
@@ -14,29 +17,49 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
+    headers.set("Content-Type", "application/json");
     return headers;
   },
 });
 
-const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError | BackendError
+> = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  // if (result?.error?.originalStatus === 403) {
-  //   //TODO what error is thrown after token expiring
-  //   console.log("sending refresh token");
+  if (result.error) {
+    const error = result.error as BackendError;
 
-  //   const refreshResult = await baseQuery("/refresh-token", api, extraOptions);
-  //   console.log(refreshResult);
-  //   if (refreshResult?.data) {
-  //     // const user = api.getState().auth.user;
-  //     // store the new token
-  //     api.dispatch(setCredentials({ ...refreshResult.data, user }));
-  //     // retry the original query with new token
-  //     result = await baseQuery(args, api, extraOptions);
-  //   } else {
-  //     api.dispatch(logOut());
-  //   }
-  // }
+    if (error.status === 406 && error.data.code === "EXPIRED_JWT") {
+      // Token has expired, try to refresh it
+      const refreshResult = (await fetchBaseQuery({
+        baseUrl: "http://localhost:8080",
+        credentials: "include",
+      })(
+        {
+          url: "/refresh-token",
+          method: "POST",
+        },
+        api,
+        extraOptions
+      )) as { data?: AuthResult };
+
+      if (refreshResult.data) {
+        api.dispatch(
+          setCredentials({ token: refreshResult.data.access_token })
+        );
+
+        // Retry the original query with the new token
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        // Refresh token failed, logout the user
+        console.log("refresh token failed, logging out");
+        api.dispatch(logOut());
+      }
+    }
+  }
   return result;
 };
 

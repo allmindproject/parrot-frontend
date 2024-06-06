@@ -1,12 +1,5 @@
 import { apiSlice } from "@/services/api/apiSlice";
-import { LoginValues } from "@/types";
-
-type AuthResult = {
-  access_token: string;
-  access_token_expiry: number;
-  token_type: string;
-  user_name: string; // email
-};
+import { AuthResult, LoginValues } from "@/types";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
