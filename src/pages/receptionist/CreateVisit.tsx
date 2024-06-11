@@ -7,13 +7,18 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -21,59 +26,31 @@ import {
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import { useCreateVisitMutation } from "@/services/api/receptionist";
-import { VisitCreateRequest } from "@/services/api/receptionist/receptionistApiSlice";
+import {
+  VisitCreateRequest,
+  useGetDoctorsQuery,
+  useGetPatientsQuery,
+} from "@/services/api/receptionist/receptionistApiSlice";
 import { handleError } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const createVisitSchema = z.object({
-  patientName: z
-    .string({
-      required_error: "Patient name is required.",
-    })
-    .min(2, {
-      message: "Patient name must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Patient name must not be longer than 30 characters.",
-    }),
-  patientSurname: z
-    .string({
-      required_error: "Patient surname is required.",
-    })
-    .min(2, {
-      message: "Patient surname must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Patient surname must not be longer than 30 characters.",
-    }),
+  patientInsuranceId: z.string({
+    required_error: "Patient is required.",
+  }),
+  doctorNpwzId: z.string({
+    required_error: "Doctor is required.",
+  }),
   visitDate: z.date({
     required_error: "Date of visit is required.",
   }),
-  doctorName: z
-    .string({
-      required_error: "Doctor name is required.",
-    })
-    .min(2, {
-      message: "Doctor name must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Doctor name must not be longer than 30 characters.",
-    }),
-  doctorSurname: z
-    .string({
-      required_error: "Doctor surname is required.",
-    })
-    .min(2, {
-      message: "Doctor surname must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Doctor surname must not be longer than 30 characters.",
-    }),
   comments: z
     .string()
     .max(500, {
@@ -86,25 +63,34 @@ type CreateVisitValues = z.infer<typeof createVisitSchema>;
 
 const CreateVisit: React.FC = () => {
   const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
+
   const [
     createVisit,
     {
       data: visitCreateResponse,
-      isLoading: isCreateVisitLoading,
       isSuccess: isCreateVisitSuccess,
       isError: isCreateVisitError,
       error: visitCreateError,
     },
   ] = useCreateVisitMutation();
 
+  const {
+    data: patients = [],
+    isError: isPatientsError,
+    error: patientsError,
+  } = useGetPatientsQuery({});
+
+  const {
+    data: doctors = [],
+    isError: isDoctorsError,
+    error: doctorsError,
+  } = useGetDoctorsQuery({});
+
   const defaultValues: Partial<CreateVisitValues> = {
-    patientName: "",
-    patientSurname: "",
+    patientInsuranceId: undefined,
+    doctorNpwzId: undefined,
     visitDate: undefined,
-    doctorName: "",
-    doctorSurname: "",
-    comments: "",
+    comments: undefined,
   };
 
   const form = useForm<CreateVisitValues>({
@@ -114,31 +100,49 @@ const CreateVisit: React.FC = () => {
   });
 
   const onCreateVisitHandler = async (visitValues: CreateVisitValues) => {
-    console.log(visitValues);
-
     const visitCreateRequest: VisitCreateRequest = {
       description: visitValues.comments || "",
-      doctorNpwzId: "npwzId1", //TODO zebrac
-      patientInsuranceId: "insurancep1", //TODO zebrac
+      doctorNpwzId: visitValues.doctorNpwzId,
+      patientInsuranceId: visitValues.patientInsuranceId,
       scheduledDateTime: format(visitValues.visitDate, "HH:mm dd.MM.yyyy"),
     };
+
     try {
       await createVisit(visitCreateRequest).unwrap();
-      // toast.success(`Hehe`, {
-      //   description: `visit created`,
-      // });
-      //TODO zastanowic sie jak toastowac sukcesy
     } catch (error) {
       handleError(error);
-    } finally {
-      console.log(visitCreateResponse);
-      //TODO usunac finally
     }
   };
 
   const onCancelHandler = () => {
     navigate("/receptionist");
   };
+
+  useEffect(() => {
+    if (isCreateVisitSuccess) {
+      toast.success(`Visit created successfully`);
+      console.log(visitCreateResponse); // TODO usunac
+      navigate("/receptionist");
+    }
+    if (isCreateVisitError) {
+      handleError(visitCreateError);
+    }
+  }, [
+    isCreateVisitSuccess,
+    isCreateVisitError,
+    visitCreateError,
+    navigate,
+    visitCreateResponse,
+  ]);
+
+  useEffect(() => {
+    if (isPatientsError) {
+      handleError(patientsError);
+    }
+    if (isDoctorsError) {
+      handleError(doctorsError);
+    }
+  }, [isPatientsError, patientsError, isDoctorsError, doctorsError]);
 
   return (
     <Form {...form}>
@@ -153,34 +157,155 @@ const CreateVisit: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
-            <div className="flex flex-row gap-4">
-              <FormField
-                control={form.control}
-                name="patientName"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Patient name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John" autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="patientSurname"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Patient surname</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Doe" autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="patientInsuranceId"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Patient</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? (() => {
+                                const patient = patients.find(
+                                  (p) => p.insuranceId === field.value
+                                );
+                                return patient
+                                  ? `${patient.person.firstName} ${patient.person.lastName} ${patient.insuranceId}`
+                                  : "Select patient";
+                              })()
+                            : "Select patient"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="min-w-[300px] w-auto p-0"
+                      align="start"
+                    >
+                      <Command>
+                        <CommandInput placeholder="Search patient..." />
+                        <CommandList>
+                          <CommandEmpty>No patient found.</CommandEmpty>
+                          <CommandGroup>
+                            {patients.map((patient) => (
+                              <CommandItem
+                                key={patient.insuranceId}
+                                value={patient.insuranceId}
+                                onSelect={() => {
+                                  form.setValue(
+                                    "patientInsuranceId",
+                                    patient.insuranceId
+                                  );
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value === patient.insuranceId
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                <div className="mr-2">
+                                  {patient.person.firstName}{" "}
+                                  {patient.person.lastName}
+                                </div>
+                                <div className="ml-auto">
+                                  ({patient.insuranceId})
+                                </div>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="doctorNpwzId"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Doctor</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? (() => {
+                                const doctor = doctors.find(
+                                  (d) => d.npwzId === field.value
+                                );
+                                return doctor
+                                  ? `${doctor.clinicStaff.person.firstName} ${doctor.clinicStaff.person.lastName} ${doctor.npwzId}`
+                                  : "Select doctor";
+                              })()
+                            : "Select doctor"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="min-w-[300px] w-auto p-0"
+                      align="start"
+                    >
+                      <Command>
+                        <CommandInput placeholder="Search doctor..." />
+                        <CommandList>
+                          <CommandEmpty>No doctor found.</CommandEmpty>
+                          <CommandGroup>
+                            {doctors.map((doctor) => (
+                              <CommandItem
+                                key={doctor.npwzId}
+                                value={doctor.npwzId}
+                                onSelect={() => {
+                                  form.setValue("doctorNpwzId", doctor.npwzId);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value === doctor.npwzId
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                <div className="mr-2">
+                                  {doctor.clinicStaff.person.firstName}{" "}
+                                  {doctor.clinicStaff.person.lastName}
+                                </div>
+                                <div className="ml-auto">({doctor.npwzId})</div>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="visitDate"
@@ -220,42 +345,6 @@ const CreateVisit: React.FC = () => {
                 </FormItem>
               )}
             />
-            <div className="flex flex-row gap-4">
-              <FormField
-                control={form.control}
-                name="doctorName"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Doctor name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Dr. Smith"
-                        autoComplete="off"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="doctorSurname"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Doctor surname</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Brown"
-                        autoComplete="off"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <FormField
               control={form.control}
               name="comments"

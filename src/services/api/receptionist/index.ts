@@ -1,15 +1,15 @@
 import {
   useCreateVisitMutation,
-  useGetDoctorQuery,
-  useGetPatientQuery,
-  useLazyGetDoctorQuery,
-  useLazyGetPatientQuery,
+  useGetDoctorsQuery,
+  useGetPatientsQuery,
+  useLazyGetDoctorsQuery,
+  useLazyGetPatientsQuery,
 } from "./receptionistApiSlice";
 
 export {
   useCreateVisitMutation,
-  useGetDoctorQuery,
-  useGetPatientQuery,
-  useLazyGetDoctorQuery,
-  useLazyGetPatientQuery,
+  useGetDoctorsQuery,
+  useGetPatientsQuery,
+  useLazyGetDoctorsQuery,
+  useLazyGetPatientsQuery,
 };

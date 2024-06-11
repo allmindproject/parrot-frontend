@@ -42,7 +42,7 @@ type DoctorSearchRequest = {
 };
 
 type VisitCreateResponse = unknown;
-// {
+// {TODO
 //   description: string;
 //   doctorNpwzId: string;
 //   patientInsuranceId: string;
@@ -58,7 +58,7 @@ export type VisitCreateRequest = {
 
 export const receptionistApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getPatient: builder.query<
+    getPatients: builder.query<
       PatientSearchResponse[],
       Partial<PatientSearchRequest>
     >({
@@ -68,7 +68,7 @@ export const receptionistApiSlice = apiSlice.injectEndpoints({
         params: patientSearchRequest,
       }),
     }),
-    getDoctor: builder.query<
+    getDoctors: builder.query<
       DoctorSearchResponse[],
       Partial<DoctorSearchRequest>
     >({
@@ -90,8 +90,8 @@ export const receptionistApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useCreateVisitMutation,
-  useGetDoctorQuery,
-  useGetPatientQuery,
-  useLazyGetDoctorQuery,
-  useLazyGetPatientQuery,
+  useGetDoctorsQuery,
+  useGetPatientsQuery,
+  useLazyGetDoctorsQuery,
+  useLazyGetPatientsQuery,
 } = receptionistApiSlice;
