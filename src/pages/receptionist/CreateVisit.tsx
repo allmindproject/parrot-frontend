@@ -53,7 +53,7 @@ const createVisitSchema = z.object({
   }),
   comments: z
     .string()
-    .max(500, {
+    .max(255, {
       message: "Comments must not be longer than 500 characters.",
     })
     .optional(),

@@ -57,13 +57,7 @@ const LoginPage: React.FC = () => {
 
   const [
     login,
-    {
-      data: loginData,
-      isLoading: isLoginLoading,
-      isSuccess: isLoginSuccess,
-      isError: isLoginError,
-      error: loginError,
-    },
+    { data: loginData, isLoading: isLoginLoading, isSuccess: isLoginSuccess },
   ] = useLoginMutation();
   const dispatch = useAppDispatch();
 
@@ -79,12 +73,8 @@ const LoginPage: React.FC = () => {
   });
 
   const onSubmitHandler = async (loginValues: LoginValues) => {
-    console.log(loginValues);
     try {
-      const authResult = await login(loginValues).unwrap();
-      // dispatch(setCredentials({token: authResult.access_token}));
-
-      // navigate("/dashboard");
+      await login(loginValues).unwrap();
     } catch (error) {
       handleError(error);
     }
@@ -92,9 +82,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (isLoginSuccess) {
-      toast.success(`Hehe`, {
-        description: `zalogowany`,
-      });
+      toast.success(`Logged in successfully`);
       dispatch(setCredentials({ token: loginData.access_token }));
       navigate("/dashboard");
     }
