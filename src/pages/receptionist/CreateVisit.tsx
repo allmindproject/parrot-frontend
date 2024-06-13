@@ -192,7 +192,25 @@ const CreateVisit: React.FC = () => {
                       className="min-w-[300px] w-auto p-0"
                       align="start"
                     >
-                      <Command>
+                      <Command
+                        filter={(value: string, search: string): number => {
+                          const patient = patients.find(
+                            (p) => p.insuranceId === value
+                          );
+                          if (
+                            [
+                              patient?.person.firstName,
+                              patient?.person.lastName,
+                              patient?.insuranceId,
+                            ]
+                              .join(" ")
+                              .toLowerCase()
+                              .includes(search.toLowerCase())
+                          )
+                            return 1;
+                          else return 0;
+                        }}
+                      >
                         <CommandInput placeholder="Search patient..." />
                         <CommandList>
                           <CommandEmpty>No patient found.</CommandEmpty>
@@ -269,7 +287,25 @@ const CreateVisit: React.FC = () => {
                       className="min-w-[300px] w-auto p-0"
                       align="start"
                     >
-                      <Command>
+                      <Command
+                        filter={(value: string, search: string): number => {
+                          const doctor = doctors.find(
+                            (d) => d.npwzId === value
+                          );
+                          if (
+                            [
+                              doctor?.clinicStaff.person.firstName,
+                              doctor?.clinicStaff.person.lastName,
+                              doctor?.npwzId,
+                            ]
+                              .join(" ")
+                              .toLowerCase()
+                              .includes(search.toLowerCase())
+                          )
+                            return 1;
+                          else return 0;
+                        }}
+                      >
                         <CommandInput placeholder="Search doctor..." />
                         <CommandList>
                           <CommandEmpty>No doctor found.</CommandEmpty>
