@@ -18,12 +18,12 @@ import {
   ScrollArea,
   ScrollBar,
 } from "./ui";
-import { VisitSearchResponse } from "@/services/api/receptionist/receptionistApiSlice";
 import { useDeleteVisitMutation } from "@/services/api/receptionist";
 import { format } from "date-fns";
 import { handleError } from "@/utils";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { VisitSearchResponse } from "@/types";
 
 type ReceptionistVisitsProps = {
   visits: VisitSearchResponse[];
@@ -107,7 +107,7 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
           </Card>
         ))}
       </div>
-      <ScrollBar orientation="horizontal" />
+      <ScrollBar orientation="vertical" />
     </ScrollArea>
   );
 };

@@ -1,45 +1,14 @@
 import { apiSlice } from "@/services/api/apiSlice";
+import {
+  Doctor,
+  Patient,
+  Receptionist,
+  Visit,
+  VisitCreateRequest,
+  VisitSearchRequest,
+  VisitSearchResponse,
+} from "@/types";
 //fest mi sie nie podobaja te wszystkie typy w tym miejscu, ale jeszcze mysle jak to rozwiazac
-type Person = {
-  firstName: string;
-  lastName: string;
-  nationalIDNumber: string;
-  sex: "FEMALE" | "MALE";
-};
-
-type labExamination = unknown; //TODO
-type physicalExamination = unknown; //TODO
-
-type Visit = {
-  description: string;
-  diagnostics: unknown; //TODO
-  id: number;
-  labExaminationList: labExamination[];
-  physicalExaminationList: physicalExamination[];
-  scheduledDateTime: Date; // TODO czy string
-  visitStatus: string; // TODO maybe enum
-};
-
-type ClinicStaff = {
-  clinicEmpId: number;
-  person: Person;
-};
-
-type Doctor = {
-  clinicStaff: ClinicStaff;
-  id: number;
-  npwzId: string;
-};
-
-type Receptionist = {
-  clinicStaff: ClinicStaff;
-  id: number;
-};
-
-type Patient = {
-  insuranceId: string;
-  person: Person;
-};
 
 type PatientSearchResponse = Patient & { visitList: Visit[] };
 
@@ -65,35 +34,13 @@ type VisitCreateResponse = Visit & {
   selectedDoctor: Doctor;
 };
 
-export type VisitCreateRequest = {
-  description: string;
-  doctorNpwzId: string;
-  patientInsuranceId: string;
-  scheduledDateTime: string;
-};
+type VisitDeleteResponse = unknown; //TODO
 
-export type VisitDeleteResponse = unknown; //TODO
-
-export type VisitDeleteRequest = {
+type VisitDeleteRequest = {
   visitId: number;
 };
 
-export type VisitSearchResponse = {
-  selectedDoctor: Doctor;
-  selectedPatient: Patient;
-  visit: Visit;
-};
-
-export type VisitSearchRequest = {
-  patientFirstName: string;
-  patientLastName: string;
-  patientInsuranceId: string;
-  doctorFirstName: string;
-  doctorLastName: string;
-  doctorNpwzId: string;
-};
-
-export const receptionistApiSlice = apiSlice.injectEndpoints({
+const receptionistApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPatients: builder.query<
       PatientSearchResponse[],
@@ -115,7 +62,7 @@ export const receptionistApiSlice = apiSlice.injectEndpoints({
         params: doctorParams,
       }),
     }),
-    getVisits: builder.query<
+    getReceptionistVisits: builder.query<
       VisitSearchResponse[],
       Partial<VisitSearchRequest>
     >({
@@ -147,8 +94,8 @@ export const {
   useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
-  useGetVisitsQuery,
+  useGetReceptionistVisitsQuery,
   useLazyGetDoctorsQuery,
   useLazyGetPatientsQuery,
-  useLazyGetVisitsQuery,
+  useLazyGetReceptionistVisitsQuery,
 } = receptionistApiSlice;

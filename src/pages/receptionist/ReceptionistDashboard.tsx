@@ -1,6 +1,6 @@
 import { ReceptionistVisits } from "@/components";
 import { Button, Calendar } from "@/components/ui";
-import { useGetVisitsQuery } from "@/services/api/receptionist";
+import { useGetReceptionistVisitsQuery } from "@/services/api/receptionist";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ const ReceptionistDashboard: React.FC = () => {
     isError: isGetVisitsError,
     error: visitsError,
     refetch: refetchVisits,
-  } = useGetVisitsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetReceptionistVisitsQuery({}, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
     if (isGetVisitsError) {

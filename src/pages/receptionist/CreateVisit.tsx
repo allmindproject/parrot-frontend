@@ -25,12 +25,12 @@ import {
   Textarea,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { useCreateVisitMutation } from "@/services/api/receptionist";
 import {
-  VisitCreateRequest,
+  useCreateVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
-} from "@/services/api/receptionist/receptionistApiSlice";
+} from "@/services/api/receptionist";
+import { VisitCreateRequest } from "@/types";
 import { handleError } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";

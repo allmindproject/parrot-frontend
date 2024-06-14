@@ -3,10 +3,10 @@ import {
   useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
-  useGetVisitsQuery,
+  useGetReceptionistVisitsQuery,
   useLazyGetDoctorsQuery,
   useLazyGetPatientsQuery,
-  useLazyGetVisitsQuery,
+  useLazyGetReceptionistVisitsQuery,
 } from "./receptionistApiSlice";
 
 export {
@@ -14,8 +14,8 @@ export {
   useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
-  useGetVisitsQuery,
+  useGetReceptionistVisitsQuery,
   useLazyGetDoctorsQuery,
   useLazyGetPatientsQuery,
-  useLazyGetVisitsQuery,
+  useLazyGetReceptionistVisitsQuery,
 };
