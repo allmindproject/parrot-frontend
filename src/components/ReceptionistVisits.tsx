@@ -1,5 +1,14 @@
 import { Trash2 } from "lucide-react";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   Button,
   Card,
   CardContent,
@@ -10,19 +19,45 @@ import {
   ScrollBar,
 } from "./ui";
 import { VisitSearchResponse } from "@/services/api/receptionist/receptionistApiSlice";
+import { useDeleteVisitMutation } from "@/services/api/receptionist";
 import { format } from "date-fns";
+import { handleError } from "@/utils";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 type ReceptionistVisitsProps = {
   visits: VisitSearchResponse[];
   isLoading: boolean;
+  refetchVisits: () => void;
 };
 
 const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
   visits,
   isLoading,
+  refetchVisits,
 }) => {
-  if (isLoading)
-    return <div className="text-center w-full">Loading...</div>;
+  const [
+    deleteVisit,
+    { data: visitDeleteResponse, isSuccess: isDeleteVisitSuccess },
+  ] = useDeleteVisitMutation();
+
+  const onDeleteHandler = async (visitId: number) => {
+    try {
+      await deleteVisit({ visitId: visitId }).unwrap();
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isDeleteVisitSuccess) {
+      toast.success(`Visit deleted successfully`);
+      console.log(visitDeleteResponse); // TODO usunac
+      refetchVisits();
+    }
+  }, [isDeleteVisitSuccess, visitDeleteResponse]);
+
+  if (isLoading) return <div className="text-center w-full">Loading...</div>;
   if (visits.length === 0)
     return <div className="text-center w-full">No visits found.</div>;
   return (
@@ -38,9 +73,32 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
                 </CardDescription>
                 <CardDescription>{`dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}</CardDescription>
               </div>
-              <Button variant="destructive" size="icon">
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" size="icon">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      the visit.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => onDeleteHandler(visit.visit.id)}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </CardHeader>
             <CardContent>
               <div className="text-sm">Comments:</div>

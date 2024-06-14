@@ -14,6 +14,7 @@ const ReceptionistDashboard: React.FC = () => {
     isLoading: isGetVisitsLoading,
     isError: isGetVisitsError,
     error: visitsError,
+    refetch: refetchVisits,
   } = useGetVisitsQuery({}, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const ReceptionistDashboard: React.FC = () => {
         <ReceptionistVisits
           visits={visitsData}
           isLoading={isGetVisitsLoading}
+          refetchVisits={refetchVisits}
         />
       </div>
     </div>

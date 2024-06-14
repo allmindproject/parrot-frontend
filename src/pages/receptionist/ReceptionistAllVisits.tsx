@@ -84,6 +84,7 @@ const ReceptionistAllVisits: React.FC = () => {
     isLoading: isGetVisitsLoading,
     isError: isGetVisitsError,
     error: visitsError,
+    refetch: refetchVisits,
   } = useGetVisitsQuery(searchParams, { refetchOnMountOrArgChange: true });
 
   const defaultValues: Partial<SearchVisitsValues> = {
@@ -289,7 +290,11 @@ const ReceptionistAllVisits: React.FC = () => {
           Back
         </Button>
       </div>
-      <ReceptionistVisits visits={visitData} isLoading={isGetVisitsLoading} />
+      <ReceptionistVisits
+        visits={visitData}
+        isLoading={isGetVisitsLoading}
+        refetchVisits={refetchVisits}
+      />
     </div>
   );
 };

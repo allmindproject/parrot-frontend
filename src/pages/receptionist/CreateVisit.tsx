@@ -54,7 +54,7 @@ const createVisitSchema = z.object({
   comments: z
     .string()
     .max(255, {
-      message: "Comments must not be longer than 500 characters.",
+      message: "Comments must not be longer than 255 characters.",
     })
     .optional(),
 });
@@ -64,15 +64,8 @@ type CreateVisitValues = z.infer<typeof createVisitSchema>;
 const CreateVisit: React.FC = () => {
   const navigate = useNavigate();
 
-  const [
-    createVisit,
-    {
-      data: visitCreateResponse,
-      isSuccess: isCreateVisitSuccess,
-      isError: isCreateVisitError,
-      error: visitCreateError,
-    },
-  ] = useCreateVisitMutation();
+  const [createVisit, { isSuccess: isCreateVisitSuccess }] =
+    useCreateVisitMutation();
 
   const {
     data: patients = [],
@@ -121,19 +114,9 @@ const CreateVisit: React.FC = () => {
   useEffect(() => {
     if (isCreateVisitSuccess) {
       toast.success(`Visit created successfully`);
-      console.log(visitCreateResponse); // TODO usunac
       navigate("/receptionist");
     }
-    if (isCreateVisitError) {
-      handleError(visitCreateError);
-    }
-  }, [
-    isCreateVisitSuccess,
-    isCreateVisitError,
-    visitCreateError,
-    navigate,
-    visitCreateResponse,
-  ]);
+  }, [isCreateVisitSuccess, navigate]);
 
   useEffect(() => {
     if (isPatientsError) {

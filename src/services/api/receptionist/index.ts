@@ -1,5 +1,6 @@
 import {
   useCreateVisitMutation,
+  useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
   useGetVisitsQuery,
@@ -10,6 +11,7 @@ import {
 
 export {
   useCreateVisitMutation,
+  useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
   useGetVisitsQuery,

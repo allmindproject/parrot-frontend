@@ -72,6 +72,12 @@ export type VisitCreateRequest = {
   scheduledDateTime: string;
 };
 
+export type VisitDeleteResponse = unknown; //TODO
+
+export type VisitDeleteRequest = {
+  visitId: number;
+};
+
 export type VisitSearchResponse = {
   selectedDoctor: Doctor;
   selectedPatient: Patient;
@@ -126,11 +132,19 @@ export const receptionistApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    deleteVisit: builder.mutation<VisitDeleteResponse, VisitDeleteRequest>({
+      query: (body) => ({
+        url: "/api/receptionist/cancel-visit",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
 export const {
   useCreateVisitMutation,
+  useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
   useGetVisitsQuery,
