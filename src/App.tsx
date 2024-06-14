@@ -13,7 +13,7 @@ import { setTheme } from "./services/state/theme/themeSlice";
 import { useAppDispatch } from "./hooks";
 import { setCredentials } from "./services/state/auth/authSlice";
 import { AdminDashboard } from "./pages/admin";
-import { DoctorDashboard } from "./pages/doctor";
+import { DoctorAllVisits, DoctorDashboard } from "./pages/doctor";
 import { LabAssistantDashboard } from "./pages/labAssistant";
 import { LabSupervisorDashboard } from "./pages/labSupervisor";
 import { PatientDashboard } from "./pages/patient";
@@ -67,6 +67,10 @@ const router = createBrowserRouter([
           {
             path: "doctor",
             element: <DoctorDashboard />,
+          },
+          {
+            path: "doctor/all-visits",
+            element: <DoctorAllVisits />,
           },
         ],
       },
@@ -125,9 +129,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        element: (
-          <PrivateRoute allowedRoles={[Role.Admin, Role.Receptionist]} />
-        ),
+        element: <PrivateRoute allowedRoles={[Role.Admin, Role.User]} />,
         children: [
           // only admin and user
           {

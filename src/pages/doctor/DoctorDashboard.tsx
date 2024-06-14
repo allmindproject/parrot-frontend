@@ -1,18 +1,31 @@
-import {
-  Button,
-  Calendar,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  ScrollArea,
-  ScrollBar,
-} from "@/components/ui";
-import { useState } from "react";
+import { DoctorVisits } from "@/components";
+import { Button, Calendar } from "@/components/ui";
+import { useGetDoctorVisitsQuery } from "@/services/api/doctor";
+import { handleError } from "@/utils";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DoctorDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const navigate = useNavigate();
+
+  const {
+    data: visitsData = [],
+    isLoading: isGetVisitsLoading,
+    isSuccess,
+    isError: isGetVisitsError,
+    error: visitsError,
+  } = useGetDoctorVisitsQuery({}, { refetchOnMountOrArgChange: true });
+
+  useEffect(() => {
+    if (isGetVisitsError) {
+      console.log("z DoctorDashboard");
+      handleError(visitsError);
+    }
+    if (isSuccess) {
+      console.log(visitsData);
+    }
+  }, [isGetVisitsError, visitsError, isSuccess, visitsData]);
 
   return (
     <div className="h-full flex justify-between items-start gap-4">
@@ -22,37 +35,13 @@ const DoctorDashboard: React.FC = () => {
         onSelect={setDate}
         className="border rounded-md p-4"
       />
-      <div className="w-full h-full flex flex-col items-stretch gap-4">
-        <div className="flex justify-end">
-          <Button variant="outline">See all visits</Button>
+      <div className="w-full h-full flex flex-col gap-4">
+        <div className="flex justify-end gap-4">
+          <Button variant="outline" onClick={() => navigate("all-visits")}>
+            See all visits
+          </Button>
         </div>
-        <ScrollArea>
-          <div className="flex flex-col gap-4">
-            {"abcdefghijk".split("").map((letter) => (
-              <Card key={letter}>
-                <CardHeader className="flex-row justify-between items-start gap-4">
-                  <div className="space-y-1.5">
-                    <CardTitle>Wojciech Dolibóg</CardTitle>
-                    <CardDescription>31.03.2024r.</CardDescription>
-                    <CardDescription>Dr. John Sm{letter}</CardDescription>
-                  </div>
-                  <Button>Enter a visit</Button>
-                </CardHeader>
-                <CardContent>
-                  My modernizujemy dużo infrastruktury, remontujemy dużo, ale
-                  przydałyby się w województwie trzy, cztery nowe szpitale z
-                  prawdziwego zdarzenia. To jednak koszt 1,5-2 mld zł przy
-                  kompleksowym podejściu. A mając w Piekarach urazówkę, która
-                  jest bardzo dobrze zarządzana, ma dodatni wynik finansowy,
-                  także dzięki staraniom województwa, stworzy ona - myślę -
-                  dobrą synergię ze szpitalem miejskim - dodał marszałek.
-                </CardContent>
-                {/* <CardFooter>gooter</CardFooter> */}
-              </Card>
-            ))}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        <DoctorVisits visits={visitsData} isLoading={isGetVisitsLoading} />
       </div>
     </div>
   );

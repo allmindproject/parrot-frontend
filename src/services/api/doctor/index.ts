@@ -1,3 +1,13 @@
-import { useSearchExaminationsQuery } from "./doctorApiSlice";
+import {
+  useGetExaminationsQuery,
+  useGetDoctorVisitsQuery,
+  useLazyGetExaminationsQuery,
+  useLazyGetDoctorVisitsQuery,
+} from "./doctorApiSlice";
 
-export { useSearchExaminationsQuery };
+export {
+  useGetExaminationsQuery,
+  useGetDoctorVisitsQuery,
+  useLazyGetExaminationsQuery,
+  useLazyGetDoctorVisitsQuery,
+};

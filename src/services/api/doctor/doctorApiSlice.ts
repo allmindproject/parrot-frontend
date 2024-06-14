@@ -1,5 +1,6 @@
 import { apiSlice } from "@/services/api/apiSlice";
-// TODO nie dziala zapytanie trzeba zmienic backend
+import { VisitSearchRequest, VisitSearchResponse } from "@/types";
+// TODO nie dziala zapytanie trzeba zmienic backend??
 type Examination = {
   code: string; // "CARDIO",
   description: string; // "Cardiovascular assessment",
@@ -7,9 +8,19 @@ type Examination = {
   rightsLevel: string; // "NONE"
 };
 
-export const doctorApiSlice = apiSlice.injectEndpoints({
+const doctorApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    searchExaminations: builder.query<
+    getDoctorVisits: builder.query<
+      VisitSearchResponse[],
+      Partial<VisitSearchRequest>
+    >({
+      query: (visitParams) => ({
+        url: "/api/doctor/search-visit",
+        method: "GET",
+        params: visitParams,
+      }),
+    }),
+    getExaminations: builder.query<
       Examination[],
       { code?: string; description?: string }
     >({
@@ -22,4 +33,9 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useSearchExaminationsQuery } = doctorApiSlice;
+export const {
+  useGetExaminationsQuery,
+  useGetDoctorVisitsQuery,
+  useLazyGetExaminationsQuery,
+  useLazyGetDoctorVisitsQuery,
+} = doctorApiSlice;
