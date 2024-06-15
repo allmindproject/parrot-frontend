@@ -13,7 +13,7 @@ import { setTheme } from "./services/state/theme/themeSlice";
 import { useAppDispatch } from "./hooks";
 import { setCredentials } from "./services/state/auth/authSlice";
 import { AdminDashboard } from "./pages/admin";
-import { DoctorAllVisits, DoctorDashboard } from "./pages/doctor";
+import { DoctorAllVisits, DoctorDashboard, VisitDetails } from "./pages/doctor";
 import { LabAssistantDashboard } from "./pages/labAssistant";
 import { LabSupervisorDashboard } from "./pages/labSupervisor";
 import { PatientDashboard } from "./pages/patient";
@@ -71,6 +71,10 @@ const router = createBrowserRouter([
           {
             path: "doctor/all-visits",
             element: <DoctorAllVisits />,
+          },
+          {
+            path: "doctor/visit-details/:visitId",
+            element: <VisitDetails />,
           },
         ],
       },

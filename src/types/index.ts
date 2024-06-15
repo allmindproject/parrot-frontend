@@ -15,18 +15,23 @@ import { LabExamination } from "./LabExamination";
 import { Doctor } from "./Doctor";
 import { ClinicStaff } from "./ClinicStaff";
 import { VisitCreateRequest } from "./VisitCreateRequest";
-
+import { Examination } from "./Examination";
+import { PhysicalExaminationAddRequest } from "./PhysicalExaminationAddRequest";
+import { PhysicalExaminationAddResponse } from "./PhysicalExaminationAddResponse";
 export type {
   ApiError,
   AuthResult,
   BackendError,
   ClinicStaff,
   Doctor,
+  Examination,
   LabExamination,
   LoginValues,
   Patient,
   Person,
   PhysicalExamination,
+  PhysicalExaminationAddRequest,
+  PhysicalExaminationAddResponse,
   Receptionist,
   Theme,
   User,

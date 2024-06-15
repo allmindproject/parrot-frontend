@@ -279,7 +279,7 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
           Back
         </Button>
       </div>
-      <ScrollBar orientation="horizontal" />
+      <ScrollBar orientation="vertical" />
     </ScrollArea>
   );
 };

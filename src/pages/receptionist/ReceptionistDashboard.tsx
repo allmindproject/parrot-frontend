@@ -3,11 +3,10 @@ import { Button, Calendar } from "@/components/ui";
 import { useGetReceptionistVisitsQuery } from "@/services/api/receptionist";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ReceptionistDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const navigate = useNavigate();
 
   const {
     data: visitsData = [],
@@ -33,11 +32,11 @@ const ReceptionistDashboard: React.FC = () => {
       />
       <div className="w-full h-full flex flex-col gap-4">
         <div className="flex justify-end gap-4">
-          <Button variant="default" onClick={() => navigate("create-visit")}>
-            Create new visit
+          <Button variant="default" asChild>
+            <Link to={"create-visit"}>Create new visit</Link>
           </Button>
-          <Button variant="outline" onClick={() => navigate("all-visits")}>
-            See all visits
+          <Button variant="outline">
+            <Link to={"all-visits"}>See all visits</Link>
           </Button>
         </div>
         <ReceptionistVisits

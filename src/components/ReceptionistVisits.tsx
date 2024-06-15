@@ -67,11 +67,11 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
           <Card key={visit.visit.id}>
             <CardHeader className="flex-row justify-between items-start gap-4">
               <div className="space-y-1.5">
-                <CardTitle>{`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}</CardTitle>
+                <CardTitle className="text-2xl font-bold">{`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}</CardTitle>
                 <CardDescription>
                   {format(visit.visit.scheduledDateTime, "HH:mm PPPP")}
                 </CardDescription>
-                <CardDescription>{`dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}</CardDescription>
+                <CardDescription>{`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}</CardDescription>
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>

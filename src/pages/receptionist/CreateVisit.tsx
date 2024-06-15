@@ -37,7 +37,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -105,10 +105,6 @@ const CreateVisit: React.FC = () => {
     } catch (error) {
       handleError(error);
     }
-  };
-
-  const onCancelHandler = () => {
-    navigate("/receptionist");
   };
 
   useEffect(() => {
@@ -382,8 +378,8 @@ const CreateVisit: React.FC = () => {
             />
           </CardContent>
           <CardFooter className="flex gap-4 justify-end">
-            <Button variant="secondary" onClick={onCancelHandler} type="button">
-              Cancel
+            <Button variant="secondary" type="button" asChild>
+              <Link to={"/receptionist"}>Cancel</Link>
             </Button>
             <Button type="submit">Create Visit</Button>
           </CardFooter>

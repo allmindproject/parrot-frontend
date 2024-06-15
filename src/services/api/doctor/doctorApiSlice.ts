@@ -1,12 +1,11 @@
 import { apiSlice } from "@/services/api/apiSlice";
-import { VisitSearchRequest, VisitSearchResponse } from "@/types";
-// TODO nie dziala zapytanie trzeba zmienic backend??
-type Examination = {
-  code: string; // "CARDIO",
-  description: string; // "Cardiovascular assessment",
-  type: string; // "PHYSICAL",
-  rightsLevel: string; // "NONE"
-};
+import {
+  Examination,
+  PhysicalExaminationAddRequest,
+  PhysicalExaminationAddResponse,
+  VisitSearchRequest,
+  VisitSearchResponse,
+} from "@/types";
 
 const doctorApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,22 +19,41 @@ const doctorApiSlice = apiSlice.injectEndpoints({
         params: visitParams,
       }),
     }),
+    getVisit: builder.query<VisitSearchResponse, string>({
+      query: (visitId) => ({
+        url: `/api/doctor/get-visit/${visitId}`,
+        method: "GET",
+      }),
+    }),
     getExaminations: builder.query<
       Examination[],
       { code?: string; description?: string }
     >({
-      query: ({ code, description }) => ({
+      query: (examParams) => ({
         url: "/api/doctor/search-examination",
         method: "GET",
-        params: { code, description },
+        params: examParams,
+      }),
+    }),
+    addPhysicalExamination: builder.mutation<
+      PhysicalExaminationAddResponse,
+      PhysicalExaminationAddRequest
+    >({
+      query: (body) => ({
+        url: "/api/doctor/add-physical-examination",
+        method: "POST",
+        body,
       }),
     }),
   }),
 });
 
 export const {
+  useAddPhysicalExaminationMutation,
   useGetExaminationsQuery,
   useGetDoctorVisitsQuery,
+  useGetVisitQuery,
   useLazyGetExaminationsQuery,
   useLazyGetDoctorVisitsQuery,
+  useLazyGetVisitQuery,
 } = doctorApiSlice;

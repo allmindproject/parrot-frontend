@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Links</CardTitle>
+        <CardTitle className="text-2xl font-bold">Links</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <Link to="/login">
