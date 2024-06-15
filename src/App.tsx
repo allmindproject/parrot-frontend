@@ -14,7 +14,10 @@ import { useAppDispatch } from "./hooks";
 import { setCredentials } from "./services/state/auth/authSlice";
 import { AdminDashboard } from "./pages/admin";
 import { DoctorAllVisits, DoctorDashboard, VisitDetails } from "./pages/doctor";
-import { LabAssistantDashboard } from "./pages/labAssistant";
+import {
+  LabAssistantDashboard,
+  LabAssistantAllTests,
+} from "./pages/labAssistant";
 import { LabSupervisorDashboard } from "./pages/labSupervisor";
 import { PatientDashboard } from "./pages/patient";
 import {
@@ -31,7 +34,7 @@ const router = createBrowserRouter([
     path: "*",
     element: <NotFoundPage />,
   },
-  //pages with layout
+  // pages with layout
   {
     path: "/",
     element: <Layout />,
@@ -87,6 +90,10 @@ const router = createBrowserRouter([
           {
             path: "labAssistant",
             element: <LabAssistantDashboard />,
+          },
+          {
+            path: "labAssistant/all-tests",
+            element: <LabAssistantAllTests />,
           },
         ],
       },
