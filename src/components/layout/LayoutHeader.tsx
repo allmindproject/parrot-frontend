@@ -1,6 +1,6 @@
 import { logOut, selectCurrentUser } from "@/services/state/auth/authSlice";
 import { ClinicLogo, ThemeToggle } from "..";
-import { Button } from "../ui";
+import { Button } from "@/components/ui";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";

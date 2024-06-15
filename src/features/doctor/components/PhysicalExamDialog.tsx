@@ -24,11 +24,11 @@ import {
   PopoverContent,
   PopoverTrigger,
   Textarea,
-} from "./ui";
+} from "@/components/ui";
 import {
   useAddPhysicalExaminationMutation,
   useGetExaminationsQuery,
-} from "@/services/api/doctor";
+} from "@/features/doctor/api";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

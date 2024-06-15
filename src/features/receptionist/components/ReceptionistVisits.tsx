@@ -17,8 +17,8 @@ import {
   CardTitle,
   ScrollArea,
   ScrollBar,
-} from "./ui";
-import { useDeleteVisitMutation } from "@/services/api/receptionist";
+} from "@/components/ui";
+import { useDeleteVisitMutation } from "@/features/receptionist/api";
 import { format } from "date-fns";
 import { handleError } from "@/utils";
 import { useEffect } from "react";

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { LayoutHeader } from ".";
-import { Separator } from "../ui";
+import { Separator } from "@/components/ui";
 
 const Layout: React.FC = () => {
   return (

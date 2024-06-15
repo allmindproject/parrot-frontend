@@ -1,5 +1,5 @@
 import { AllVisitsSearch, DoctorVisits } from "@/components";
-import { useGetDoctorVisitsQuery } from "@/services/api/doctor";
+import { useGetDoctorVisitsQuery } from "@/features/doctor/api";
 import { VisitSearchRequest } from "@/types";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";

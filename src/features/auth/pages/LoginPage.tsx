@@ -14,7 +14,7 @@ import {
   FormMessage,
   FormField,
 } from "@/components/ui";
-import { useLoginMutation } from "@/services/api/auth";
+import { useLoginMutation } from "@/features/auth/api";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

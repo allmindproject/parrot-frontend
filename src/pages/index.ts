@@ -1,7 +1,6 @@
 import { DashboardPage } from "./DashboardPage";
 import { HomePage } from "./HomePage";
-import { LoginPage } from "./LoginPage";
 import { NotFoundPage } from "./NotFoundPage";
-import { RegisterPage } from "./RegisterPage";
+import { UnauthorizedPage } from "./UnauthorizedPage";
 
-export { DashboardPage, HomePage, LoginPage, NotFoundPage, RegisterPage };
+export { DashboardPage, HomePage, NotFoundPage, UnauthorizedPage };

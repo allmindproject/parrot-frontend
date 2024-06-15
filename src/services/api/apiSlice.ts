@@ -5,8 +5,8 @@ import {
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../state/store";
-import { logOut, setCredentials } from "../state/auth/authSlice";
+import { RootState } from "@/services/state/store";
+import { logOut, setCredentials } from "@/services/state/auth/authSlice";
 import { AuthResult, BackendError } from "@/types";
 
 const baseQuery = fetchBaseQuery({

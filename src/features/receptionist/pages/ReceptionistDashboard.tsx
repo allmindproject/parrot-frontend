@@ -1,30 +1,26 @@
-import { DoctorVisits } from "@/components";
+import { ReceptionistVisits } from "@/components";
 import { Button, Calendar } from "@/components/ui";
-import { useGetDoctorVisitsQuery } from "@/services/api/doctor";
+import { useGetReceptionistVisitsQuery } from "@/features/receptionist/api";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const DoctorDashboard: React.FC = () => {
+const ReceptionistDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const {
     data: visitsData = [],
     isLoading: isGetVisitsLoading,
-    isSuccess,
     isError: isGetVisitsError,
     error: visitsError,
-  } = useGetDoctorVisitsQuery({}, { refetchOnMountOrArgChange: true });
+    refetch: refetchVisits,
+  } = useGetReceptionistVisitsQuery({}, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
     if (isGetVisitsError) {
-      console.log("z DoctorDashboard");
       handleError(visitsError);
     }
-    if (isSuccess) {
-      console.log(visitsData);
-    }
-  }, [isGetVisitsError, visitsError, isSuccess, visitsData]);
+  }, [isGetVisitsError, visitsError]);
 
   return (
     <div className="h-full flex justify-between items-start gap-4">
@@ -36,14 +32,21 @@ const DoctorDashboard: React.FC = () => {
       />
       <div className="w-full h-full flex flex-col gap-4">
         <div className="flex justify-end gap-4">
-          <Button variant="outline" asChild>
-            <Link to={`all-visits`}>See all visits</Link>
+          <Button variant="default" asChild>
+            <Link to={"create-visit"}>Create new visit</Link>
+          </Button>
+          <Button variant="outline">
+            <Link to={"all-visits"}>See all visits</Link>
           </Button>
         </div>
-        <DoctorVisits visits={visitsData} isLoading={isGetVisitsLoading} />
+        <ReceptionistVisits
+          visits={visitsData}
+          isLoading={isGetVisitsLoading}
+          refetchVisits={refetchVisits}
+        />
       </div>
     </div>
   );
 };
 
-export { DoctorDashboard };
+export { ReceptionistDashboard };

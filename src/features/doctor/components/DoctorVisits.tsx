@@ -8,7 +8,7 @@ import {
   CardTitle,
   ScrollArea,
   ScrollBar,
-} from "./ui";
+} from "@/components/ui";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 

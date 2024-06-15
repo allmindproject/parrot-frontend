@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { useGetVisitQuery } from "@/services/api/doctor";
+import { useGetVisitQuery } from "@/features/doctor/api";
 import { handleError } from "@/utils";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { format } from "date-fns";

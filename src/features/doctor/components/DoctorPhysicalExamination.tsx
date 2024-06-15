@@ -8,15 +8,17 @@ import {
   DialogTrigger,
   ScrollArea,
   ScrollBar,
-} from "./ui";
-import { PhysicalExamDialog } from ".";
+} from "@/components/ui";
 import { useState } from "react";
+import { PhysicalExamDialog } from ".";
 //TODO
 type DoctorPhysicalExaminationProps = {
   visitId: number;
 };
 
-const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({visitId}) => {
+const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
+  visitId,
+}) => {
   const [open, setOpen] = useState(false);
 
   return (

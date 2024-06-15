@@ -1,5 +1,5 @@
 import { AllVisitsSearch, ReceptionistVisits } from "@/components";
-import { useGetReceptionistVisitsQuery } from "@/services/api/receptionist";
+import { useGetReceptionistVisitsQuery } from "@/features/receptionist/api";
 import { VisitSearchRequest } from "@/types";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";

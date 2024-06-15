@@ -6,7 +6,7 @@ import {
   CardTitle,
   ScrollArea,
   ScrollBar,
-} from "./ui";
+} from "@/components/ui";
 //TODO
 const DoctorLaboratoryExamination: React.FC = () => {
   return (

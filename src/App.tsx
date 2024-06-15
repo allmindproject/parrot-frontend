@@ -2,9 +2,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {
   DashboardPage,
   HomePage,
-  LoginPage,
   NotFoundPage,
-  RegisterPage,
+  UnauthorizedPage,
 } from "./pages";
 import { Layout } from "./components/layout";
 import { GuestOnlyRoute, PrivateRoute } from "./components/routes";
@@ -12,21 +11,25 @@ import { Role, Theme } from "./types";
 import { setTheme } from "./services/state/theme/themeSlice";
 import { useAppDispatch } from "./hooks";
 import { setCredentials } from "./services/state/auth/authSlice";
-import { AdminDashboard } from "./pages/admin";
-import { DoctorAllVisits, DoctorDashboard, VisitDetails } from "./pages/doctor";
+import { AdminDashboard } from "./features/admin/pages";
+import {
+  DoctorAllVisits,
+  DoctorDashboard,
+  VisitDetails,
+} from "./features/doctor/pages";
 import {
   LabAssistantDashboard,
   LabAssistantAllTests,
-} from "./pages/labAssistant";
-import { LabSupervisorDashboard } from "./pages/labSupervisor";
-import { PatientDashboard } from "./pages/patient";
+} from "./features/labAssistant/pages";
+import { LabSupervisorDashboard } from "./features/labSupervisor/pages";
+import { PatientDashboard } from "./features/patient/pages";
 import {
   CreateVisit,
   ReceptionistAllVisits,
   ReceptionistDashboard,
-} from "./pages/receptionist";
-import { UnauthorizedPage } from "./pages/UnauthorizedPage";
-import { UserDashboard } from "./pages/user";
+} from "./features/receptionist/pages";
+import { UserDashboard } from "./features/user/pages";
+import { LoginPage, RegisterPage } from "./features/auth/pages";
 
 const router = createBrowserRouter([
   // error page

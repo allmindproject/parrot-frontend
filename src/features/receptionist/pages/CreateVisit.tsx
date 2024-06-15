@@ -29,7 +29,7 @@ import {
   useCreateVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
-} from "@/services/api/receptionist";
+} from "@/features/receptionist/api";
 import { VisitCreateRequest } from "@/types";
 import { handleError } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
