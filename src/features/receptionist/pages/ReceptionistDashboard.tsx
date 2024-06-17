@@ -9,7 +9,7 @@ const ReceptionistDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const {
-    data: visitsData = [],
+    data: visits = [],
     isLoading: isGetVisitsLoading,
     isError: isGetVisitsError,
     error: visitsError,
@@ -40,7 +40,7 @@ const ReceptionistDashboard: React.FC = () => {
           </Button>
         </div>
         <ReceptionistVisits
-          visits={visitsData}
+          visits={visits}
           isLoading={isGetVisitsLoading}
           refetchVisits={refetchVisits}
         />

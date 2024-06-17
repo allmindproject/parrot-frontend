@@ -30,7 +30,7 @@ const LayoutHeader: React.FC = () => {
       </Link>
       <div className="flex items-center gap-8">
         <div className="flex flex-row text-sm font-semibold">
-          <CalendarIcon className="h-4 w-4" />
+          <CalendarIcon className="h-4 w-4 shrink-0" />
           <span className="ml-2">{format(date, "PPPP")}</span>
         </div>
         {user && (

@@ -9,22 +9,17 @@ const DoctorDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const {
-    data: visitsData = [],
+    data: visits = [],
     isLoading: isGetVisitsLoading,
-    isSuccess,
     isError: isGetVisitsError,
     error: visitsError,
   } = useGetDoctorVisitsQuery({}, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
     if (isGetVisitsError) {
-      console.log("z DoctorDashboard");
       handleError(visitsError);
     }
-    if (isSuccess) {
-      console.log(visitsData);
-    }
-  }, [isGetVisitsError, visitsError, isSuccess, visitsData]);
+  }, [isGetVisitsError, visitsError]);
 
   return (
     <div className="h-full flex justify-between items-start gap-4">
@@ -40,7 +35,7 @@ const DoctorDashboard: React.FC = () => {
             <Link to={`all-visits`}>See all visits</Link>
           </Button>
         </div>
-        <DoctorVisits visits={visitsData} isLoading={isGetVisitsLoading} />
+        <DoctorVisits visits={visits} isLoading={isGetVisitsLoading} />
       </div>
     </div>
   );
