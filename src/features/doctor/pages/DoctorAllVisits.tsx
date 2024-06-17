@@ -1,8 +1,9 @@
-import { AllVisitsSearch, DoctorVisits } from "@/components";
+import { AllVisitsSearch } from "@/components";
 import { useGetDoctorVisitsQuery } from "@/features/doctor/api";
 import { VisitSearchRequest } from "@/types";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
+import { DoctorVisits } from "../components";
 
 const DoctorAllVisits: React.FC = () => {
   const [searchParams, setSearchParams] = useState<Partial<VisitSearchRequest>>(

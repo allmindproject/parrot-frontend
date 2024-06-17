@@ -1,8 +1,9 @@
-import { AllVisitsSearch, ReceptionistVisits } from "@/components";
+import { AllVisitsSearch } from "@/components";
 import { useGetReceptionistVisitsQuery } from "@/features/receptionist/api";
 import { VisitSearchRequest } from "@/types";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
+import { ReceptionistVisits } from "../components";
 
 const ReceptionistAllVisits: React.FC = () => {
   const [searchParams, setSearchParams] = useState<Partial<VisitSearchRequest>>(

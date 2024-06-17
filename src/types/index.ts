@@ -11,13 +11,13 @@ import { Receptionist } from "./Receptionist";
 import { PhysicalExamination } from "./PhysicalExamination";
 import { Person } from "./Person";
 import { Patient } from "./Patient";
-import { LabExamination } from "./LabExamination";
+import { LaboratoryExamination } from "./LaboratoryExamination";
 import { Doctor } from "./Doctor";
 import { ClinicStaff } from "./ClinicStaff";
 import { VisitCreateRequest } from "./VisitCreateRequest";
 import { Examination } from "./Examination";
-import { PhysicalExaminationAddRequest } from "./PhysicalExaminationAddRequest";
-import { PhysicalExaminationAddResponse } from "./PhysicalExaminationAddResponse";
+import { ExaminationType } from "./ExaminationType";
+
 export type {
   ApiError,
   AuthResult,
@@ -25,13 +25,12 @@ export type {
   ClinicStaff,
   Doctor,
   Examination,
-  LabExamination,
+  ExaminationType,
+  LaboratoryExamination,
   LoginValues,
   Patient,
   Person,
   PhysicalExamination,
-  PhysicalExaminationAddRequest,
-  PhysicalExaminationAddResponse,
   Receptionist,
   Theme,
   User,

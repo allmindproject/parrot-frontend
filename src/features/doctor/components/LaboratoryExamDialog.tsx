@@ -26,7 +26,7 @@ import {
   Textarea,
 } from "@/components/ui";
 import {
-  useAddPhysicalExaminationMutation,
+  useAddLaboratoryExaminationMutation,
   useGetExaminationsQuery,
 } from "@/features/doctor/api";
 import { useForm } from "react-hook-form";
@@ -34,37 +34,36 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleError } from "@/utils";
 import { useEffect } from "react";
-import { format } from "date-fns";
 import { toast } from "sonner";
-import { PhysicalExaminationAddRequest } from "../types";
+import { LaboratoryExaminationAddRequest } from "../types";
 
-const physicalExaminationSchema = z.object({
+const laboratoryExaminationSchema = z.object({
   examinationDictCode: z.string({
     required_error: "Examination is required.",
   }),
-  result: z
+  doctorNotices: z
     .string({
-      required_error: "Result is required.",
+      required_error: "Notices are required.",
     })
     .max(255, {
-      message: "Result must not be longer than 255 characters.",
+      message: "Notices must not be longer than 255 characters.",
     }),
 });
-type PhysicalExamValues = z.infer<typeof physicalExaminationSchema>;
+type LaboratoryExamValues = z.infer<typeof laboratoryExaminationSchema>;
 
-type PhysicalExamDialogProps = {
+type LaboratoryExamDialogProps = {
   setOpen: (open: boolean) => void;
   visitId: number;
   refetchVisitExaminations: () => void;
 };
 
-const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
+const LaboratoryExamDialog: React.FC<LaboratoryExamDialogProps> = ({
   setOpen,
   visitId,
   refetchVisitExaminations,
 }) => {
   const [addExamination, { isSuccess: isAddExaminationSuccess }] =
-    useAddPhysicalExaminationMutation();
+    useAddLaboratoryExaminationMutation();
 
   const {
     data: examinations = [],
@@ -72,26 +71,23 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
     error: examinationsError,
   } = useGetExaminationsQuery({});
 
-  const defaultValues: Partial<PhysicalExamValues> = {
+  const defaultValues: Partial<LaboratoryExamValues> = {
     examinationDictCode: undefined,
-    result: undefined,
+    doctorNotices: undefined,
   };
 
-  const form = useForm<PhysicalExamValues>({
-    resolver: zodResolver(physicalExaminationSchema),
+  const form = useForm<LaboratoryExamValues>({
+    resolver: zodResolver(laboratoryExaminationSchema),
     defaultValues,
     mode: "onChange",
   });
 
-  const onAddHandler = async (exam: PhysicalExamValues) => {
-    const examAddRequest: PhysicalExaminationAddRequest = {
-      examinationDictCode: exam.examinationDictCode,
-      result: exam.result,
+  const onAddHandler = async (exam: LaboratoryExamValues) => {
+    const examAddRequest: LaboratoryExaminationAddRequest = {
+      examinationCode: exam.examinationDictCode,
+      doctorNotices: exam.doctorNotices,
       visitId: visitId,
-      examinationDateTime: format(new Date(), "HH:mm dd.MM.yyyy"),
     };
-
-    console.log(examAddRequest);
 
     try {
       await addExamination(examAddRequest).unwrap();
@@ -105,7 +101,7 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
       form.reset();
       setOpen(false);
       refetchVisitExaminations();
-      toast.success(`Physical examination added successfully`);
+      toast.success(`Laboratory examination ordered successfully`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAddExaminationSuccess]);
@@ -117,14 +113,14 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExaminationsError]);
 
-  const physicalExaminations = examinations.filter(
-    (examination) => examination.type === "PHYSICAL"
+  const laboratoryExaminations = examinations.filter(
+    (examination) => examination.type === "LABORATORY"
   );
 
   return (
     <DialogContent className="sm:max-w-md">
       <DialogHeader>
-        <DialogTitle>Add physical examination</DialogTitle>
+        <DialogTitle>Order laboratory examination</DialogTitle>
         <DialogDescription>
           Enter the details of the examination below.
         </DialogDescription>
@@ -149,7 +145,7 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
                         )}
                       >
                         {field.value
-                          ? physicalExaminations.find(
+                          ? laboratoryExaminations.find(
                               (e) => e.code === field.value
                             )?.description
                           : "Select examination"}
@@ -166,7 +162,7 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
                       <CommandList>
                         <CommandEmpty>No examinations found.</CommandEmpty>
                         <CommandGroup>
-                          {physicalExaminations.map((examination) => (
+                          {laboratoryExaminations.map((examination) => (
                             <CommandItem
                               key={examination.code}
                               value={examination.description}
@@ -204,12 +200,15 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
           />
           <FormField
             control={form.control}
-            name="result"
+            name="doctorNotices"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Result</FormLabel>
+                <FormLabel>Notices</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter result here..." {...field} />
+                  <Textarea
+                    placeholder="Enter any notices here..."
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -221,7 +220,7 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
                 Close
               </Button>
             </DialogClose>
-            <Button type="submit">Add examination</Button>
+            <Button type="submit">Order examination</Button>
           </DialogFooter>
         </form>
       </Form>
@@ -229,4 +228,4 @@ const PhysicalExamDialog: React.FC<PhysicalExamDialogProps> = ({
   );
 };
 
-export { PhysicalExamDialog };
+export { LaboratoryExamDialog };

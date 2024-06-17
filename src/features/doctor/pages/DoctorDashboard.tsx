@@ -1,9 +1,9 @@
-import { DoctorVisits } from "@/components";
 import { Button, Calendar } from "@/components/ui";
 import { useGetDoctorVisitsQuery } from "@/features/doctor/api";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { DoctorVisits } from "../components";
 
 const DoctorDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());

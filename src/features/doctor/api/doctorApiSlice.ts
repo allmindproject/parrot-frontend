@@ -1,11 +1,17 @@
 import { apiSlice } from "@/services/api/apiSlice";
 import {
   Examination,
-  PhysicalExaminationAddRequest,
-  PhysicalExaminationAddResponse,
+  ExaminationType,
+  LaboratoryExamination,
+  PhysicalExamination,
   VisitSearchRequest,
   VisitSearchResponse,
 } from "@/types";
+import {
+  LaboratoryExaminationAddRequest,
+  PhysicalExaminationAddRequest,
+  VisitExaminationsResponse,
+} from "../types";
 
 const doctorApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -35,8 +41,18 @@ const doctorApiSlice = apiSlice.injectEndpoints({
         params: examParams,
       }),
     }),
+    getVisitExaminations: builder.query<
+      VisitExaminationsResponse,
+      { visitId: number; examinationType: ExaminationType }
+    >({
+      query: (vistExamParams) => ({
+        url: "/api/doctor/search-visit-examination",
+        method: "GET",
+        params: vistExamParams,
+      }),
+    }),
     addPhysicalExamination: builder.mutation<
-      PhysicalExaminationAddResponse,
+      PhysicalExamination,
       PhysicalExaminationAddRequest
     >({
       query: (body) => ({
@@ -45,15 +61,28 @@ const doctorApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    addLaboratoryExamination: builder.mutation<
+      LaboratoryExamination,
+      LaboratoryExaminationAddRequest
+    >({
+      query: (body) => ({
+        url: "/api/doctor/add-lab-examination",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
 export const {
+  useAddLaboratoryExaminationMutation,
   useAddPhysicalExaminationMutation,
   useGetExaminationsQuery,
   useGetDoctorVisitsQuery,
+  useGetVisitExaminationsQuery,
   useGetVisitQuery,
   useLazyGetExaminationsQuery,
   useLazyGetDoctorVisitsQuery,
+  useLazyGetVisitExaminationsQuery,
   useLazyGetVisitQuery,
 } = doctorApiSlice;

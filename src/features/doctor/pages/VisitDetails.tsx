@@ -1,8 +1,4 @@
 import {
-  DoctorLaboratoryExamination,
-  DoctorPhysicalExamination,
-} from "@/components";
-import {
   Button,
   Card,
   CardContent,
@@ -16,6 +12,10 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { format } from "date-fns";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  DoctorLaboratoryExamination,
+  DoctorPhysicalExamination,
+} from "../components";
 
 const VisitDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -37,7 +37,6 @@ const VisitDetails: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGetVisitError]);
 
-  console.log(visit);
   if (isGetVisitLoading) return <div className="text-center">Loading...</div>;
   if (!visit)
     return (
@@ -55,38 +54,45 @@ const VisitDetails: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl font-bold">
-                {`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}
+                Visit details:
               </CardTitle>
               <CardDescription>
-                <span className="font-bold">Patient National ID: </span>
-                {visit.selectedPatient.person.nationalIDNumber}
-              </CardDescription>
-              <CardDescription>
-                <span className="font-bold">Patient Sex: </span>
-                {visit.selectedPatient.person.sex}
-              </CardDescription>
-              <CardDescription>
-                <span className="font-bold">Patient Insurance ID: </span>
-                {visit.selectedPatient.insuranceId}
-              </CardDescription>
-              <CardDescription>
-                <span className="font-bold">Doctor Name: </span>
-                {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
-              </CardDescription>
-              <CardDescription>
-                <span className="font-bold">Scheduled Date: </span>
-                {format(visit.visit.scheduledDateTime, "PPPP")}
-              </CardDescription>
-              <CardDescription>
-                <span className="font-bold">Scheduled Time: </span>
-                {format(visit.visit.scheduledDateTime, "HH:mm")}
-              </CardDescription>
-              <CardDescription>
-                <span className="font-bold">Visit Status: </span>
-                {visit.visit.visitStatus}
+                {format(visit.visit.scheduledDateTime, "HH:mm PPPP")}
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-2">
+              <p className="text-sm">
+                <strong>Patient: </strong>
+                {`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}
+              </p>
+              <p className="text-sm">
+                <strong>Patient National ID: </strong>
+                {visit.selectedPatient.person.nationalIDNumber}
+              </p>
+              <p className="text-sm">
+                <strong>Patient Sex: </strong>
+                {visit.selectedPatient.person.sex}
+              </p>
+              <p className="text-sm">
+                <strong>Patient Insurance ID: </strong>
+                {visit.selectedPatient.insuranceId}
+              </p>
+              <p className="text-sm">
+                <strong>Doctor Name: </strong>
+                {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
+              </p>
+              <p className="text-sm">
+                <strong>Scheduled Date: </strong>
+                {format(visit.visit.scheduledDateTime, "PPPP")}
+              </p>
+              <p className="text-sm">
+                <strong>Scheduled Time: </strong>
+                {format(visit.visit.scheduledDateTime, "HH:mm")}
+              </p>
+              <p className="text-sm">
+                <strong>Visit Status: </strong>
+                {visit.visit.visitStatus}
+              </p>
               <div className="text-sm">Comments:</div>
               <div>{visit.visit.description}</div>
             </CardContent>
@@ -106,7 +112,7 @@ const VisitDetails: React.FC = () => {
       </div>
       <div className="w-3/5 h-full flex flex-col gap-4">
         <DoctorPhysicalExamination visitId={visit.visit.id} />
-        <DoctorLaboratoryExamination />
+        <DoctorLaboratoryExamination visitId={visit.visit.id} />
       </div>
     </div>
   );

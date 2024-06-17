@@ -1,9 +1,9 @@
-import { ReceptionistVisits } from "@/components";
 import { Button, Calendar } from "@/components/ui";
 import { useGetReceptionistVisitsQuery } from "@/features/receptionist/api";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ReceptionistVisits } from "../components";
 
 const ReceptionistDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
