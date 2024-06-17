@@ -15,6 +15,7 @@ import { AdminDashboard } from "./features/admin/pages";
 import {
   DoctorAllVisits,
   DoctorDashboard,
+  FullMedicalHistory,
   VisitDetails,
 } from "./features/doctor/pages";
 import {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
           {
             path: "doctor/visit-details/:visitId",
             element: <VisitDetails />,
+          },
+          {
+            path: "doctor/medical-history/:insuranceId",
+            element: <FullMedicalHistory />,
           },
         ],
       },

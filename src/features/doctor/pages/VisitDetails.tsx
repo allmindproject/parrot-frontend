@@ -49,7 +49,7 @@ const VisitDetails: React.FC = () => {
     );
   return (
     <div className="w-full h-full flex flex-row gap-4">
-      <div className="w-2/5 h-full min-w-[250px] flex flex-col justify-between gap-4">
+      <div className="w-2/5 h-full min-w-[286px] flex flex-col justify-between gap-4">
         <div className="flex flex-col gap-4">
           <Card>
             <CardHeader>
@@ -98,7 +98,11 @@ const VisitDetails: React.FC = () => {
             </CardContent>
           </Card>
           <Button className="self-start" asChild>
-            <Link to="#">Full medical history</Link>
+            <Link
+              to={`/doctor/medical-history/${visit.selectedPatient.insuranceId}`}
+            >
+              Full medical history
+            </Link>
           </Button>
           <Card>
             <CardHeader>
@@ -106,13 +110,17 @@ const VisitDetails: React.FC = () => {
             </CardHeader>
           </Card>
         </div>
-        <Button variant="outline" asChild className="w-1/2">
+        <Button variant="outline" asChild className="w-1/2 min-w-[286px]">
           <Link to="/doctor">Back</Link>
         </Button>
       </div>
       <div className="w-3/5 h-full flex flex-col gap-4">
-        <DoctorPhysicalExamination visitId={visit.visit.id} />
-        <DoctorLaboratoryExamination visitId={visit.visit.id} />
+        <div className="h-[calc(50%-0.5rem)]">
+          <DoctorPhysicalExamination visitId={visit.visit.id} />
+        </div>
+        <div className="h-[calc(50%-0.5rem)]">
+          <DoctorLaboratoryExamination visitId={visit.visit.id} />
+        </div>
       </div>
     </div>
   );

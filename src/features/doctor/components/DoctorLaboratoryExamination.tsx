@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogTrigger,
   ScrollArea,
+  ScrollBar,
 } from "@/components/ui";
 import { useEffect, useState } from "react";
 import { useGetVisitExaminationsQuery } from "../api";
@@ -30,13 +31,10 @@ const DoctorLaboratoryExamination: React.FC<
     isError: isGetVisitExaminationsError,
     error: visitExaminationsError,
     refetch: refetchVisitExaminations,
-  } = useGetVisitExaminationsQuery(
-    {
-      visitId: visitId,
-      examinationType: "LABORATORY",
-    }
-    // { refetchOnMountOrArgChange: true }
-  );
+  } = useGetVisitExaminationsQuery({
+    visitId: visitId,
+    examinationType: "LABORATORY",
+  });
 
   const laboratoryVisitExaminations =
     visitExaminations?.labExaminationList || [];
@@ -51,9 +49,9 @@ const DoctorLaboratoryExamination: React.FC<
   if (isGetVisitExaminationsLoading) {
     return <div className="text-center">Loading...</div>;
   }
-  console.log(laboratoryVisitExaminations);
+
   return (
-    <div className="h-1/2 flex flex-col gap-4">
+    <div className="h-full flex flex-col gap-4">
       <div className="text-2xl font-bold">Laboratory examinations:</div>
       <ScrollArea className="w-full h-full">
         <div className="flex flex-col gap-4">
@@ -113,6 +111,7 @@ const DoctorLaboratoryExamination: React.FC<
             <div>No examinations found.</div>
           )}
         </div>
+        <ScrollBar orientation="vertical" />
       </ScrollArea>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>

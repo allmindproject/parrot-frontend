@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogTrigger,
   ScrollArea,
+  ScrollBar,
 } from "@/components/ui";
 import { useEffect, useState } from "react";
 import { PhysicalExamDialog } from ".";
@@ -50,7 +51,7 @@ const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
   }
 
   return (
-    <div className="h-1/2 flex flex-col gap-4">
+    <div className="h-full flex flex-col gap-4">
       <div className="text-2xl font-bold">Physical examinations:</div>
       <ScrollArea className="w-full h-full">
         <div className="flex flex-col gap-4">
@@ -86,6 +87,7 @@ const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
             <div>No examinations found.</div>
           )}
         </div>
+        <ScrollBar orientation="vertical" />
       </ScrollArea>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
