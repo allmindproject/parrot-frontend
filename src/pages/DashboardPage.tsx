@@ -16,10 +16,10 @@ const DashboardPage: React.FC = () => {
       route = "/doctor";
       break;
     case Role.LabAssistant:
-      route = "/labAssistant";
+      route = "/lab-assistant";
       break;
     case Role.LabSupervisor:
-      route = "/labSupervisor";
+      route = "/lab-supervisor";
       break;
     case Role.Patient:
       route = "/patient";

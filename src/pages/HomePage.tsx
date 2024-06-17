@@ -27,10 +27,10 @@ const HomePage: React.FC = () => {
         <Link to="/doctor">
           <Button variant="secondary">doctor</Button>
         </Link>
-        <Link to="/labAssistant">
+        <Link to="/lab-assistant">
           <Button variant="secondary">labAssistant</Button>
         </Link>
-        <Link to="/labSupervisor">
+        <Link to="/lab-supervisor">
           <Button variant="secondary">labSupervisor</Button>
         </Link>
         <Link to="/patient">
@@ -39,6 +39,7 @@ const HomePage: React.FC = () => {
         <Link to="/receptionist">
           <Button variant="secondary">receptionist</Button>
         </Link>
+        <p className=" text-sm">Docelowo nie bedzie tej strony</p>
       </CardContent>
     </Card>
   );

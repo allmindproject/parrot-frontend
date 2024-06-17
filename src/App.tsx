@@ -91,11 +91,11 @@ const router = createBrowserRouter([
         children: [
           // only admin and labAssistant
           {
-            path: "labAssistant",
+            path: "lab-assistant",
             element: <LabAssistantDashboard />,
           },
           {
-            path: "labAssistant/all-tests",
+            path: "lab-assistant/all-tests",
             element: <LabAssistantAllTests />,
           },
         ],
@@ -107,7 +107,7 @@ const router = createBrowserRouter([
         children: [
           // only admin and labSupervisor
           {
-            path: "labSupervisor",
+            path: "lab-supervisor",
             element: <LabSupervisorDashboard />,
           },
         ],

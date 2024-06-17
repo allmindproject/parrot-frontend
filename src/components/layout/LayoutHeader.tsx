@@ -34,14 +34,16 @@ const LayoutHeader: React.FC = () => {
           <span className="ml-2">{format(date, "PPPP")}</span>
         </div>
         {user && (
-          <div className="flex flex-col items-end">
-            <div className="text-sm font-bold">
-              {user?.firstName} {user?.lastName}
+          <>
+            <div className="flex flex-col items-end">
+              <div className="text-sm font-bold">
+                {user?.firstName} {user?.lastName}
+              </div>
+              <div className="text-xs font-semibold text-primary">{role}</div>
             </div>
-            <div className="text-xs font-semibold text-primary">{role}</div>
-          </div>
+            <Button onClick={handleLogout}>logout</Button>
+          </>
         )}
-        <Button onClick={handleLogout}>logout</Button>
         <ThemeToggle />
       </div>
     </div>
