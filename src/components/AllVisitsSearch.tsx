@@ -117,7 +117,7 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
           <form onSubmit={form.handleSubmit(onSearchHandler)}>
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl font-bold">Search</CardTitle>
+                <CardTitle className="font-bold">Search</CardTitle>
                 <CardDescription>
                   Enter the details of the visit below
                 </CardDescription>

@@ -86,6 +86,7 @@ const LoginPage: React.FC = () => {
       dispatch(setCredentials({ token: loginData.access_token }));
       navigate("/dashboard");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoginSuccess]);
 
   return (
@@ -94,7 +95,7 @@ const LoginPage: React.FC = () => {
         <form onSubmit={form.handleSubmit(onSubmitHandler)}>
           <Card className="max-w-sm shadow-md min-w-[300px]">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold">Login</CardTitle>
+              <CardTitle className="font-bold">Login</CardTitle>
               <CardDescription>
                 Enter your email and password to login to your account
               </CardDescription>

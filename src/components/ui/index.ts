@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog";
+import { Badge, badgeVariants } from "./badge";
 import { Button, buttonVariants } from "./button";
 import { Calendar } from "./calendar";
 import {
@@ -87,6 +88,8 @@ export {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  Badge,
+  badgeVariants,
   Button,
   buttonVariants,
   Calendar,

@@ -9,6 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  Badge,
   Button,
   Card,
   CardContent,
@@ -67,11 +68,20 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
           <Card key={visit.visit.id}>
             <CardHeader className="flex-row justify-between items-start gap-4">
               <div className="space-y-1.5">
-                <CardTitle className="text-2xl font-bold">{`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}</CardTitle>
+                <CardTitle className="flex flex-row gap-4">
+                  <div className="font-bold">
+                    {`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}
+                  </div>
+                  <Badge
+                    variant="secondary"
+                    // variant={visit.visit.visitStatus === "CANCELLED" ? "destructive" : "secondary"}
+                  >
+                    {visit.visit.visitStatus}
+                  </Badge>
+                </CardTitle>
                 <CardDescription>
                   {format(visit.visit.scheduledDateTime, "HH:mm PPPP")}
                 </CardDescription>
-                <CardDescription>{`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}</CardDescription>
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
@@ -100,9 +110,15 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
                 </AlertDialogContent>
               </AlertDialog>
             </CardHeader>
-            <CardContent>
-              <div className="text-sm">Comments:</div>
-              <div>{visit.visit.description}</div>
+            <CardContent className="space-y-2">
+              <p className="text-sm">
+                <strong>Doctor: </strong>
+                {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
+              </p>
+              <p className="text-sm">
+                <strong>Comments: </strong>
+                {visit.visit.description}
+              </p>
             </CardContent>
           </Card>
         ))}

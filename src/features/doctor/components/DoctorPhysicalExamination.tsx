@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -60,8 +61,11 @@ const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
             physicalVisitExaminations.map((exam) => (
               <Card key={exam.id} className="w-full">
                 <CardHeader>
-                  <CardTitle>
-                    {exam.examinationDictionary.description}
+                  <CardTitle className="flex flex-row gap-4">
+                    <div className="font-bold">
+                      {exam.examinationDictionary.description}
+                    </div>
+                    <Badge variant="secondary">COMPLETED</Badge>
                   </CardTitle>
                   <CardDescription>
                     {format(exam.examinationDateTime, "HH:mm PPPP")}

@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -30,7 +31,12 @@ const LabAssistantExaminations: React.FC<LabAssistantExaminationsProps> = ({
           <Card key={exam.id} className="w-full">
             <CardHeader className="flex-row justify-between items-start gap-4">
               <div className="space-y-1.5">
-                <CardTitle>{exam.examinationDictionary.description}</CardTitle>
+                <CardTitle className="flex flex-row gap-4">
+                  <div className="font-bold">
+                    {exam.examinationDictionary.description}
+                  </div>
+                  <Badge variant="secondary">{exam.status}</Badge>
+                </CardTitle>
                 <CardDescription>
                   Ordered on: {format(exam.orderedDateTime, "HH:mm PPPP")}
                 </CardDescription>
@@ -46,10 +52,6 @@ const LabAssistantExaminations: React.FC<LabAssistantExaminationsProps> = ({
                   {exam.result}
                 </p>
               )}
-              <p className="text-sm">
-                <strong>Status: </strong>
-                {exam.status}
-              </p>
               <p className="text-sm">
                 <strong>Code: </strong>
                 {exam.examinationDictionary.code}

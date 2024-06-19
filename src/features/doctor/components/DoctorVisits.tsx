@@ -1,5 +1,6 @@
 import { VisitSearchResponse } from "@/types";
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -28,11 +29,15 @@ const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
           <Card key={visit.visit.id}>
             <CardHeader className="flex-row justify-between items-start gap-4">
               <div className="space-y-1.5">
-                <CardTitle className="text-2xl font-bold">{`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}</CardTitle>
+                <CardTitle className="flex flex-row gap-4">
+                  <div className="font-bold">
+                    {`${visit.selectedPatient.person.firstName} ${visit.selectedPatient.person.lastName}`}
+                  </div>
+                  <Badge variant="secondary">{visit.visit.visitStatus}</Badge>
+                </CardTitle>
                 <CardDescription>
                   {format(visit.visit.scheduledDateTime, "HH:mm PPPP")}
                 </CardDescription>
-                <CardDescription>{`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}</CardDescription>
               </div>
               <Button asChild>
                 <Link to={`/doctor/visit-details/${visit.visit.id}`}>
@@ -40,9 +45,15 @@ const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
                 </Link>
               </Button>
             </CardHeader>
-            <CardContent>
-              <div className="text-sm">Comments:</div>
-              <div>{visit.visit.description}</div>
+            <CardContent className="space-y-2">
+              <p className="text-sm">
+                <strong>Doctor: </strong>
+                {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
+              </p>
+              <p className="text-sm">
+                <strong>Comments: </strong>
+                {visit.visit.description}
+              </p>
             </CardContent>
           </Card>
         ))}

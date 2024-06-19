@@ -128,9 +128,7 @@ const CreateVisit: React.FC = () => {
       <form onSubmit={form.handleSubmit(onCreateVisitHandler)}>
         <Card className="max-w-[700px] mx-auto">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">
-              Create New Visit
-            </CardTitle>
+            <CardTitle className="font-bold">Create New Visit</CardTitle>
             <CardDescription>
               Enter the details of the visit below
             </CardDescription>

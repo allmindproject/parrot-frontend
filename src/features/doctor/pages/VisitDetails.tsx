@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -53,8 +54,9 @@ const VisitDetails: React.FC = () => {
         <div className="flex flex-col gap-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl font-bold">
-                Visit details:
+              <CardTitle className="flex flex-row gap-4 justify-between">
+                <div className="font-bold">Visit Details:</div>
+                <Badge variant="secondary">{visit.visit.visitStatus}</Badge>
               </CardTitle>
               <CardDescription>
                 {format(visit.visit.scheduledDateTime, "HH:mm PPPP")}
@@ -90,11 +92,9 @@ const VisitDetails: React.FC = () => {
                 {format(visit.visit.scheduledDateTime, "HH:mm")}
               </p>
               <p className="text-sm">
-                <strong>Visit Status: </strong>
-                {visit.visit.visitStatus}
+                <strong>Comments: </strong>
+                {visit.visit.description}
               </p>
-              <div className="text-sm">Comments:</div>
-              <div>{visit.visit.description}</div>
             </CardContent>
           </Card>
           <Button className="self-start" asChild>

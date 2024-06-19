@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -60,8 +61,11 @@ const DoctorLaboratoryExamination: React.FC<
             laboratoryVisitExaminations.map((exam) => (
               <Card key={exam.id} className="w-full">
                 <CardHeader>
-                  <CardTitle>
-                    {exam.examinationDictionary.description}
+                  <CardTitle className="flex flex-row gap-4">
+                    <div className="font-bold">
+                      {exam.examinationDictionary.description}
+                    </div>
+                    <Badge variant="secondary">{exam.status}</Badge>
                   </CardTitle>
                   <CardDescription>
                     Ordered on: {format(exam.orderedDateTime, "HH:mm PPPP")}
@@ -74,10 +78,6 @@ const DoctorLaboratoryExamination: React.FC<
                       {exam.result}
                     </p>
                   )}
-                  <p className="text-sm">
-                    <strong>Status: </strong>
-                    {exam.status}
-                  </p>
                   <p className="text-sm">
                     <strong>Code: </strong>
                     {exam.examinationDictionary.code}
