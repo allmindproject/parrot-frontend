@@ -53,7 +53,19 @@ const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
 
   return (
     <div className="h-full flex flex-col gap-4">
-      <div className="text-2xl font-bold">Physical examinations:</div>
+      <div className="flex flex-row justify-between items-center gap-4">
+        <div className="text-2xl font-bold">Physical examinations:</div>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button className="self-end">Add physical examination</Button>
+          </DialogTrigger>
+          <PhysicalExamDialog
+            setOpen={setOpen}
+            visitId={visitId}
+            refetchVisitExaminations={refetchVisitExaminations}
+          />
+        </Dialog>
+      </div>
       <ScrollArea className="w-full h-full">
         <div className="flex flex-col gap-4">
           {/* TODO może jakąś tabeleczkę tutaj strzelić????? */}
@@ -93,16 +105,6 @@ const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
         </div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button className="self-end">Add physical examination</Button>
-        </DialogTrigger>
-        <PhysicalExamDialog
-          setOpen={setOpen}
-          visitId={visitId}
-          refetchVisitExaminations={refetchVisitExaminations}
-        />
-      </Dialog>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { VisitSearchResponse } from "@/types";
+import { VisitSearchResponse, VisitStatus } from "@/types";
 import {
   Badge,
   Button,
@@ -11,7 +11,9 @@ import {
   ScrollBar,
 } from "@/components/ui";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSetVisitStatusMutation } from "../api";
+import { handleError } from "@/utils";
 
 type DoctorVisitsProps = {
   visits: VisitSearchResponse[];
@@ -19,6 +21,22 @@ type DoctorVisitsProps = {
 };
 
 const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
+  const [setVisitStatus] = useSetVisitStatusMutation();
+
+  const navigate = useNavigate();
+
+  const onProcessVisitHandler = async (visitId: number) => {
+    try {
+      await setVisitStatus({
+        visitId: visitId.toString(),
+        visitStatus: VisitStatus.IN_PROGRESS,
+      }).unwrap();
+      navigate(`/doctor/visit-details/${visitId}`);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   if (isLoading) return <div className="text-center w-full">Loading...</div>;
   if (visits.length === 0)
     return <div className="text-center w-full">No visits found.</div>;
@@ -39,10 +57,11 @@ const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
                   {format(visit.visit.scheduledDateTime, "HH:mm PPPP")}
                 </CardDescription>
               </div>
-              <Button asChild>
-                <Link to={`/doctor/visit-details/${visit.visit.id}`}>
-                  Visit details
-                </Link>
+              <Button
+                onClick={() => onProcessVisitHandler(visit.visit.id)}
+                disabled={visit.visit.visitStatus === VisitStatus.CANCELLED}
+              >
+                Process visit
               </Button>
             </CardHeader>
             <CardContent className="space-y-2">

@@ -6,12 +6,19 @@ import {
   PhysicalExamination,
   VisitSearchRequest,
   VisitSearchResponse,
+  VisitStatus,
 } from "@/types";
 import {
   LaboratoryExaminationAddRequest,
   PhysicalExaminationAddRequest,
   VisitExaminationsResponse,
 } from "../types";
+
+type VisitStatusSetResponse = unknown; //TODO
+type VisitStatusSetRequest = {
+  visitId: string;
+  visitStatus: VisitStatus;
+};
 
 const doctorApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -71,12 +78,23 @@ const doctorApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    setVisitStatus: builder.mutation<
+      VisitStatusSetResponse,
+      VisitStatusSetRequest
+    >({
+      query: (body) => ({
+        url: "/api/doctor/set-visit-status",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
 export const {
   useAddLaboratoryExaminationMutation,
   useAddPhysicalExaminationMutation,
+  useSetVisitStatusMutation,
   useGetExaminationsQuery,
   useGetDoctorVisitsQuery,
   useGetVisitExaminationsQuery,

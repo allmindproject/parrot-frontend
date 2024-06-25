@@ -1,4 +1,3 @@
-import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,7 +23,7 @@ import { format } from "date-fns";
 import { handleError } from "@/utils";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { VisitSearchResponse } from "@/types";
+import { VisitSearchResponse, VisitStatus } from "@/types";
 
 type ReceptionistVisitsProps = {
   visits: VisitSearchResponse[];
@@ -83,8 +82,11 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive" size="icon">
-                    <Trash2 className="h-4 w-4" />
+                  <Button
+                    variant="destructive"
+                    disabled={visit.visit.visitStatus != VisitStatus.REGISTERED}
+                  >
+                    Cancel visit
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>

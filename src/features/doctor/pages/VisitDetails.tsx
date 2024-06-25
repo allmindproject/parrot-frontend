@@ -7,7 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui";
-import { useGetVisitQuery } from "@/features/doctor/api";
+import {
+  useGetVisitQuery,
+  useSetVisitStatusMutation,
+} from "@/features/doctor/api";
 import { handleError } from "@/utils";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { format } from "date-fns";
@@ -17,6 +20,8 @@ import {
   DoctorLaboratoryExamination,
   DoctorPhysicalExamination,
 } from "../components";
+import { VisitStatus } from "@/types";
+import { toast } from "sonner";
 
 const VisitDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -28,7 +33,25 @@ const VisitDetails: React.FC = () => {
     isLoading: isGetVisitLoading,
     isError: isGetVisitError,
     error: visitError,
-  } = useGetVisitQuery(visitId ?? skipToken);
+    refetch: refetchVisit,
+  } = useGetVisitQuery(visitId ?? skipToken, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [completeVisit] = useSetVisitStatusMutation();
+
+  const onVisitCompleteHandler = async () => {
+    try {
+      await completeVisit({
+        visitId: visitId || "",
+        visitStatus: VisitStatus.COMPLETED,
+      }).unwrap();
+      refetchVisit();
+      toast.success(`Visit completed`);
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   useEffect(() => {
     if (isGetVisitError) {
@@ -104,23 +127,21 @@ const VisitDetails: React.FC = () => {
               Full medical history
             </Link>
           </Button>
-          <Card>
-            <CardHeader>
-              <CardTitle>Visit results:</CardTitle>
-            </CardHeader>
-          </Card>
         </div>
         <Button variant="outline" asChild className="w-1/2 min-w-[286px]">
           <Link to="/doctor">Back</Link>
         </Button>
       </div>
       <div className="w-3/5 h-full flex flex-col gap-4">
-        <div className="h-[calc(50%-0.5rem)]">
+        <div className="h-[calc(50%-2.25rem)]">
           <DoctorPhysicalExamination visitId={visit.visit.id} />
         </div>
-        <div className="h-[calc(50%-0.5rem)]">
+        <div className="h-[calc(50%-2.25rem)]">
           <DoctorLaboratoryExamination visitId={visit.visit.id} />
         </div>
+        <Button className="self-end" onClick={onVisitCompleteHandler}>
+          Complete Visit
+        </Button>
       </div>
     </div>
   );
