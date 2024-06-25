@@ -1,6 +1,6 @@
 import {
+  useCancelVisitMutation,
   useCreateVisitMutation,
-  useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
   useGetReceptionistVisitsQuery,
@@ -10,8 +10,8 @@ import {
 } from "./receptionistApiSlice";
 
 export {
+  useCancelVisitMutation,
   useCreateVisitMutation,
-  useDeleteVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,
   useGetReceptionistVisitsQuery,

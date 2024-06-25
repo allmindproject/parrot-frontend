@@ -19,7 +19,7 @@ import {
   ScrollArea,
   ScrollBar,
 } from "@/components/ui";
-import { useDeleteVisitMutation } from "@/features/receptionist/api";
+import { useCancelVisitMutation } from "@/features/receptionist/api";
 import { format } from "date-fns";
 import { handleError } from "@/utils";
 import { useEffect } from "react";
@@ -37,26 +37,24 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
   isLoading,
   refetchVisits,
 }) => {
-  const [
-    deleteVisit,
-    { data: visitDeleteResponse, isSuccess: isDeleteVisitSuccess },
-  ] = useDeleteVisitMutation();
+  const [cancelVisit, { isSuccess: isCancelVisitSuccess }] =
+    useCancelVisitMutation();
 
-  const onDeleteHandler = async (visitId: number) => {
+  const onCancelHandler = async (visitId: number) => {
     try {
-      await deleteVisit({ visitId: visitId }).unwrap();
+      await cancelVisit({ visitId: visitId }).unwrap();
     } catch (error) {
       handleError(error);
     }
   };
 
   useEffect(() => {
-    if (isDeleteVisitSuccess) {
-      toast.success(`Visit deleted successfully`);
-      console.log(visitDeleteResponse); // TODO usunac
+    if (isCancelVisitSuccess) {
+      toast.success(`Visit cancelled successfully`);
       refetchVisits();
     }
-  }, [isDeleteVisitSuccess, visitDeleteResponse]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCancelVisitSuccess]);
 
   if (isLoading) return <div className="text-center w-full">Loading...</div>;
   if (visits.length === 0)
@@ -95,14 +93,14 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
                       Are you absolutely sure?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
+                      This action cannot be undone. This will permanently cancel
                       the visit.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => onDeleteHandler(visit.visit.id)}
+                      onClick={() => onCancelHandler(visit.visit.id)}
                     >
                       Continue
                     </AlertDialogAction>

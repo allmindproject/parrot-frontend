@@ -20,14 +20,14 @@ const PrivateRoute = ({ allowedRoles }: PrivateRouteProps) => {
     <Outlet />
   ) : !!user && !!token ? (
     <>
-      {toast.error(`oooops where you goin bro`, {
+      {toast.error(`Error Not Authorized`, {
         description: `You are not authorized to go there`,
       })}
       <Navigate to={"/unauthorized"} state={{ from: location }} replace />
     </>
   ) : (
     <>
-      {toast.error(`oooops where you goin bro`, {
+      {toast.error(`Error Not Authenticated`, {
         description: `You are not logged in`,
       })}
       <Navigate to={"/login"} state={{ from: location }} replace />

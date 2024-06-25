@@ -18,9 +18,7 @@ const LayoutHeader: React.FC = () => {
   const handleLogout = (): void => {
     dispatch(logOut());
     navigate("/login"); // TODO replace false trzeba dac ale ten button nie moze byc na page'ach ktore są publiczne
-    toast.success(`Hehe`, {
-      description: `wylogowany`,
-    });
+    toast.success(`Logged out successfully.`);
   };
 
   return (
