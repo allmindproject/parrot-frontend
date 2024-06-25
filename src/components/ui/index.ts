@@ -74,6 +74,18 @@ import { Input } from "./input";
 import { Label } from "./label";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { ScrollArea, ScrollBar } from "./scroll-area";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 import { Separator } from "./separator";
 import { Toaster } from "./sonner";
 import { Textarea } from "./textarea";
@@ -146,6 +158,16 @@ export {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
   Separator,
   ScrollArea,
   ScrollBar,

@@ -4,16 +4,22 @@ import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { DoctorVisits } from "../components";
+import { format, startOfDay } from "date-fns";
 
 const DoctorDashboard: React.FC = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(startOfDay(new Date()));
 
   const {
     data: visits = [],
     isLoading: isGetVisitsLoading,
     isError: isGetVisitsError,
     error: visitsError,
-  } = useGetDoctorVisitsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetDoctorVisitsQuery(
+    {
+      scheduledDate: date ? format(date, "HH:mm dd.MM.yyyy") : undefined,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     if (isGetVisitsError) {

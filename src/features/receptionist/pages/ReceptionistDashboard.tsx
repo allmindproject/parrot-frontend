@@ -4,9 +4,10 @@ import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ReceptionistVisits } from "../components";
+import { format, startOfDay } from "date-fns";
 
 const ReceptionistDashboard: React.FC = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(startOfDay(new Date()));
 
   const {
     data: visits = [],
@@ -14,7 +15,12 @@ const ReceptionistDashboard: React.FC = () => {
     isError: isGetVisitsError,
     error: visitsError,
     refetch: refetchVisits,
-  } = useGetReceptionistVisitsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetReceptionistVisitsQuery(
+    {
+      scheduledDate: date ? format(date, "HH:mm dd.MM.yyyy") : undefined,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     if (isGetVisitsError) {
