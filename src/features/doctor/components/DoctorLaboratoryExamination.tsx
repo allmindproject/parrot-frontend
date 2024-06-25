@@ -57,7 +57,9 @@ const DoctorLaboratoryExamination: React.FC<
         <div className="text-2xl font-bold">Laboratory examinations:</div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="self-end">Order laboratory examination</Button>
+            <Button className="self-end" variant="outline">
+              Order laboratory examination
+            </Button>
           </DialogTrigger>
           <LaboratoryExamDialog
             setOpen={setOpen}

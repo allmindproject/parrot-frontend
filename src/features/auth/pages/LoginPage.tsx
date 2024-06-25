@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { LoginValues } from "@/types";
+import { LoginValues } from "../types";
 import { toast } from "sonner";
 import { setCredentials } from "@/services/state/auth/authSlice";
 import { useAppDispatch } from "@/hooks";
@@ -50,8 +50,6 @@ const loginSchema = z.object({
     }),
 });
 
-// TODO LoginValues type inferred here
-//TODO handling errors, isloading, isError
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 

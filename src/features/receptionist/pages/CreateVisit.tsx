@@ -30,7 +30,7 @@ import {
   useGetDoctorsQuery,
   useGetPatientsQuery,
 } from "@/features/receptionist/api";
-import { VisitCreateRequest } from "@/types";
+import { VisitCreateRequest } from "../types";
 import { handleError } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, startOfDay } from "date-fns";

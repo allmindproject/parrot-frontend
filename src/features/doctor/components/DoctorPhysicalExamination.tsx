@@ -57,7 +57,9 @@ const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
         <div className="text-2xl font-bold">Physical examinations:</div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="self-end">Add physical examination</Button>
+            <Button className="self-end" variant="outline">
+              Add physical examination
+            </Button>
           </DialogTrigger>
           <PhysicalExamDialog
             setOpen={setOpen}

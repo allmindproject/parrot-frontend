@@ -4,10 +4,10 @@ import {
   Patient,
   Receptionist,
   Visit,
-  VisitCreateRequest,
   VisitSearchRequest,
   VisitSearchResponse,
 } from "@/types";
+import { VisitCreateRequest } from "../types";
 //fest mi sie nie podobaja te wszystkie typy w tym miejscu, ale jeszcze mysle jak to rozwiazac
 
 type PatientSearchResponse = Patient & { visitList: Visit[] };

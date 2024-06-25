@@ -1,5 +1,4 @@
 import { User } from "./User";
-import { LoginValues } from "./LoginValues";
 import { Role } from "./Role";
 import { Theme } from "./Theme";
 import { ApiError, BackendError } from "./Errors";
@@ -14,7 +13,6 @@ import { Patient } from "./Patient";
 import { LaboratoryExamination } from "./LaboratoryExamination";
 import { Doctor } from "./Doctor";
 import { ClinicStaff } from "./ClinicStaff";
-import { VisitCreateRequest } from "./VisitCreateRequest";
 import { Examination } from "./Examination";
 import { ExaminationType } from "./ExaminationType";
 import { VisitStatus } from "./VisitStatus";
@@ -28,7 +26,6 @@ export type {
   Examination,
   ExaminationType,
   LaboratoryExamination,
-  LoginValues,
   Patient,
   Person,
   PhysicalExamination,
@@ -36,7 +33,6 @@ export type {
   Theme,
   User,
   Visit,
-  VisitCreateRequest,
   VisitSearchRequest,
   VisitSearchResponse,
 };
