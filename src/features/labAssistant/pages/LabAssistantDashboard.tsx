@@ -4,6 +4,7 @@ import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LabAssistantExaminations } from "../components";
+import { LabExaminationStatus } from "@/types";
 
 const LabAssistantDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -13,7 +14,10 @@ const LabAssistantDashboard: React.FC = () => {
     isLoading: isGetLabExaminationsLoading,
     isError: isGetLabExaminationsError,
     error: examinationsError,
-  } = useGetAssistantExaminationsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAssistantExaminationsQuery(
+    { status: LabExaminationStatus.ORDERED },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     if (isGetLabExaminationsError) {
@@ -32,7 +36,7 @@ const LabAssistantDashboard: React.FC = () => {
       <div className="w-full h-full flex flex-col gap-4">
         <div className="flex justify-end gap-4">
           <Button variant="outline" asChild>
-            <Link to={`all-tests`}>See all tests</Link>
+            <Link to={`all-tests`}>See all examinations</Link>
           </Button>
         </div>
         <LabAssistantExaminations

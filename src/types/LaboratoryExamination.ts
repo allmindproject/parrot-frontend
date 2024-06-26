@@ -1,4 +1,4 @@
-import { Examination } from "@/types";
+import { Examination, LabExaminationStatus } from "@/types";
 
 type LaboratoryExamination = {
   approvalDateTime: Date;
@@ -11,7 +11,7 @@ type LaboratoryExamination = {
   labSupervisor: unknown; //TODO
   orderedDateTime: Date;
   result: string;
-  status: string;
+  status: LabExaminationStatus;
   supervisorNotices: string;
 };
 export type { LaboratoryExamination };

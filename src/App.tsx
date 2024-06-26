@@ -21,6 +21,7 @@ import {
 import {
   LabAssistantDashboard,
   LabAssistantAllTests,
+  LabAssistantProcessExamination,
 } from "./features/labAssistant/pages";
 import {
   LabSupervisorAllTests,
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
           {
             path: "lab-assistant/all-tests",
             element: <LabAssistantAllTests />,
+          },
+          {
+            path: "lab-assistant/process-examination/:examinationId",
+            element: <LabAssistantProcessExamination />,
           },
         ],
       },

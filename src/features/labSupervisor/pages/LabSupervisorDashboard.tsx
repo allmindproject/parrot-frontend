@@ -35,7 +35,7 @@ const LabSupervisorDashboard: React.FC = () => {
       <div className="w-full h-full flex flex-col gap-4">
         <div className="flex justify-end gap-4">
           <Button variant="outline" asChild>
-            <Link to={`all-tests`}>See all tests</Link>
+            <Link to={`all-tests`}>See all examinations</Link>
           </Button>
         </div>
         <LabSupervisorExaminations
