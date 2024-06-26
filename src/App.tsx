@@ -22,7 +22,10 @@ import {
   LabAssistantDashboard,
   LabAssistantAllTests,
 } from "./features/labAssistant/pages";
-import { LabSupervisorDashboard } from "./features/labSupervisor/pages";
+import {
+  LabSupervisorAllTests,
+  LabSupervisorDashboard,
+} from "./features/labSupervisor/pages";
 import { PatientDashboard } from "./features/patient/pages";
 import {
   CreateVisit,
@@ -114,6 +117,10 @@ const router = createBrowserRouter([
           {
             path: "lab-supervisor",
             element: <LabSupervisorDashboard />,
+          },
+          {
+            path: "lab-supervisor/all-tests",
+            element: <LabSupervisorAllTests />,
           },
         ],
       },

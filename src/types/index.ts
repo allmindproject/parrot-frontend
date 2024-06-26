@@ -18,6 +18,7 @@ import { ExaminationType } from "./ExaminationType";
 import { VisitStatus } from "./VisitStatus";
 import { LabExaminationStatus } from "./LabExaminationStatus";
 import { RightsLevel } from "./RightsLevel";
+import { LabExaminationSearchRequest } from "./LabExaminationSearchRequest";
 
 export type {
   ApiError,
@@ -27,6 +28,7 @@ export type {
   Doctor,
   Examination,
   ExaminationType,
+  LabExaminationSearchRequest,
   LaboratoryExamination,
   Patient,
   Person,

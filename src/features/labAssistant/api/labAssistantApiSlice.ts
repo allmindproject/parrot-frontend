@@ -1,10 +1,9 @@
 import { apiSlice } from "@/services/api/apiSlice";
-import { LaboratoryExamination } from "@/types";
-import { LabExaminationSearchRequest } from "../types";
+import { LabExaminationSearchRequest, LaboratoryExamination } from "@/types";
 
 const labAssistantApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getLabExaminations: builder.query<
+    getAssistantExaminations: builder.query<
       LaboratoryExamination[],
       Partial<LabExaminationSearchRequest>
     >({
@@ -17,5 +16,7 @@ const labAssistantApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetLabExaminationsQuery, useLazyGetLabExaminationsQuery } =
-  labAssistantApiSlice;
+export const {
+  useGetAssistantExaminationsQuery,
+  useLazyGetAssistantExaminationsQuery,
+} = labAssistantApiSlice;

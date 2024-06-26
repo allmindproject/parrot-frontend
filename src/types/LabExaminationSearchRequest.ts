@@ -1,4 +1,4 @@
-import { LabExaminationStatus, RightsLevel } from "@/types";
+import { LabExaminationStatus, RightsLevel } from ".";
 
 type LabExaminationSearchRequest = {
   status: LabExaminationStatus;

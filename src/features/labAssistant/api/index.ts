@@ -1,6 +1,9 @@
 import {
-  useGetLabExaminationsQuery,
-  useLazyGetLabExaminationsQuery,
+  useGetAssistantExaminationsQuery,
+  useLazyGetAssistantExaminationsQuery,
 } from "./labAssistantApiSlice";
 
-export { useGetLabExaminationsQuery, useLazyGetLabExaminationsQuery };
+export {
+  useGetAssistantExaminationsQuery,
+  useLazyGetAssistantExaminationsQuery,
+};

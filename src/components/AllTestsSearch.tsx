@@ -6,8 +6,7 @@ import { CalendarIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LabExaminationSearchRequest } from "../types";
-import { LabExaminationStatus, RightsLevel } from "@/types";
+import { LabExaminationSearchRequest, LabExaminationStatus, RightsLevel } from "@/types";
 import {
   Button,
   Calendar,

@@ -1,3 +1,4 @@
+import { LabSupervisorAllTests } from "./LabSupervisorAllTests";
 import { LabSupervisorDashboard } from "./LabSupervisorDashboard";
 
-export { LabSupervisorDashboard };
+export { LabSupervisorAllTests, LabSupervisorDashboard };

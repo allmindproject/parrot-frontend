@@ -1,5 +1,5 @@
 import { Button, Calendar } from "@/components/ui";
-import { useGetLabExaminationsQuery } from "../api";
+import { useGetAssistantExaminationsQuery } from "../api";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ const LabAssistantDashboard: React.FC = () => {
     isLoading: isGetLabExaminationsLoading,
     isError: isGetLabExaminationsError,
     error: examinationsError,
-  } = useGetLabExaminationsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAssistantExaminationsQuery({}, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
     if (isGetLabExaminationsError) {

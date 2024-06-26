@@ -1,11 +1,11 @@
+import { LabExaminationSearchRequest } from "@/types";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
-import { LabExaminationSearchRequest } from "@/types";
-import { LabAssistantExaminations } from "../components";
-import { useGetAssistantExaminationsQuery } from "../api";
+import { useGetSupervisorExaminationsQuery } from "../api";
+import { LabSupervisorExaminations } from "../components";
 import { AllTestsSearch } from "@/components";
 
-const LabAssistantAllTests: React.FC = () => {
+const LabSupervisorAllTests: React.FC = () => {
   const [searchParams, setSearchParams] = useState<
     Partial<LabExaminationSearchRequest>
   >({});
@@ -15,7 +15,7 @@ const LabAssistantAllTests: React.FC = () => {
     isLoading: isGetLabExaminationsLoading,
     isError: isGetLabExaminationsError,
     error: labExaminationsError,
-  } = useGetAssistantExaminationsQuery(searchParams, {
+  } = useGetSupervisorExaminationsQuery(searchParams, {
     refetchOnMountOrArgChange: true,
   });
 
@@ -31,7 +31,7 @@ const LabAssistantAllTests: React.FC = () => {
         setSearchParams={setSearchParams}
         isGetLabExaminationsLoading={isGetLabExaminationsLoading}
       />
-      <LabAssistantExaminations
+      <LabSupervisorExaminations
         examinations={labExaminations}
         isLoading={isGetLabExaminationsLoading}
       />
@@ -39,4 +39,4 @@ const LabAssistantAllTests: React.FC = () => {
   );
 };
 
-export { LabAssistantAllTests };
+export { LabSupervisorAllTests };
