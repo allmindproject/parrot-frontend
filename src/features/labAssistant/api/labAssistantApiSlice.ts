@@ -1,13 +1,12 @@
 import { apiSlice } from "@/services/api/apiSlice";
 import { LaboratoryExamination } from "@/types";
-
-type ExaminationSearchRequest = unknown; //TODO
+import { LabExaminationSearchRequest } from "../types";
 
 const labAssistantApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getLabExaminations: builder.query<
       LaboratoryExamination[],
-      Partial<ExaminationSearchRequest>
+      Partial<LabExaminationSearchRequest>
     >({
       query: (examParams) => ({
         url: "/api/assistant/search-examination",

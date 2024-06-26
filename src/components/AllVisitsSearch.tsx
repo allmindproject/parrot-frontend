@@ -122,8 +122,8 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
   };
 
   return (
-    <ScrollArea className="h-full min-w-[286px]">
-      <div className="h-full flex flex-col justify-between gap-4">
+    <div className="h-full flex flex-col justify-between gap-4">
+      <ScrollArea className="h-full min-w-[286px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSearchHandler)}>
             <Card>
@@ -316,12 +316,12 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
             </Card>
           </form>
         </Form>
-        <Button variant="outline" onClick={() => navigate(-1)}>
-          Back
-        </Button>
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+      <Button variant="outline" onClick={() => navigate(-1)}>
+        Back
+      </Button>
+    </div>
   );
 };
 

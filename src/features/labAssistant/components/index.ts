@@ -1,3 +1,4 @@
+import { AllTestsSearch } from "./AllTestsSearch";
 import { LabAssistantExaminations } from "./LabAssistantExaminations";
 
-export { LabAssistantExaminations };
+export { AllTestsSearch, LabAssistantExaminations };

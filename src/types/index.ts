@@ -16,6 +16,8 @@ import { ClinicStaff } from "./ClinicStaff";
 import { Examination } from "./Examination";
 import { ExaminationType } from "./ExaminationType";
 import { VisitStatus } from "./VisitStatus";
+import { LabExaminationStatus } from "./LabExaminationStatus";
+import { RightsLevel } from "./RightsLevel";
 
 export type {
   ApiError,
@@ -36,4 +38,4 @@ export type {
   VisitSearchRequest,
   VisitSearchResponse,
 };
-export { Role, VisitStatus };
+export { LabExaminationStatus, RightsLevel, Role, VisitStatus };
