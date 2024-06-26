@@ -1,10 +1,10 @@
-import { LabExamination, PhysicalExamination } from ".";
+import { LaboratoryExamination, PhysicalExamination } from ".";
 
 type Visit = {
   description: string;
   diagnostics: unknown; //TODO
   id: number;
-  labExaminationList: LabExamination[];
+  labExaminationList: LaboratoryExamination[];
   physicalExaminationList: PhysicalExamination[];
   scheduledDateTime: Date; // TODO czy string
   visitStatus: string; // TODO maybe enum

@@ -1,5 +1,4 @@
 import { User } from "./User";
-import { LoginValues } from "./LoginValues";
 import { Role } from "./Role";
 import { Theme } from "./Theme";
 import { ApiError, BackendError } from "./Errors";
@@ -11,13 +10,16 @@ import { Receptionist } from "./Receptionist";
 import { PhysicalExamination } from "./PhysicalExamination";
 import { Person } from "./Person";
 import { Patient } from "./Patient";
-import { LabExamination } from "./LabExamination";
+import { LaboratoryExamination } from "./LaboratoryExamination";
 import { Doctor } from "./Doctor";
 import { ClinicStaff } from "./ClinicStaff";
-import { VisitCreateRequest } from "./VisitCreateRequest";
 import { Examination } from "./Examination";
-import { PhysicalExaminationAddRequest } from "./PhysicalExaminationAddRequest";
-import { PhysicalExaminationAddResponse } from "./PhysicalExaminationAddResponse";
+import { ExaminationType } from "./ExaminationType";
+import { VisitStatus } from "./VisitStatus";
+import { LabExaminationStatus } from "./LabExaminationStatus";
+import { RightsLevel } from "./RightsLevel";
+import { LabExaminationSearchRequest } from "./LabExaminationSearchRequest";
+
 export type {
   ApiError,
   AuthResult,
@@ -25,19 +27,17 @@ export type {
   ClinicStaff,
   Doctor,
   Examination,
-  LabExamination,
-  LoginValues,
+  ExaminationType,
+  LabExaminationSearchRequest,
+  LaboratoryExamination,
   Patient,
   Person,
   PhysicalExamination,
-  PhysicalExaminationAddRequest,
-  PhysicalExaminationAddResponse,
   Receptionist,
   Theme,
   User,
   Visit,
-  VisitCreateRequest,
   VisitSearchRequest,
   VisitSearchResponse,
 };
-export { Role };
+export { LabExaminationStatus, RightsLevel, Role, VisitStatus };

@@ -2,9 +2,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {
   DashboardPage,
   HomePage,
-  LoginPage,
   NotFoundPage,
-  RegisterPage,
+  UnauthorizedPage,
 } from "./pages";
 import { Layout } from "./components/layout";
 import { GuestOnlyRoute, PrivateRoute } from "./components/routes";
@@ -12,21 +11,31 @@ import { Role, Theme } from "./types";
 import { setTheme } from "./services/state/theme/themeSlice";
 import { useAppDispatch } from "./hooks";
 import { setCredentials } from "./services/state/auth/authSlice";
-import { AdminDashboard } from "./pages/admin";
-import { DoctorAllVisits, DoctorDashboard, VisitDetails } from "./pages/doctor";
+import { AdminDashboard } from "./features/admin/pages";
+import {
+  DoctorAllVisits,
+  DoctorDashboard,
+  FullMedicalHistory,
+  VisitDetails,
+} from "./features/doctor/pages";
 import {
   LabAssistantDashboard,
   LabAssistantAllTests,
-} from "./pages/labAssistant";
-import { LabSupervisorDashboard } from "./pages/labSupervisor";
-import { PatientDashboard } from "./pages/patient";
+  LabAssistantProcessExamination,
+} from "./features/labAssistant/pages";
+import {
+  LabSupervisorAllTests,
+  LabSupervisorDashboard,
+  LabSupervisorVerifyExamination,
+} from "./features/labSupervisor/pages";
+import { PatientDashboard } from "./features/patient/pages";
 import {
   CreateVisit,
   ReceptionistAllVisits,
   ReceptionistDashboard,
-} from "./pages/receptionist";
-import { UnauthorizedPage } from "./pages/UnauthorizedPage";
-import { UserDashboard } from "./pages/user";
+} from "./features/receptionist/pages";
+import { UserDashboard } from "./features/user/pages";
+import { LoginPage, RegisterPage } from "./features/auth/pages";
 
 const router = createBrowserRouter([
   // error page
@@ -79,6 +88,10 @@ const router = createBrowserRouter([
             path: "doctor/visit-details/:visitId",
             element: <VisitDetails />,
           },
+          {
+            path: "doctor/medical-history/:insuranceId",
+            element: <FullMedicalHistory />,
+          },
         ],
       },
       {
@@ -88,12 +101,16 @@ const router = createBrowserRouter([
         children: [
           // only admin and labAssistant
           {
-            path: "labAssistant",
+            path: "lab-assistant",
             element: <LabAssistantDashboard />,
           },
           {
-            path: "labAssistant/all-tests",
+            path: "lab-assistant/all-tests",
             element: <LabAssistantAllTests />,
+          },
+          {
+            path: "lab-assistant/process-examination/:examinationId",
+            element: <LabAssistantProcessExamination />,
           },
         ],
       },
@@ -104,8 +121,16 @@ const router = createBrowserRouter([
         children: [
           // only admin and labSupervisor
           {
-            path: "labSupervisor",
+            path: "lab-supervisor",
             element: <LabSupervisorDashboard />,
+          },
+          {
+            path: "lab-supervisor/all-tests",
+            element: <LabSupervisorAllTests />,
+          },
+          {
+            path: "lab-supervisor/verify-examination/:examinationId",
+            element: <LabSupervisorVerifyExamination />,
           },
         ],
       },

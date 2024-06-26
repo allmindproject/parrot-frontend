@@ -1,6 +1,6 @@
 import { logOut, selectCurrentUser } from "@/services/state/auth/authSlice";
 import { ClinicLogo, ThemeToggle } from "..";
-import { Button } from "../ui";
+import { Button } from "@/components/ui";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -18,9 +18,7 @@ const LayoutHeader: React.FC = () => {
   const handleLogout = (): void => {
     dispatch(logOut());
     navigate("/login"); // TODO replace false trzeba dac ale ten button nie moze byc na page'ach ktore są publiczne
-    toast.success(`Hehe`, {
-      description: `wylogowany`,
-    });
+    toast.success(`Logged out successfully.`);
   };
 
   return (
@@ -30,18 +28,20 @@ const LayoutHeader: React.FC = () => {
       </Link>
       <div className="flex items-center gap-8">
         <div className="flex flex-row text-sm font-semibold">
-          <CalendarIcon className="h-4 w-4" />
+          <CalendarIcon className="h-4 w-4 shrink-0" />
           <span className="ml-2">{format(date, "PPPP")}</span>
         </div>
         {user && (
-          <div className="flex flex-col items-end">
-            <div className="text-sm font-bold">
-              {user?.firstName} {user?.lastName}
+          <>
+            <div className="flex flex-col items-end">
+              <div className="text-sm font-bold">
+                {user?.firstName} {user?.lastName}
+              </div>
+              <div className="text-xs font-semibold text-primary">{role}</div>
             </div>
-            <div className="text-xs font-semibold text-primary">{role}</div>
-          </div>
+            <Button onClick={handleLogout}>logout</Button>
+          </>
         )}
-        <Button onClick={handleLogout}>logout</Button>
         <ThemeToggle />
       </div>
     </div>

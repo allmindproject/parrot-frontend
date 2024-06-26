@@ -1,7 +1,9 @@
+import { ExaminationType, RightsLevel } from ".";
+
 type Examination = {
   code: string;
   description: string;
-  type: "LABORATORY" | "PHYSICAL";
-  rightsLevel: string;
+  type: ExaminationType;
+  rightsLevel: RightsLevel;
 };
 export type { Examination };

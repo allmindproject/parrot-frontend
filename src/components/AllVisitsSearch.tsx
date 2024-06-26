@@ -20,6 +20,11 @@ import {
   PopoverTrigger,
   ScrollArea,
   ScrollBar,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "./ui";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -27,7 +32,7 @@ import { CalendarIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VisitSearchRequest } from "@/types";
+import { VisitSearchRequest, VisitStatus } from "@/types";
 
 const searchVisitsSchema = z.object({
   patientFirstName: z
@@ -66,6 +71,7 @@ const searchVisitsSchema = z.object({
       message: "NPWZ ID must not be longer than 20 characters.",
     })
     .optional(),
+  visitStatus: z.nativeEnum(VisitStatus).optional(),
   visitDate: z.date().optional(),
 });
 
@@ -89,6 +95,7 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
     doctorFirstName: "",
     doctorLastName: "",
     doctorNpwzId: "",
+    visitStatus: undefined,
     visitDate: undefined,
   };
 
@@ -106,18 +113,22 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
       doctorFirstName: searchVisitValues.doctorFirstName || undefined,
       doctorLastName: searchVisitValues.doctorLastName || undefined,
       doctorNpwzId: searchVisitValues.doctorNpwzId || undefined,
+      status: searchVisitValues.visitStatus || undefined,
+      scheduledDate: searchVisitValues.visitDate
+        ? format(searchVisitValues.visitDate, "HH:mm dd.MM.yyyy")
+        : undefined,
     });
     form.reset();
   };
 
   return (
-    <ScrollArea className="h-full min-w-[286px]">
-      <div className="h-full flex flex-col justify-between gap-4">
+    <div className="h-full flex flex-col justify-between gap-4">
+      <ScrollArea className="h-full min-w-[286px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSearchHandler)}>
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl font-bold">Search</CardTitle>
+                <CardTitle className="font-bold">Search</CardTitle>
                 <CardDescription>
                   Enter the details of the visit below
                 </CardDescription>
@@ -227,6 +238,38 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
                 />
                 <FormField
                   control={form.control}
+                  name="visitStatus"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Visit Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value || ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger
+                            className={cn(
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="REGISTERED">Registered</SelectItem>
+                          <SelectItem value="IN_PROGRESS">
+                            In progress
+                          </SelectItem>
+                          <SelectItem value="COMPLETED">Completed</SelectItem>
+                          <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="visitDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
@@ -255,9 +298,7 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
                             mode="single"
                             selected={field.value}
                             onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
+                            disabled={(date) => date < new Date("1900-01-01")}
                             initialFocus
                           />
                         </PopoverContent>
@@ -275,12 +316,12 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
             </Card>
           </form>
         </Form>
-        <Button variant="outline" onClick={() => navigate(-1)}>
-          Back
-        </Button>
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+      <Button variant="outline" onClick={() => navigate(-1)}>
+        Back
+      </Button>
+    </div>
   );
 };
 
