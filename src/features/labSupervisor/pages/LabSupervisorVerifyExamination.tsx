@@ -241,49 +241,11 @@ const LabSupervisorVerifyExamination: React.FC = () => {
         </Button>
         <div className="flex gap-4">
           <Dialog
-            open={isApproveDialogOpen}
-            onOpenChange={setIsApproveDialogOpen}
-          >
-            <DialogTrigger asChild>
-              <Button variant="outline">Approve examination</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Approve examination</DialogTitle>
-              </DialogHeader>
-              <Form {...approveForm}>
-                <form onSubmit={approveForm.handleSubmit(onApproveHandler)}>
-                  <FormField
-                    control={approveForm.control}
-                    name="supervisorNotices"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Supervisor notes</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Notes..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <DialogFooter className="sm:justify-end mt-4">
-                    <DialogClose asChild>
-                      <Button type="button" variant="secondary">
-                        Close
-                      </Button>
-                    </DialogClose>
-                    <Button type="submit">Approve examination</Button>
-                  </DialogFooter>
-                </form>
-              </Form>
-            </DialogContent>
-          </Dialog>
-          <Dialog
             open={isRejectDialogOpen}
             onOpenChange={setIsRejectDialogOpen}
           >
             <DialogTrigger asChild>
-              <Button>Reject examination</Button>
+              <Button variant="outline">Reject examination</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
@@ -311,6 +273,44 @@ const LabSupervisorVerifyExamination: React.FC = () => {
                       </Button>
                     </DialogClose>
                     <Button type="submit">Reject examination</Button>
+                  </DialogFooter>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
+          <Dialog
+            open={isApproveDialogOpen}
+            onOpenChange={setIsApproveDialogOpen}
+          >
+            <DialogTrigger asChild>
+              <Button>Approve examination</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Approve examination</DialogTitle>
+              </DialogHeader>
+              <Form {...approveForm}>
+                <form onSubmit={approveForm.handleSubmit(onApproveHandler)}>
+                  <FormField
+                    control={approveForm.control}
+                    name="supervisorNotices"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Supervisor notes</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Notes..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <DialogFooter className="sm:justify-end mt-4">
+                    <DialogClose asChild>
+                      <Button type="button" variant="secondary">
+                        Close
+                      </Button>
+                    </DialogClose>
+                    <Button type="submit">Approve examination</Button>
                   </DialogFooter>
                 </form>
               </Form>
