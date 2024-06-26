@@ -4,6 +4,7 @@ import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LabSupervisorExaminations } from "../components";
+import { LabExaminationStatus } from "@/types";
 
 const LabSupervisorDashboard: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -14,7 +15,7 @@ const LabSupervisorDashboard: React.FC = () => {
     isError: isGetLabExaminationsError,
     error: examinationsError,
   } = useGetSupervisorExaminationsQuery(
-    {},
+    { status: LabExaminationStatus.COMPLETED },
     { refetchOnMountOrArgChange: true }
   );
 

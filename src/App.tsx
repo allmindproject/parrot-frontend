@@ -26,6 +26,7 @@ import {
 import {
   LabSupervisorAllTests,
   LabSupervisorDashboard,
+  LabSupervisorVerifyExamination,
 } from "./features/labSupervisor/pages";
 import { PatientDashboard } from "./features/patient/pages";
 import {
@@ -126,6 +127,10 @@ const router = createBrowserRouter([
           {
             path: "lab-supervisor/all-tests",
             element: <LabSupervisorAllTests />,
+          },
+          {
+            path: "lab-supervisor/verify-examination/:examinationId",
+            element: <LabSupervisorVerifyExamination />,
           },
         ],
       },

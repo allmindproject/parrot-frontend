@@ -26,61 +26,63 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  useCancelLabExaminationMutation,
-  useCompleteLabExaminationMutation,
-  useGetAssistantExaminationByIdQuery,
-} from "../api";
+
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  LabExaminationCancelRequest,
-  LabExaminationCompleteRequest,
-} from "../types";
+
 import { toast } from "sonner";
+import {
+  useApproveLabExaminationMutation,
+  useGetSupervisorExaminationByIdQuery,
+  useRejectLabExaminationMutation,
+} from "../api";
+import {
+  LabExaminationApproveRequest,
+  LabExaminationRejectRequest,
+} from "../types";
 
-const cancelSchema = z.object({
-  cancellationReason: z
+const approveSchema = z.object({
+  supervisorNotices: z
     .string({
-      required_error: "Cancellation reason is required.",
+      required_error: "Notes are required.",
     })
     .min(5, {
-      message: "Cancellation reason must be at least 5 characters.",
+      message: "Notes must be at least 5 characters.",
     })
     .max(255, {
-      message: "Cancellation reason must not be longer than 255 characters.",
+      message: "Notes must not be longer than 255 characters.",
     }),
 });
 
-const completeSchema = z.object({
-  result: z
+const rejectSchema = z.object({
+  supervisorNotices: z
     .string({
-      required_error: "Result is required.",
+      required_error: "Notes is required.",
     })
     .min(5, {
-      message: "Result must be at least 5 characters.",
+      message: "Notes must be at least 5 characters.",
     })
     .max(255, {
-      message: "Result must not be longer than 255 characters.",
+      message: "Notes must not be longer than 255 characters.",
     }),
 });
 
-type CancelSchemaValues = z.infer<typeof cancelSchema>;
-type CompleteSchemaValues = z.infer<typeof completeSchema>;
+type ApproveSchemaValues = z.infer<typeof approveSchema>;
+type RejectSchemaValues = z.infer<typeof rejectSchema>;
 
-const LabAssistantProcessExamination: React.FC = () => {
-  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-  const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
+const LabSupervisorVerifyExamination: React.FC = () => {
+  const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams<{ examinationId: string }>();
   const examinationId = params.examinationId;
 
-  const [cancelExamination, { isSuccess: isCancelExaminationSuccess }] =
-    useCancelLabExaminationMutation();
-  const [completeExamination, { isSuccess: isCompleteExaminationSuccess }] =
-    useCompleteLabExaminationMutation();
+  const [approveExamination, { isSuccess: isApproveExaminationSuccess }] =
+    useApproveLabExaminationMutation();
+  const [rejectExamination, { isSuccess: isRejectExaminationSuccess }] =
+    useRejectLabExaminationMutation();
 
   const {
     data: examination,
@@ -88,69 +90,67 @@ const LabAssistantProcessExamination: React.FC = () => {
     isError: isGetExaminationError,
     error: examinationError,
     refetch: refetchExamination,
-  } = useGetAssistantExaminationByIdQuery(examinationId ?? skipToken);
+  } = useGetSupervisorExaminationByIdQuery(examinationId ?? skipToken);
 
-  const cancelForm = useForm<CancelSchemaValues>({
-    resolver: zodResolver(cancelSchema),
-    defaultValues: { cancellationReason: "" },
+  const approveForm = useForm<ApproveSchemaValues>({
+    resolver: zodResolver(approveSchema),
+    defaultValues: { supervisorNotices: "" },
     mode: "onChange",
   });
 
-  const completeForm = useForm<CompleteSchemaValues>({
-    resolver: zodResolver(completeSchema),
-    defaultValues: { result: "" },
+  const rejectForm = useForm<RejectSchemaValues>({
+    resolver: zodResolver(rejectSchema),
+    defaultValues: { supervisorNotices: "" },
     mode: "onChange",
   });
 
-  const onCancelHandler = async (cancelSchemaValues: CancelSchemaValues) => {
+  const onApproveHandler = async (approveSchemaValues: ApproveSchemaValues) => {
     if (!examinationId) return;
-    const examCancelRequest: LabExaminationCancelRequest = {
+    const examApproveRequest: LabExaminationApproveRequest = {
       examinationId: examinationId,
-      cancellationReason: cancelSchemaValues.cancellationReason,
+      supervisorNotices: approveSchemaValues.supervisorNotices,
     };
 
     try {
-      await cancelExamination(examCancelRequest).unwrap();
+      await approveExamination(examApproveRequest).unwrap();
     } catch (error) {
       handleError(error);
     }
   };
 
-  const onCompleteHandler = async (
-    completeSchemaValues: CompleteSchemaValues
-  ) => {
+  const onRejectHandler = async (rejectSchemaValues: RejectSchemaValues) => {
     if (!examinationId) return;
-    const examCompleteRequest: LabExaminationCompleteRequest = {
+    const examRejectRequest: LabExaminationRejectRequest = {
       examinationId: examinationId,
-      result: completeSchemaValues.result,
+      supervisorNotices: rejectSchemaValues.supervisorNotices,
     };
 
     try {
-      await completeExamination(examCompleteRequest).unwrap();
+      await rejectExamination(examRejectRequest).unwrap();
     } catch (error) {
       handleError(error);
     }
   };
 
   useEffect(() => {
-    if (isCancelExaminationSuccess) {
-      cancelForm.reset();
-      setIsCancelDialogOpen(false);
+    if (isApproveExaminationSuccess) {
+      approveForm.reset();
+      setIsApproveDialogOpen(false);
       refetchExamination();
-      toast.info(`Examination cancelled`);
+      toast.info(`Examination approved`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCancelExaminationSuccess]);
+  }, [isApproveExaminationSuccess]);
 
   useEffect(() => {
-    if (isCompleteExaminationSuccess) {
-      completeForm.reset();
-      setIsCompleteDialogOpen(false);
+    if (isRejectExaminationSuccess) {
+      rejectForm.reset();
+      setIsRejectDialogOpen(false);
       refetchExamination();
-      toast.info(`Examination completed`);
+      toast.info(`Examination rejected`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCompleteExaminationSuccess]);
+  }, [isRejectExaminationSuccess]);
 
   useEffect(() => {
     if (isGetExaminationError) {
@@ -233,42 +233,34 @@ const LabAssistantProcessExamination: React.FC = () => {
               {examination.cancellationReason}
             </p>
           )}
-          {/* <p className="text-sm">
-            <strong>Lab Assistant: </strong>
-            {examination.labAssistant ? examination.labAssistant : "N/A"}
-          </p>
-          <p className="text-sm">
-            <strong>Lab Supervisor: </strong>
-            {examination.labSupervisor ? examination.labSupervisor : "N/A"}
-          </p> */}
         </CardContent>
       </Card>
       <div className="flex flex-row gap-4 justify-between">
         <Button variant="outline" asChild className="min-w-[200px]">
-          <Link to="/lab-assistant">Back</Link>
+          <Link to="/lab-supervisor">Back</Link>
         </Button>
         <div className="flex gap-4">
           <Dialog
-            open={isCancelDialogOpen}
-            onOpenChange={setIsCancelDialogOpen}
+            open={isApproveDialogOpen}
+            onOpenChange={setIsApproveDialogOpen}
           >
             <DialogTrigger asChild>
-              <Button variant="outline">Cancel examination</Button>
+              <Button variant="outline">Approve examination</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Cancel examination</DialogTitle>
+                <DialogTitle>Approve examination</DialogTitle>
               </DialogHeader>
-              <Form {...cancelForm}>
-                <form onSubmit={cancelForm.handleSubmit(onCancelHandler)}>
+              <Form {...approveForm}>
+                <form onSubmit={approveForm.handleSubmit(onApproveHandler)}>
                   <FormField
-                    control={cancelForm.control}
-                    name="cancellationReason"
+                    control={approveForm.control}
+                    name="supervisorNotices"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Cancellation reason</FormLabel>
+                        <FormLabel>Supervisor notes</FormLabel>
                         <FormControl>
-                          <Textarea placeholder="Reason..." {...field} />
+                          <Textarea placeholder="Notes..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -280,36 +272,33 @@ const LabAssistantProcessExamination: React.FC = () => {
                         Close
                       </Button>
                     </DialogClose>
-                    <Button type="submit">Cancel examination</Button>
+                    <Button type="submit">Approve examination</Button>
                   </DialogFooter>
                 </form>
               </Form>
             </DialogContent>
           </Dialog>
           <Dialog
-            open={isCompleteDialogOpen}
-            onOpenChange={setIsCompleteDialogOpen}
+            open={isRejectDialogOpen}
+            onOpenChange={setIsRejectDialogOpen}
           >
             <DialogTrigger asChild>
-              <Button>Complete examination</Button>
+              <Button>Reject examination</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Complete examination</DialogTitle>
+                <DialogTitle>Reject examination</DialogTitle>
               </DialogHeader>
-              <Form {...completeForm}>
-                <form onSubmit={completeForm.handleSubmit(onCompleteHandler)}>
+              <Form {...rejectForm}>
+                <form onSubmit={rejectForm.handleSubmit(onRejectHandler)}>
                   <FormField
-                    control={completeForm.control}
-                    name="result"
+                    control={rejectForm.control}
+                    name="supervisorNotices"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Result</FormLabel>
+                        <FormLabel>Supervisor notes</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="Enter examination result..."
-                            {...field}
-                          />
+                          <Textarea placeholder="Notes..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -321,7 +310,7 @@ const LabAssistantProcessExamination: React.FC = () => {
                         Close
                       </Button>
                     </DialogClose>
-                    <Button type="submit">Complete examination</Button>
+                    <Button type="submit">Reject examination</Button>
                   </DialogFooter>
                 </form>
               </Form>
@@ -333,4 +322,4 @@ const LabAssistantProcessExamination: React.FC = () => {
   );
 };
 
-export { LabAssistantProcessExamination };
+export { LabSupervisorVerifyExamination };

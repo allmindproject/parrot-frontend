@@ -9,9 +9,9 @@ import {
   ScrollArea,
   ScrollBar,
 } from "@/components/ui";
-import { LaboratoryExamination } from "@/types";
+import { LabExaminationStatus, LaboratoryExamination } from "@/types";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type LabSupervisorExaminationsProps = {
   examinations: LaboratoryExamination[];
@@ -21,6 +21,8 @@ const LabSupervisorExaminations: React.FC<LabSupervisorExaminationsProps> = ({
   examinations,
   isLoading,
 }) => {
+  const navigate = useNavigate();
+
   if (isLoading) return <div className="text-center w-full">Loading...</div>;
   if (examinations.length === 0)
     return <div className="text-center w-full">No examinations found.</div>;
@@ -41,8 +43,13 @@ const LabSupervisorExaminations: React.FC<LabSupervisorExaminationsProps> = ({
                   Ordered on: {format(exam.orderedDateTime, "HH:mm PPPP")}
                 </CardDescription>
               </div>
-              <Button asChild>
-                <Link to={"#"}>Process examination</Link>
+              <Button
+                onClick={() =>
+                  navigate(`/lab-supervisor/verify-examination/${exam.id}`)
+                }
+                disabled={exam.status != LabExaminationStatus.COMPLETED}
+              >
+                Verify examination
               </Button>
             </CardHeader>
             <CardContent className="space-y-2">
