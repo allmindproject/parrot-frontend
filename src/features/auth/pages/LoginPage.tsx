@@ -28,9 +28,7 @@ import { handleError } from "@/utils";
 
 const loginSchema = z.object({
   email: z
-    .string({
-      required_error: "Email is required.",
-    })
+    .string()
     .email()
     .min(2, {
       message: "Email must be at least 2 characters.",
@@ -39,9 +37,7 @@ const loginSchema = z.object({
       message: "Email must not be longer than 30 characters.",
     }),
   password: z
-    .string({
-      required_error: "Password is required.",
-    })
+    .string()
     .min(2, {
       message: "Password must be at least 2 characters.",
     })

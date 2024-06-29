@@ -30,6 +30,7 @@ import {
 } from "./features/labSupervisor/pages";
 import { PatientDashboard } from "./features/patient/pages";
 import {
+  CreatePatient,
   CreateVisit,
   ReceptionistAllVisits,
   ReceptionistDashboard,
@@ -157,6 +158,10 @@ const router = createBrowserRouter([
           {
             path: "receptionist/all-visits",
             element: <ReceptionistAllVisits />,
+          },
+          {
+            path: "receptionist/create-patient",
+            element: <CreatePatient />,
           },
           {
             path: "receptionist/create-visit",

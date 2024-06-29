@@ -44,25 +44,17 @@ import {
 
 const approveSchema = z.object({
   supervisorNotices: z
-    .string({
-      required_error: "Notes are required.",
-    })
-    .min(5, {
-      message: "Notes must be at least 5 characters.",
-    })
+    .string()
     .max(255, {
       message: "Notes must not be longer than 255 characters.",
-    }),
+    })
+    .optional(),
 });
 
 const rejectSchema = z.object({
   supervisorNotices: z
-    .string({
-      required_error: "Notes is required.",
-    })
-    .min(5, {
-      message: "Notes must be at least 5 characters.",
-    })
+    .string()
+    .min(1, { message: "Notes are required." })
     .max(255, {
       message: "Notes must not be longer than 255 characters.",
     }),
