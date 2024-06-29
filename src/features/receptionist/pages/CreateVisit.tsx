@@ -23,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Textarea,
+  TimePicker,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import {
@@ -324,7 +325,7 @@ const CreateVisit: React.FC = () => {
               name="visitDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Date of visit</FormLabel>
+                  <FormLabel>Date and time of visit</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -336,7 +337,7 @@ const CreateVisit: React.FC = () => {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, "PPP HH:mm")
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -352,6 +353,12 @@ const CreateVisit: React.FC = () => {
                         disabled={(date) => date < startOfDay(new Date())}
                         initialFocus
                       />
+                      <div className="p-3 border-t border-border">
+                        <TimePicker
+                          setDate={field.onChange}
+                          date={field.value}
+                        />
+                      </div>
                     </PopoverContent>
                   </Popover>
                   <FormMessage />

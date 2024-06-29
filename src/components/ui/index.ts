@@ -89,6 +89,8 @@ import {
 import { Separator } from "./separator";
 import { Toaster } from "./sonner";
 import { Textarea } from "./textarea";
+import { TimePicker } from "./time-picker";
+import { TimePickerInput } from "./time-picker-input";
 
 export {
   AlertDialog,
@@ -172,5 +174,7 @@ export {
   ScrollArea,
   ScrollBar,
   Textarea,
+  TimePickerInput,
+  TimePicker,
   Toaster,
 };
