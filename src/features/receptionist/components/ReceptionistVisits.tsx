@@ -58,10 +58,17 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
   if (isLoading) return <div className="text-center w-full">Loading...</div>;
   if (visits.length === 0)
     return <div className="text-center w-full">No visits found.</div>;
+
+  const sortedVisits = [...visits].sort(
+    (a, b) =>
+      new Date(a.visit.scheduledDateTime).getTime() -
+      new Date(b.visit.scheduledDateTime).getTime()
+  );
+
   return (
     <ScrollArea className="w-full h-full">
       <div className="flex flex-col gap-4 min-w-[350px]">
-        {visits.map((visit) => (
+        {sortedVisits.map((visit) => (
           <Card key={visit.visit.id}>
             <CardHeader className="flex-row justify-between items-start gap-4">
               <div className="space-y-1.5">

@@ -26,10 +26,17 @@ const LabAssistantExaminations: React.FC<LabAssistantExaminationsProps> = ({
   if (isLoading) return <div className="text-center w-full">Loading...</div>;
   if (examinations.length === 0)
     return <div className="text-center w-full">No examinations found.</div>;
+
+  const sortedExaminations = [...examinations].sort(
+    (a, b) =>
+      new Date(a.orderedDateTime).getTime() -
+      new Date(b.orderedDateTime).getTime()
+  );
+
   return (
     <ScrollArea className="w-full h-full">
       <div className="flex flex-col gap-4 min-w-[350px]">
-        {examinations.map((exam) => (
+        {sortedExaminations.map((exam) => (
           <Card key={exam.id} className="w-full">
             <CardHeader className="flex-row justify-between items-start gap-4">
               <div className="space-y-1.5">
