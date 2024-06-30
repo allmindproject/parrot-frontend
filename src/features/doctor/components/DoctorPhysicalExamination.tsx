@@ -19,10 +19,12 @@ import { format } from "date-fns";
 
 type DoctorPhysicalExaminationProps = {
   visitId: number;
+  shouldBeDisabled?: boolean;
 };
 
 const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
   visitId,
+  shouldBeDisabled = false,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -57,7 +59,11 @@ const DoctorPhysicalExamination: React.FC<DoctorPhysicalExaminationProps> = ({
         <div className="text-2xl font-bold">Physical examinations:</div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="self-end" variant="outline">
+            <Button
+              className="self-end"
+              variant="outline"
+              disabled={shouldBeDisabled}
+            >
               Add physical examination
             </Button>
           </DialogTrigger>

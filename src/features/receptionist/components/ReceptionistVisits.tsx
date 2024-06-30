@@ -127,7 +127,7 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
                 {visit.visit.description}
               </p>
               <p className="text-sm">
-                <strong>Diagnostics: </strong>
+                <strong>Diagnosis: </strong>
                 {visit.visit.diagnostics}
               </p>
             </CardContent>

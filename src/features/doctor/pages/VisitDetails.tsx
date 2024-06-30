@@ -68,7 +68,13 @@ const detailsSchema = z.object({
 type CompleteSchemaValues = z.infer<typeof completeSchema>;
 type DetailsSchemaValues = z.infer<typeof detailsSchema>;
 
-const VisitDetails: React.FC = () => {
+type VisitDetailsProps = {
+  shouldBeDisabled?: boolean;
+};
+
+const VisitDetails: React.FC<VisitDetailsProps> = ({
+  shouldBeDisabled = false,
+}) => {
   const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
 
@@ -221,72 +227,75 @@ const VisitDetails: React.FC = () => {
             </CardContent>
           </Card>
           <Card>
-            <CardHeader>
-              <CardTitle className="flex justify-between">
-                <div className="font-bold">Result</div>
-                <Dialog
-                  open={isDetailsDialogOpen}
-                  onOpenChange={setIsDetailsDialogOpen}
-                >
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Edit Visit Details</DialogTitle>
-                    </DialogHeader>
-                    <Form {...detailsForm}>
-                      <form
-                        onSubmit={detailsForm.handleSubmit(onDetailsSetHandler)}
-                        className="grid grid-cols-1 gap-4"
-                      >
-                        <FormField
-                          control={detailsForm.control}
-                          name="description"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Description</FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  placeholder="Enter patient description..."
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={detailsForm.control}
-                          name="diagnostics"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Diagnosis</FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  placeholder="Enter diagnosis..."
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <DialogFooter className="sm:justify-end mt-4">
-                          <DialogClose asChild>
-                            <Button type="button" variant="secondary">
-                              Close
-                            </Button>
-                          </DialogClose>
-                          <Button type="submit">Save</Button>
-                        </DialogFooter>
-                      </form>
-                    </Form>
-                  </DialogContent>
-                </Dialog>
-              </CardTitle>
+            <CardHeader className="flex-row items-start justify-between gap-4">
+              <div className="space-y-1.5">
+                <CardTitle className="font-bold">Result</CardTitle>
+                <CardDescription>
+                  Patient description and doctor diagnosis
+                </CardDescription>
+              </div>
+              <Dialog
+                open={isDetailsDialogOpen}
+                onOpenChange={setIsDetailsDialogOpen}
+              >
+                <DialogTrigger asChild>
+                  <Button variant="outline" disabled={shouldBeDisabled}>
+                    Edit
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Edit Visit Details</DialogTitle>
+                  </DialogHeader>
+                  <Form {...detailsForm}>
+                    <form
+                      onSubmit={detailsForm.handleSubmit(onDetailsSetHandler)}
+                      className="grid grid-cols-1 gap-4"
+                    >
+                      <FormField
+                        control={detailsForm.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Enter patient description..."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={detailsForm.control}
+                        name="diagnostics"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Diagnosis</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Enter diagnosis..."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <DialogFooter className="sm:justify-end mt-4">
+                        <DialogClose asChild>
+                          <Button type="button" variant="secondary">
+                            Close
+                          </Button>
+                        </DialogClose>
+                        <Button type="submit">Save</Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
             </CardHeader>
             <CardContent className="space-y-2">
               <p className="text-sm">
@@ -306,10 +315,16 @@ const VisitDetails: React.FC = () => {
       </div>
       <div className="w-3/5 h-full flex flex-col gap-4">
         <div className="h-[calc(50%-2.25rem)]">
-          <DoctorPhysicalExamination visitId={visit.visit.id} />
+          <DoctorPhysicalExamination
+            visitId={visit.visit.id}
+            shouldBeDisabled={shouldBeDisabled}
+          />
         </div>
         <div className="h-[calc(50%-2.25rem)]">
-          <DoctorLaboratoryExamination visitId={visit.visit.id} />
+          <DoctorLaboratoryExamination
+            visitId={visit.visit.id}
+            shouldBeDisabled={shouldBeDisabled}
+          />
         </div>
         <div className="flex flex-row justify-end gap-4">
           <Button variant="outline" asChild>
@@ -324,7 +339,7 @@ const VisitDetails: React.FC = () => {
             onOpenChange={setIsCompleteDialogOpen}
           >
             <DialogTrigger asChild>
-              <Button>Complete visit</Button>
+              <Button disabled={shouldBeDisabled}>Complete visit</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>

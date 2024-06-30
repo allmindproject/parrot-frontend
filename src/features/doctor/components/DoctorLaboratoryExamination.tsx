@@ -19,11 +19,12 @@ import { LaboratoryExamDialog } from ".";
 
 type DoctorLaboratoryExaminationProps = {
   visitId: number;
+  shouldBeDisabled?: boolean;
 };
 
 const DoctorLaboratoryExamination: React.FC<
   DoctorLaboratoryExaminationProps
-> = ({ visitId }) => {
+> = ({ visitId, shouldBeDisabled = false }) => {
   const [open, setOpen] = useState(false);
 
   const {
@@ -57,7 +58,11 @@ const DoctorLaboratoryExamination: React.FC<
         <div className="text-2xl font-bold">Laboratory examinations:</div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="self-end" variant="outline">
+            <Button
+              className="self-end"
+              variant="outline"
+              disabled={shouldBeDisabled}
+            >
               Order laboratory examination
             </Button>
           </DialogTrigger>

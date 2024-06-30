@@ -85,8 +85,12 @@ const router = createBrowserRouter([
             element: <DoctorAllVisits />,
           },
           {
-            path: "doctor/visit-details/:visitId",
+            path: "doctor/process-visit/:visitId",
             element: <VisitDetails />,
+          },
+          {
+            path: "doctor/view-visit/:visitId",
+            element: <VisitDetails shouldBeDisabled />,
           },
           {
             path: "doctor/medical-history/:insuranceId",
