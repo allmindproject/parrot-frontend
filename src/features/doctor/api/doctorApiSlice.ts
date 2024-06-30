@@ -11,8 +11,14 @@ import {
 import {
   LaboratoryExaminationAddRequest,
   PhysicalExaminationAddRequest,
+  VisitCompleteRequest,
+  VisitDetailsSetRequest,
   VisitExaminationsResponse,
 } from "../types";
+
+type VisitCompleteResponse = unknown; //TODO
+
+type VisitDetailsSetResponse = unknown; //TODO
 
 type VisitStatusSetResponse = unknown; //TODO
 type VisitStatusSetRequest = {
@@ -78,6 +84,26 @@ const doctorApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    completeVisit: builder.mutation<
+      VisitCompleteResponse,
+      VisitCompleteRequest
+    >({
+      query: (body) => ({
+        url: "/api/doctor/complete-visit",
+        method: "POST",
+        body,
+      }),
+    }),
+    setVisitDetails: builder.mutation<
+      VisitDetailsSetResponse,
+      VisitDetailsSetRequest
+    >({
+      query: (body) => ({
+        url: "/api/doctor/set-details",
+        method: "POST",
+        body,
+      }),
+    }),
     setVisitStatus: builder.mutation<
       VisitStatusSetResponse,
       VisitStatusSetRequest
@@ -94,6 +120,8 @@ const doctorApiSlice = apiSlice.injectEndpoints({
 export const {
   useAddLaboratoryExaminationMutation,
   useAddPhysicalExaminationMutation,
+  useCompleteVisitMutation,
+  useSetVisitDetailsMutation,
   useSetVisitStatusMutation,
   useGetExaminationsQuery,
   useGetDoctorVisitsQuery,

@@ -6,31 +6,86 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Textarea,
 } from "@/components/ui";
 import {
+  useCompleteVisitMutation,
   useGetVisitQuery,
-  useSetVisitStatusMutation,
+  useSetVisitDetailsMutation,
 } from "@/features/doctor/api";
 import { handleError } from "@/utils";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { format } from "date-fns";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   DoctorLaboratoryExamination,
   DoctorPhysicalExamination,
 } from "../components";
-import { VisitStatus } from "@/types";
 import { toast } from "sonner";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { VisitCompleteRequest, VisitDetailsSetRequest } from "../types";
+
+const completeSchema = z.object({
+  diagnostics: z
+    .string()
+    .min(1, { message: "Diagnosis is required." })
+    .max(255, {
+      message: "Diagnosis must not be longer than 255 characters.",
+    }),
+});
+
+const detailsSchema = z.object({
+  description: z
+    .string()
+    .max(255, {
+      message: "Description must not be longer than 255 characters.",
+    })
+    .optional(),
+  diagnostics: z
+    .string()
+    .min(1, { message: "Diagnosis is required." })
+    .max(255, {
+      message: "Diagnosis must not be longer than 255 characters.",
+    }),
+});
+
+type CompleteSchemaValues = z.infer<typeof completeSchema>;
+type DetailsSchemaValues = z.infer<typeof detailsSchema>;
 
 const VisitDetails: React.FC = () => {
+  const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+
   const navigate = useNavigate();
   const params = useParams<{ visitId: string }>();
   const visitId = params.visitId;
 
+  const [completeVisit, { isSuccess: isCompleteVisitSuccess }] =
+    useCompleteVisitMutation();
+
+  const [setDetails, { isSuccess: isSetDetailsSuccess }] =
+    useSetVisitDetailsMutation();
+
   const {
     data: visit,
-    isLoading: isGetVisitLoading,
+    isSuccess: isGetVisitSuccess,
+    isFetching: isGetVisitFetching,
     isError: isGetVisitError,
     error: visitError,
     refetch: refetchVisit,
@@ -38,20 +93,77 @@ const VisitDetails: React.FC = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  const [completeVisit] = useSetVisitStatusMutation();
+  const completeForm = useForm<CompleteSchemaValues>({
+    resolver: zodResolver(completeSchema),
+    defaultValues: { diagnostics: "" },
+    mode: "onChange",
+  });
 
-  const onVisitCompleteHandler = async () => {
+  const detailsForm = useForm<DetailsSchemaValues>({
+    resolver: zodResolver(detailsSchema),
+    defaultValues: { description: "", diagnostics: "" },
+    mode: "onChange",
+  });
+
+  const onVisitCompleteHandler = async (data: CompleteSchemaValues) => {
+    if (!visitId) return;
+    const visitCompleteRequest: VisitCompleteRequest = {
+      visitId: visitId,
+      diagnostics: data.diagnostics,
+    };
+
     try {
-      await completeVisit({
-        visitId: visitId || "",
-        visitStatus: VisitStatus.COMPLETED,
-      }).unwrap();
-      refetchVisit();
-      toast.success(`Visit completed`);
+      await completeVisit(visitCompleteRequest).unwrap();
     } catch (error) {
       handleError(error);
     }
   };
+
+  const onDetailsSetHandler = async (data: DetailsSchemaValues) => {
+    if (!visitId) return;
+    const visitDetailsSetRequest: VisitDetailsSetRequest = {
+      visitId: visitId,
+      description: data.description || "",
+      diagnostics: data.diagnostics,
+    };
+
+    try {
+      await setDetails(visitDetailsSetRequest).unwrap();
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isCompleteVisitSuccess) {
+      completeForm.reset();
+      setIsCompleteDialogOpen(false);
+      refetchVisit();
+      toast.success(`Visit completed`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCompleteVisitSuccess]);
+
+  useEffect(() => {
+    if (isSetDetailsSuccess) {
+      detailsForm.reset();
+      setIsDetailsDialogOpen(false);
+      refetchVisit();
+      toast.success(`Visit details updated`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSetDetailsSuccess]);
+
+  useEffect(() => {
+    if (!isGetVisitFetching && isGetVisitSuccess) {
+      completeForm.reset({ diagnostics: visit.visit.diagnostics });
+      detailsForm.reset({
+        description: visit.visit.description,
+        diagnostics: visit.visit.diagnostics,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGetVisitFetching]);
 
   useEffect(() => {
     if (isGetVisitError) {
@@ -61,7 +173,7 @@ const VisitDetails: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGetVisitError]);
 
-  if (isGetVisitLoading) return <div className="text-center">Loading...</div>;
+  if (isGetVisitFetching) return <div className="text-center">Loading...</div>;
   if (!visit)
     return (
       <div className="flex flex-col items-center gap-4">
@@ -106,19 +218,87 @@ const VisitDetails: React.FC = () => {
                 <strong>Doctor Name: </strong>
                 {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
               </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex justify-between">
+                <div className="font-bold">Result</div>
+                <Dialog
+                  open={isDetailsDialogOpen}
+                  onOpenChange={setIsDetailsDialogOpen}
+                >
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      Edit
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Edit Visit Details</DialogTitle>
+                    </DialogHeader>
+                    <Form {...detailsForm}>
+                      <form
+                        onSubmit={detailsForm.handleSubmit(onDetailsSetHandler)}
+                        className="grid grid-cols-1 gap-4"
+                      >
+                        <FormField
+                          control={detailsForm.control}
+                          name="description"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Description</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  placeholder="Enter patient description..."
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={detailsForm.control}
+                          name="diagnostics"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Diagnosis</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  placeholder="Enter diagnosis..."
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <DialogFooter className="sm:justify-end mt-4">
+                          <DialogClose asChild>
+                            <Button type="button" variant="secondary">
+                              Close
+                            </Button>
+                          </DialogClose>
+                          <Button type="submit">Save</Button>
+                        </DialogFooter>
+                      </form>
+                    </Form>
+                  </DialogContent>
+                </Dialog>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
               <p className="text-sm">
                 <strong>Description: </strong>
                 {visit.visit.description}
               </p>
+              <p className="text-sm">
+                <strong>Diagnosis: </strong>
+                {visit.visit.diagnostics}
+              </p>
             </CardContent>
           </Card>
-          <Button className="self-start" asChild>
-            <Link
-              to={`/doctor/medical-history/${visit.selectedPatient.insuranceId}`}
-            >
-              Full medical history
-            </Link>
-          </Button>
         </div>
         <Button variant="outline" asChild className="w-1/2 min-w-[286px]">
           <Link to="/doctor">Back</Link>
@@ -131,9 +311,58 @@ const VisitDetails: React.FC = () => {
         <div className="h-[calc(50%-2.25rem)]">
           <DoctorLaboratoryExamination visitId={visit.visit.id} />
         </div>
-        <Button className="self-end" onClick={onVisitCompleteHandler}>
-          Complete Visit
-        </Button>
+        <div className="flex flex-row justify-end gap-4">
+          <Button variant="outline" asChild>
+            <Link
+              to={`/doctor/medical-history/${visit.selectedPatient.insuranceId}`}
+            >
+              Full medical history
+            </Link>
+          </Button>
+          <Dialog
+            open={isCompleteDialogOpen}
+            onOpenChange={setIsCompleteDialogOpen}
+          >
+            <DialogTrigger asChild>
+              <Button>Complete visit</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Complete visit</DialogTitle>
+              </DialogHeader>
+              <Form {...completeForm}>
+                <form
+                  onSubmit={completeForm.handleSubmit(onVisitCompleteHandler)}
+                >
+                  <FormField
+                    control={completeForm.control}
+                    name="diagnostics"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Diagnosis</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Enter visit diagnosis..."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <DialogFooter className="sm:justify-end mt-4">
+                    <DialogClose asChild>
+                      <Button type="button" variant="secondary">
+                        Close
+                      </Button>
+                    </DialogClose>
+                    <Button type="submit">Complete visit</Button>
+                  </DialogFooter>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </div>
   );
