@@ -1,10 +1,9 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {
-  DashboardPage,
-  HomePage,
-  NotFoundPage,
-  UnauthorizedPage,
-} from "./pages";
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
+import { DashboardPage, NotFoundPage, UnauthorizedPage } from "./pages";
 import { Layout } from "./components/layout";
 import { GuestOnlyRoute, PrivateRoute } from "./components/routes";
 import { Role, Theme } from "./types";
@@ -30,6 +29,7 @@ import {
 } from "./features/labSupervisor/pages";
 import { PatientDashboard } from "./features/patient/pages";
 import {
+  CreatePatient,
   CreateVisit,
   ReceptionistAllVisits,
   ReceptionistDashboard,
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
       // public pages - unrestricted access
       {
         index: true,
-        element: <HomePage />, // TODO kiedys usunac
+        element: <Navigate to="/login" replace />,
       },
       {
         path: "dashboard",
@@ -85,8 +85,12 @@ const router = createBrowserRouter([
             element: <DoctorAllVisits />,
           },
           {
-            path: "doctor/visit-details/:visitId",
+            path: "doctor/process-visit/:visitId",
             element: <VisitDetails />,
+          },
+          {
+            path: "doctor/view-visit/:visitId",
+            element: <VisitDetails shouldBeDisabled />,
           },
           {
             path: "doctor/medical-history/:insuranceId",
@@ -157,6 +161,10 @@ const router = createBrowserRouter([
           {
             path: "receptionist/all-visits",
             element: <ReceptionistAllVisits />,
+          },
+          {
+            path: "receptionist/create-patient",
+            element: <CreatePatient />,
           },
           {
             path: "receptionist/create-visit",

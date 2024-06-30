@@ -1,7 +1,7 @@
 type Person = {
   firstName: string;
   lastName: string;
-  nationalIDNumber: string;
+  nationalIdNumber: string;
   sex: "FEMALE" | "MALE";
 };
 export type { Person };

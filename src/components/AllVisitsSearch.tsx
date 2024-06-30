@@ -118,7 +118,6 @@ const AllVisitsSearch: React.FC<AllVisitsSearchProps> = ({
         ? format(searchVisitValues.visitDate, "HH:mm dd.MM.yyyy")
         : undefined,
     });
-    form.reset();
   };
 
   return (

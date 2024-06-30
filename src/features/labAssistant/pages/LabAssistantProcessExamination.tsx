@@ -45,9 +45,6 @@ const cancelSchema = z.object({
     .string({
       required_error: "Cancellation reason is required.",
     })
-    .min(5, {
-      message: "Cancellation reason must be at least 5 characters.",
-    })
     .max(255, {
       message: "Cancellation reason must not be longer than 255 characters.",
     }),
@@ -57,9 +54,6 @@ const completeSchema = z.object({
   result: z
     .string({
       required_error: "Result is required.",
-    })
-    .min(5, {
-      message: "Result must be at least 5 characters.",
     })
     .max(255, {
       message: "Result must not be longer than 255 characters.",

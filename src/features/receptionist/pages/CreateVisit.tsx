@@ -22,7 +22,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Textarea,
+  TimePicker,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import {
@@ -51,12 +51,6 @@ const createVisitSchema = z.object({
   visitDate: z.date({
     required_error: "Date of visit is required.",
   }),
-  comments: z
-    .string()
-    .max(255, {
-      message: "Comments must not be longer than 255 characters.",
-    })
-    .optional(),
 });
 
 type CreateVisitValues = z.infer<typeof createVisitSchema>;
@@ -83,7 +77,6 @@ const CreateVisit: React.FC = () => {
     patientInsuranceId: undefined,
     doctorNpwzId: undefined,
     visitDate: undefined,
-    comments: undefined,
   };
 
   const form = useForm<CreateVisitValues>({
@@ -94,7 +87,6 @@ const CreateVisit: React.FC = () => {
 
   const onCreateVisitHandler = async (visitValues: CreateVisitValues) => {
     const visitCreateRequest: VisitCreateRequest = {
-      description: visitValues.comments || "",
       doctorNpwzId: visitValues.doctorNpwzId,
       patientInsuranceId: visitValues.patientInsuranceId,
       scheduledDateTime: format(visitValues.visitDate, "HH:mm dd.MM.yyyy"),
@@ -324,7 +316,7 @@ const CreateVisit: React.FC = () => {
               name="visitDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Date of visit</FormLabel>
+                  <FormLabel>Date and time of visit</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -336,7 +328,7 @@ const CreateVisit: React.FC = () => {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, "PPP HH:mm")
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -352,24 +344,14 @@ const CreateVisit: React.FC = () => {
                         disabled={(date) => date < startOfDay(new Date())}
                         initialFocus
                       />
+                      <div className="p-3 border-t border-border">
+                        <TimePicker
+                          setDate={field.onChange}
+                          date={field.value}
+                        />
+                      </div>
                     </PopoverContent>
                   </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="comments"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Comments</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Enter any comments here..."
-                      {...field}
-                    />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

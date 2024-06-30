@@ -31,7 +31,7 @@ const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
         visitId: visitId.toString(),
         visitStatus: VisitStatus.IN_PROGRESS,
       }).unwrap();
-      navigate(`/doctor/visit-details/${visitId}`);
+      navigate(`/doctor/process-visit/${visitId}`);
     } catch (error) {
       handleError(error);
     }
@@ -40,10 +40,18 @@ const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
   if (isLoading) return <div className="text-center w-full">Loading...</div>;
   if (visits.length === 0)
     return <div className="text-center w-full">No visits found.</div>;
+
+  // Sort visits by scheduledDateTime
+  const sortedVisits = [...visits].sort(
+    (a, b) =>
+      new Date(a.visit.scheduledDateTime).getTime() -
+      new Date(b.visit.scheduledDateTime).getTime()
+  );
+
   return (
     <ScrollArea className="w-full h-full">
       <div className="flex flex-col gap-4 min-w-[350px]">
-        {visits.map((visit) => (
+        {sortedVisits.map((visit) => (
           <Card key={visit.visit.id}>
             <CardHeader className="flex-row justify-between items-start gap-4">
               <div className="space-y-1.5">
@@ -57,12 +65,20 @@ const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
                   {format(visit.visit.scheduledDateTime, "HH:mm PPPP")}
                 </CardDescription>
               </div>
-              <Button
-                onClick={() => onProcessVisitHandler(visit.visit.id)}
-                disabled={visit.visit.visitStatus === VisitStatus.CANCELLED}
-              >
-                Process visit
-              </Button>
+              {visit.visit.visitStatus === VisitStatus.IN_PROGRESS ||
+              visit.visit.visitStatus === VisitStatus.REGISTERED ? (
+                <Button onClick={() => onProcessVisitHandler(visit.visit.id)}>
+                  Process visit
+                </Button>
+              ) : (
+                <Button
+                  onClick={() =>
+                    navigate(`/doctor/view-visit/${visit.visit.id}`)
+                  }
+                >
+                  View visit
+                </Button>
+              )}
             </CardHeader>
             <CardContent className="space-y-2">
               <p className="text-sm">
@@ -70,8 +86,12 @@ const DoctorVisits: React.FC<DoctorVisitsProps> = ({ visits, isLoading }) => {
                 {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
               </p>
               <p className="text-sm">
-                <strong>Comments: </strong>
+                <strong>Description: </strong>
                 {visit.visit.description}
+              </p>
+              <p className="text-sm">
+                <strong>Diagnosis: </strong>
+                {visit.visit.diagnostics}
               </p>
             </CardContent>
           </Card>

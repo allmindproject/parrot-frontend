@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LabSupervisorExaminations } from "../components";
 import { LabExaminationStatus } from "@/types";
+import { format, startOfDay } from "date-fns";
 
 const LabSupervisorDashboard: React.FC = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(startOfDay(new Date()));
 
   const {
     data: examinations = [],
@@ -15,7 +16,10 @@ const LabSupervisorDashboard: React.FC = () => {
     isError: isGetLabExaminationsError,
     error: examinationsError,
   } = useGetSupervisorExaminationsQuery(
-    { status: LabExaminationStatus.COMPLETED },
+    {
+      status: LabExaminationStatus.COMPLETED,
+      orderedDateTime: date ? format(date, "HH:mm dd.MM.yyyy") : undefined,
+    },
     { refetchOnMountOrArgChange: true }
   );
 
@@ -34,7 +38,12 @@ const LabSupervisorDashboard: React.FC = () => {
         className="border rounded-md p-4"
       />
       <div className="w-full h-full flex flex-col gap-4">
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-between gap-4">
+          <div className="text-2xl font-bold">
+            {date
+              ? `${format(date, "dd.MM.yyyy")} examinations:`
+              : `Examinations:`}
+          </div>
           <Button variant="outline" asChild>
             <Link to={`all-tests`}>See all examinations</Link>
           </Button>

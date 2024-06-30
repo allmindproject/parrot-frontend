@@ -10,11 +10,15 @@ import {
   useGetVisitExaminationsQuery,
   useLazyGetVisitExaminationsQuery,
   useSetVisitStatusMutation,
+  useSetVisitDetailsMutation,
+  useCompleteVisitMutation,
 } from "./doctorApiSlice";
 
 export {
   useAddLaboratoryExaminationMutation,
   useAddPhysicalExaminationMutation,
+  useCompleteVisitMutation,
+  useSetVisitDetailsMutation,
   useSetVisitStatusMutation,
   useGetExaminationsQuery,
   useGetDoctorVisitsQuery,
