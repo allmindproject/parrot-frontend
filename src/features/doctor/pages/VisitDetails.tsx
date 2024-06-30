@@ -92,7 +92,7 @@ const VisitDetails: React.FC = () => {
               </p>
               <p className="text-sm">
                 <strong>Patient National ID: </strong>
-                {visit.selectedPatient.person.nationalIDNumber}
+                {visit.selectedPatient.person.nationalIdNumber}
               </p>
               <p className="text-sm">
                 <strong>Patient Sex: </strong>

@@ -7,8 +7,7 @@ import {
   VisitSearchRequest,
   VisitSearchResponse,
 } from "@/types";
-import { VisitCreateRequest } from "../types";
-//fest mi sie nie podobaja te wszystkie typy w tym miejscu, ale jeszcze mysle jak to rozwiazac
+import { PatientCreateRequest, VisitCreateRequest } from "../types";
 
 type PatientSearchResponse = Patient & { visitList: Visit[] };
 
@@ -72,6 +71,13 @@ const receptionistApiSlice = apiSlice.injectEndpoints({
         params: visitParams,
       }),
     }),
+    createPatient: builder.mutation<Patient, PatientCreateRequest>({
+      query: (body) => ({
+        url: "/api/receptionist/create-patient",
+        method: "POST",
+        body,
+      }),
+    }),
     createVisit: builder.mutation<VisitCreateResponse, VisitCreateRequest>({
       query: (body) => ({
         url: "/api/receptionist/create-visit",
@@ -91,6 +97,7 @@ const receptionistApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useCancelVisitMutation,
+  useCreatePatientMutation,
   useCreateVisitMutation,
   useGetDoctorsQuery,
   useGetPatientsQuery,

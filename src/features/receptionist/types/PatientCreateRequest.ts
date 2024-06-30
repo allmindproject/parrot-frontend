@@ -1,9 +1,10 @@
 import { Sex } from "@/types";
-//TODO
+
 type PatientCreateRequest = {
   firstName: string;
   lastName: string;
-  nationalIDNumber: string;
+  email: string;
+  nationalIdNumber: string;
   insuranceId: string;
   sex: Sex;
 };

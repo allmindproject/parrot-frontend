@@ -39,7 +39,7 @@ const ReceptionistDashboard: React.FC = () => {
       <div className="w-full h-full flex flex-col gap-4">
         <div className="flex justify-end gap-4">
           <Button variant="default" asChild>
-            <Link to={"create-patient"}>Create new patient</Link>
+            <Link to={"create-patient"}>Register new patient</Link>
           </Button>
           <Button variant="default" asChild>
             <Link to={"create-visit"}>Create new visit</Link>

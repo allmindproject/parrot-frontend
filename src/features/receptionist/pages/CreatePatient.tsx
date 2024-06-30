@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui";
-// import { useCreatePatientMutation } from "@/features/receptionist/api";
+import { useCreatePatientMutation } from "@/features/receptionist/api";
 import { Sex } from "@/types";
 import { handleError } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +34,8 @@ import { cn } from "@/lib/utils";
 const createPatientSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required." }),
   lastName: z.string().min(1, { message: "Last name is required." }),
-  nationalIDNumber: z.string().min(1, {
+  email: z.string().email().min(1, { message: "Email is required." }),
+  nationalIdNumber: z.string().min(1, {
     message: "National ID number is required.",
   }),
   sex: z.nativeEnum(Sex, {
@@ -44,17 +45,18 @@ const createPatientSchema = z.object({
 });
 
 type CreatePatientValues = z.infer<typeof createPatientSchema>;
-//TODO
+
 const CreatePatient: React.FC = () => {
   const navigate = useNavigate();
 
-  //   const [createPatient, { isSuccess: isCreatePatientSuccess }] =
-  //     useCreatePatientMutation();
+  const [createPatient, { isSuccess: isCreatePatientSuccess }] =
+    useCreatePatientMutation();
 
   const defaultValues: Partial<CreatePatientValues> = {
     firstName: "",
     lastName: "",
-    nationalIDNumber: "",
+    email: "",
+    nationalIdNumber: "",
     sex: undefined,
     insuranceId: "",
   };
@@ -69,45 +71,77 @@ const CreatePatient: React.FC = () => {
     const patientCreateRequest: PatientCreateRequest = {
       firstName: patientValues.firstName,
       lastName: patientValues.lastName,
-      nationalIDNumber: patientValues.nationalIDNumber,
+      email: patientValues.email,
+      nationalIdNumber: patientValues.nationalIdNumber,
       insuranceId: patientValues.insuranceId,
       sex: patientValues.sex,
     };
 
     try {
-      console.log(patientCreateRequest);
-      //   await createPatient(patientCreateRequest).unwrap();
+      await createPatient(patientCreateRequest).unwrap();
     } catch (error) {
       handleError(error);
     }
   };
 
-  //   useEffect(() => {
-  //     if (isCreatePatientSuccess) {
-  //       toast.success(`Patient created successfully`);
-  //       navigate("/receptionist");
-  //     }
-  //   }, [isCreatePatientSuccess, navigate]);
+  useEffect(() => {
+    if (isCreatePatientSuccess) {
+      toast.success(`Patient registered successfully`);
+      navigate("/receptionist");
+    }
+  }, [isCreatePatientSuccess, navigate]);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onCreatePatientHandler)}>
         <Card className="max-w-[700px] mx-auto">
           <CardHeader>
-            <CardTitle className="font-bold">Create New Patient</CardTitle>
+            <CardTitle className="font-bold">Register New Patient</CardTitle>
             <CardDescription>
               Enter the details of the patient below
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
+            <div className="flex flex-row gap-4 justify-between">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="First Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Last Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
-              name="firstName"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="First Name" {...field} />
+                    <Input
+                      placeholder="m@example.com"
+                      autoComplete="off"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,20 +149,7 @@ const CreatePatient: React.FC = () => {
             />
             <FormField
               control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Last Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="nationalIDNumber"
+              name="nationalIdNumber"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>National ID Number</FormLabel>
