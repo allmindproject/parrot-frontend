@@ -1,12 +1,12 @@
-import { LaboratoryExamination, PhysicalExamination } from ".";
+import { LaboratoryExamination, PhysicalExamination, VisitStatus } from ".";
 
 type Visit = {
   description: string;
-  diagnostics: unknown; //TODO
+  diagnostics: string;
   id: number;
   labExaminationList: LaboratoryExamination[];
   physicalExaminationList: PhysicalExamination[];
-  scheduledDateTime: Date; // TODO czy string
-  visitStatus: string; // TODO maybe enum
+  scheduledDateTime: Date;
+  visitStatus: VisitStatus;
 };
 export type { Visit };

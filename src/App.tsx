@@ -1,10 +1,9 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {
-  DashboardPage,
-  HomePage,
-  NotFoundPage,
-  UnauthorizedPage,
-} from "./pages";
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
+import { DashboardPage, NotFoundPage, UnauthorizedPage } from "./pages";
 import { Layout } from "./components/layout";
 import { GuestOnlyRoute, PrivateRoute } from "./components/routes";
 import { Role, Theme } from "./types";
@@ -52,7 +51,7 @@ const router = createBrowserRouter([
       // public pages - unrestricted access
       {
         index: true,
-        element: <HomePage />, // TODO kiedys usunac
+        element: <Navigate to="/login" replace />,
       },
       {
         path: "dashboard",

@@ -107,15 +107,7 @@ const VisitDetails: React.FC = () => {
                 {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
               </p>
               <p className="text-sm">
-                <strong>Scheduled Date: </strong>
-                {format(visit.visit.scheduledDateTime, "PPPP")}
-              </p>
-              <p className="text-sm">
-                <strong>Scheduled Time: </strong>
-                {format(visit.visit.scheduledDateTime, "HH:mm")}
-              </p>
-              <p className="text-sm">
-                <strong>Comments: </strong>
+                <strong>Description: </strong>
                 {visit.visit.description}
               </p>
             </CardContent>

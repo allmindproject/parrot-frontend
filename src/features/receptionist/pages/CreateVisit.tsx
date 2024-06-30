@@ -22,7 +22,6 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Textarea,
   TimePicker,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
@@ -52,12 +51,6 @@ const createVisitSchema = z.object({
   visitDate: z.date({
     required_error: "Date of visit is required.",
   }),
-  comments: z
-    .string()
-    .max(255, {
-      message: "Comments must not be longer than 255 characters.",
-    })
-    .optional(),
 });
 
 type CreateVisitValues = z.infer<typeof createVisitSchema>;
@@ -84,7 +77,6 @@ const CreateVisit: React.FC = () => {
     patientInsuranceId: undefined,
     doctorNpwzId: undefined,
     visitDate: undefined,
-    comments: undefined,
   };
 
   const form = useForm<CreateVisitValues>({
@@ -95,7 +87,6 @@ const CreateVisit: React.FC = () => {
 
   const onCreateVisitHandler = async (visitValues: CreateVisitValues) => {
     const visitCreateRequest: VisitCreateRequest = {
-      description: visitValues.comments || "",
       doctorNpwzId: visitValues.doctorNpwzId,
       patientInsuranceId: visitValues.patientInsuranceId,
       scheduledDateTime: format(visitValues.visitDate, "HH:mm dd.MM.yyyy"),
@@ -361,22 +352,6 @@ const CreateVisit: React.FC = () => {
                       </div>
                     </PopoverContent>
                   </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="comments"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Comments</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Enter any comments here..."
-                      {...field}
-                    />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

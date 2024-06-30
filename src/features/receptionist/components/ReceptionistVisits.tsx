@@ -123,8 +123,12 @@ const ReceptionistVisits: React.FC<ReceptionistVisitsProps> = ({
                 {`Dr. ${visit.selectedDoctor.clinicStaff.person.firstName} ${visit.selectedDoctor.clinicStaff.person.lastName}`}
               </p>
               <p className="text-sm">
-                <strong>Comments: </strong>
+                <strong>Description: </strong>
                 {visit.visit.description}
+              </p>
+              <p className="text-sm">
+                <strong>Diagnostics: </strong>
+                {visit.visit.diagnostics}
               </p>
             </CardContent>
           </Card>

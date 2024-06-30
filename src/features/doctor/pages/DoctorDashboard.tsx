@@ -36,7 +36,10 @@ const DoctorDashboard: React.FC = () => {
         className="border rounded-md p-4"
       />
       <div className="w-full h-full flex flex-col gap-4">
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-between gap-4">
+          <div className="text-2xl font-bold">
+            {date ? `${format(date, "dd.MM.yyyy")} visits:` : `Visits:`}
+          </div>
           <Button variant="outline" asChild>
             <Link to={`all-visits`}>See all visits</Link>
           </Button>
